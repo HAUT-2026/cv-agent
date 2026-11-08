@@ -93,6 +93,10 @@ Se añadieron allowlists por agente, registro de llamadas, rechazo verificable, 
 
 Se añadió README con ruta rápida, interfaces de integración y procedimiento reproducible de PostgreSQL local, `docker-compose.yml`, comando de inicialización y prueba de integración condicionada por `CVAGENT_POSTGRES_URL`. `python -m pytest` → 15 passed, 1 skipped; `python -m cvagent.demo` → pendiente de lista → pendiente de mensaje → cerrado con un efecto simulado; `docker compose config --quiet` → correcto. La prueba PostgreSQL no pudo ejecutarse porque Docker Desktop no tenía el daemon disponible; no se convirtió en PASS. Risk: item 5 (infraestructura de persistencia).
 
+### L7 — Cierre técnico
+
+Se exportaron todos los enums de estado y decisión desde `cvagent` para simplificar el consumo de los Roles 2–4 sin duplicar imports del contrato. `python -m pytest` → 15 passed, 1 skipped. Risk: item 3 (superficie pública del contrato compartido).
+
 ### L1 — Solicitud original del usuario
 
 Actúa como ingeniero senior de Python y responsable del Rol 1 («Grafo y estado») del MVP de CVAgent.
