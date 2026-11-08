@@ -139,6 +139,10 @@ def _receive(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
     return _change(runtime, state, estado=EstadoCaso.EVALUANDO, razon_parada=None)
 
 
+def _route_after_receive(state_value: Any) -> str:
+    return "stop" if _state(state_value).estado is EstadoCaso.PAUSADO_KILL_SWITCH else "analyze"
+
+
 def _analyze(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
     state = _state(state_value)
     ficha = runtime.adapters.analista.crear_ficha(state, now=runtime.clock.now())
@@ -365,21 +369,34 @@ def _external_guard(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
             estado=EstadoCaso.PAUSADO_KILL_SWITCH,
             razon_parada=RazónParada.KILL_SWITCH_ACTIVO,
         )
-        runtime.registry.record(_state(paused))
         _log(runtime, _state(paused), componente="workflow", razon="external_action_paused")
-        response = interrupt(
-            {
-                "tipo": "kill_switch",
-                "correlation_id": state.correlation_id,
-                "razon": RazónParada.KILL_SWITCH_ACTIVO.value,
-                "instruccion": "reanudar solo después del procedimiento operativo explícito",
-            }
-        )
-        if not isinstance(response, dict) or response.get("decision") != "reanudar":
-            raise ValueError("kill switch resume requires decision=reanudar")
-        if runtime.controls.is_blocked(vacante_id=state.vacante_id, agente="envio"):
-            return paused
+        return paused
     return _change(runtime, state, estado=EstadoCaso.ENVIANDO, razon_parada=None)
+
+
+def _route_after_external_guard(state_value: Any) -> str:
+    return "operational_resume" if _state(state_value).estado is EstadoCaso.PAUSADO_KILL_SWITCH else "send"
+
+
+def _operational_resume(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
+    state = _state(state_value)
+    response = interrupt(
+        {
+            "tipo": "kill_switch",
+            "correlation_id": state.correlation_id,
+            "razon": RazónParada.KILL_SWITCH_ACTIVO.value,
+            "instruccion": "reanudar solo después del procedimiento operativo explícito",
+        }
+    )
+    if not isinstance(response, dict) or response.get("decision") != "reanudar":
+        raise ValueError("kill switch resume requires decision=reanudar")
+    if runtime.controls.is_blocked(vacante_id=state.vacante_id, agente="envio"):
+        return state.model_dump()
+    return _change(runtime, state, estado=EstadoCaso.ENVIANDO, razon_parada=None)
+
+
+def _route_after_operational_resume(state_value: Any) -> str:
+    return "send" if _state(state_value).estado is EstadoCaso.ENVIANDO else "stop"
 
 
 def _send(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
@@ -457,11 +474,14 @@ def build_graph(
     builder.add_node("schedule", lambda state: _schedule(runtime, state))
     builder.add_node("approve_message", lambda state: _approve_message(runtime, state))
     builder.add_node("external_guard", lambda state: _external_guard(runtime, state))
+    builder.add_node("operational_resume", lambda state: _operational_resume(runtime, state))
     builder.add_node("send", lambda state: _send(runtime, state))
     builder.add_node("stop", lambda state: _stop(runtime, state))
 
     builder.add_edge(START, "receive")
-    builder.add_edge("receive", "analyze")
+    builder.add_conditional_edges(
+        "receive", _route_after_receive, {"analyze": "analyze", "stop": "stop"}
+    )
     builder.add_edge("analyze", "evaluate")
     builder.add_conditional_edges("evaluate", _route_after_evaluation, {"audit": "audit", "stop": "stop"})
     builder.add_conditional_edges("audit", _route_after_audit, {"prepare_shortlist": "prepare_shortlist", "stop": "stop"})
@@ -481,7 +501,16 @@ def build_graph(
         _route_after_message,
         {"external_guard": "external_guard", "stop": "stop"},
     )
-    builder.add_edge("external_guard", "send")
+    builder.add_conditional_edges(
+        "external_guard",
+        _route_after_external_guard,
+        {"operational_resume": "operational_resume", "send": "send"},
+    )
+    builder.add_conditional_edges(
+        "operational_resume",
+        _route_after_operational_resume,
+        {"send": "send", "stop": "stop"},
+    )
     builder.add_edge("send", END)
     builder.add_edge("stop", END)
     if checkpointer is None:
