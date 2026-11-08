@@ -21,6 +21,7 @@ dev = [
 
 [project.scripts]
 cvagent-demo = "cvagent.demo:main"
+cvagent-postgres-setup = "cvagent.postgres_setup:main"
 
 [tool.setuptools.packages.find]
 include = ["cvagent*"]
@@ -28,3 +29,6 @@ include = ["cvagent*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = [
+    "integration: requires a running local PostgreSQL configured by CVAGENT_POSTGRES_URL",
+]

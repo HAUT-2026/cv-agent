@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cvagent
+      POSTGRES_USER: cvagent
+      POSTGRES_PASSWORD: cvagent_local_only
+    ports:
+      - "54329:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cvagent -d cvagent"]
+      interval: 2s
+      timeout: 3s
+      retries: 15

@@ -68,8 +68,8 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 - T1 · S1 · inline · done · commit: `ee56bf8` (`python -m pytest tests/test_contracts.py` → 4 passed)
 - T2 · S2–S3 · inline · done · commit: `6bf556e` (+ cleanup `62ea42a`; `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
 - T3 · S4 · inline · done · commit: `3109925` (`python -m pytest` → 11 passed)
-- T4 · S5 · inline · done · commit: pending (`python -m pytest` → 15 passed)
-- T5 · S6 · inline · pending · commit: —
+- T4 · S5 · inline · done · commit: `0cb0a53` (`python -m pytest` → 15 passed)
+- T5 · S6 · inline · done · commit: pending (`python -m pytest` → 15 passed, 1 skipped)
 
 ## Log
 
@@ -88,6 +88,10 @@ Se añadió `DecisionLog` de solo anexado con hash encadenado y `SLAWatchdog` se
 ### L5 — T4 completado
 
 Se añadieron allowlists por agente, registro de llamadas, rechazo verificable, reintentos finitos con backoff, reconciliación por clave idempotente y kill switch por vacante/agente/sistema con reanudación explícita. `python -m pytest` → 15 passed; las pruebas confirman que la acción externa no se duplica y que el switch detiene el caso. Risk: item 2 (controles de seguridad) e item 3 (guardas de acciones externas).
+
+### L6 — T5 completado
+
+Se añadió README con ruta rápida, interfaces de integración y procedimiento reproducible de PostgreSQL local, `docker-compose.yml`, comando de inicialización y prueba de integración condicionada por `CVAGENT_POSTGRES_URL`. `python -m pytest` → 15 passed, 1 skipped; `python -m cvagent.demo` → pendiente de lista → pendiente de mensaje → cerrado con un efecto simulado; `docker compose config --quiet` → correcto. La prueba PostgreSQL no pudo ejecutarse porque Docker Desktop no tenía el daemon disponible; no se convirtió en PASS. Risk: item 5 (infraestructura de persistencia).
 
 ### L1 — Solicitud original del usuario
 
