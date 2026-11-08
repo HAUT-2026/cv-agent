@@ -10,6 +10,7 @@ requires-python = ">=3.11"
 dependencies = [
     "langgraph>=1.0,<2.0",
     "langgraph-checkpoint-postgres>=3.0,<4.0",
+    "psycopg[binary]>=3.2,<4.0",
     "pydantic>=2.10,<3.0",
 ]
 
@@ -17,6 +18,9 @@ dependencies = [
 dev = [
     "pytest>=8.0,<9.0",
 ]
+
+[project.scripts]
+cvagent-demo = "cvagent.demo:main"
 
 [tool.setuptools.packages.find]
 include = ["cvagent*"]

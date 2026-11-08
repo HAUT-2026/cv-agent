@@ -321,6 +321,14 @@ class CaseState(StrictModel):
 class EntradaDecisionLog(StrictModel):
     """Append-only audit entry. Hashes are populated by DecisionLog.append."""
 
+    model_config = ConfigDict(
+        extra="forbid",
+        strict=True,
+        validate_assignment=True,
+        validate_default=True,
+        frozen=True,
+    )
+
     correlation_id: str
     tiempo: datetime
     componente: str = Field(min_length=1)

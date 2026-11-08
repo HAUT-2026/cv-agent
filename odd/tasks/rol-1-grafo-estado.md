@@ -65,8 +65,8 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 
 ## Tasks
 
-- T1 · S1 · inline · done · commit: `ef54c17` (`python -m pytest tests/test_contracts.py` → 4 passed)
-- T2 · S2–S3 · inline · pending · commit: —
+- T1 · S1 · inline · done · commit: `ee56bf8` (`python -m pytest tests/test_contracts.py` → 4 passed)
+- T2 · S2–S3 · inline · done · commit: pending (`python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
 - T3 · S4 · inline · pending · commit: —
 - T4 · S5 · inline · pending · commit: —
 - T5 · S6 · inline · pending · commit: —
@@ -76,6 +76,10 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 ### L2 — T1 completado
 
 Se verificó que no existían contratos previos. Se creó `cvagent/contracts.py` como fuente única versionada (`1.0.0`) con modelos estrictos, ejemplos, esquemas JSON, UUID4, versiones, timestamps, citas con offsets y auditoría. `python -m pytest tests/test_contracts.py` → 4 passed; `python -m pytest` → 4 passed. Risk: item 3 (contratos compartidos que consumirán otros roles).
+
+### L3 — T2 completado
+
+Se creó el grafo LangGraph con `correlation_id` como `configurable.thread_id`, adaptadores sintéticos explícitos, dos interrupciones independientes y ruta de `PostgresSaver` con serializer allowlisted. Se verificó reanudación después de recompilar el grafo y deduplicación por idempotency key con SQLite local. `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed; `python -m pytest` → 7 passed; `python -m cvagent.demo` → cerró con un efecto simulado. Risk: item 3 (persistencia y aprobaciones son contratos compartidos).
 
 ### L1 — Solicitud original del usuario
 
