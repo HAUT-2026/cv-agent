@@ -14,6 +14,19 @@ sistemas externos reales.
 La demostración muestra el caso pendiente de aprobación de lista, el caso
 pendiente de aprobación del mensaje exacto y el cierre con un efecto simulado.
 
+## LangGraph Studio en desarrollo
+
+El grafo se exporta desde `cvagent/langgraph_app.py` y se registra como `cvagent`
+en `langgraph.json`. Para iniciarlo:
+
+```bash
+uv run langgraph dev
+```
+
+El CLI imprime las URLs de la API y de Studio. El servidor `dev` usa persistencia
+en memoria; la configuración de PostgreSQL del apartado siguiente sirve para
+las pruebas locales del checkpointer del proyecto.
+
 ## PostgreSQL local
 
 La API oficial de LangGraph 1.x exige un checkpointer compilado y el mismo

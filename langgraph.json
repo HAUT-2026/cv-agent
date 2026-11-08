@@ -1,0 +1,10 @@
+{
+  "python_version": "3.11",
+  "graphs": {
+    "cvagent": "./cvagent/langgraph_app.py:graph"
+  },
+  "source": {
+    "kind": "uv",
+    "root": "."
+  }
+}

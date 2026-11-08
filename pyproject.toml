@@ -10,6 +10,7 @@ requires-python = ">=3.11"
 dependencies = [
     "langgraph>=1.0,<2.0",
     "langgraph-checkpoint-postgres>=3.0,<4.0",
+    "langgraph-cli[inmem]>=0.4.42",
     "psycopg[binary]>=3.2,<4.0",
     "pydantic>=2.10,<3.0",
 ]
