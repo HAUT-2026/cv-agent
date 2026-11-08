@@ -82,6 +82,9 @@ class RazónParada(str, Enum):
     KILL_SWITCH_ACTIVO = "kill_switch_activo"
     SLA_VENCIDO = "sla_vencido"
     DATOS_INVALIDOS = "datos_invalidos"
+    TOKEN_AUSENTE = "token_ausente"
+    TOKEN_INVALIDO = "token_invalido"
+    TOKEN_VENCIDO = "token_vencido"
 
 
 class EstadoSLA(str, Enum):

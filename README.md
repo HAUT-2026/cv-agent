@@ -62,8 +62,13 @@ El test de integración se omite de forma explícita si no existe
   lo transforma en aprobación ni descarte.
 - `SLAWatchdog` inspecciona `CaseRegistry` y registra recordatorio/escalamiento
   sin llamar al grafo. `register_policy()` permite añadir plazos adicionales.
+- `SLAWatchdogService` ejecuta esas inspecciones periódicamente en un proceso
+  desacoplado del grafo; `start()` y `stop()` controlan su ciclo de vida y
+  `run_once()` permite una ejecución operativa puntual.
 - `OperationalControls` expone allowlist, registro de llamadas, reintentos,
-  reconciliación por idempotency key y kill switch explícito.
+  reconciliación por idempotency key, kill switch explícito y tokens opacos
+  ligados a agente/caso/vacante con TTL predeterminado de 15 minutos. Las
+  validaciones registran ausencia, invalidez y vencimiento sin guardar el token.
 
 ## Organización del paquete
 

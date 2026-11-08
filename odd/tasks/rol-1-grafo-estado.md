@@ -38,7 +38,7 @@ Acceptance: la ruta PostgreSQL usa `PostgresSaver` y `thread_id`; las pruebas r�
 > Inyecta el reloj para probar vencimientos en segundos sin esperar horas reales.
 > Proporciona un helper de decision_log de solo anexado que todos los nodos puedan usar. Registra correlation_id, tiempo, componente, fuente, versiones, razón, cobertura, veredicto y aprobador cuando corresponda. El checkpoint no sustituye este log.
 
-Acceptance: el reloj falso demuestra las tres etapas de lista y las dos de mensaje, conserva estados y deja entradas de log encadenadas sin mutación.
+Acceptance: el reloj falso demuestra las tres etapas de lista y las dos de mensaje, conserva estados y deja entradas de log encadenadas sin mutación. Además, existe un servicio periódico separado del grafo que ejecuta inspecciones sobre el registro de casos pendientes.
 
 ### S5 — Controles operativos
 
@@ -46,6 +46,7 @@ Acceptance: el reloj falso demuestra las tres etapas de lista y las dos de mensa
 > Añade reintentos acotados y backoff para fallos transitorios, con idempotencia o reconciliación antes de repetir operaciones externas.
 > Implementa el kill switch con alcance por vacante, agente o sistema: pausa casos afectados, impide nuevas acciones externas, registra causa y exige el procedimiento de reanudación descrito en B3.
 > No conviertas un fallo, silencio o excepción en descarte automático de un candidato.
+> El gateway debe emitir tokens por agente/caso con vencimiento de 15 minutos y rechazar tokens ausentes, inválidos o vencidos sin exponerlos en prompts ni estado.
 
 Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto simulado no se duplica al reintentar; el kill switch bloquea el alcance seleccionado y solo una reanudación explícita permite continuar.
 
@@ -68,9 +69,9 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 
 - T1 · S1 · inline · done · commit: `ee56bf8` (`python -m pytest tests/test_contracts.py` → 4 passed)
 - T2 · S2–S3 · inline · done · commit: `6bf556e` (+ cleanup `62ea42a`; `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
-- T3 · S4 · inline · done · commit: `3109925` (`python -m pytest` → 11 passed)
-- T4 · S5 · inline · done · commit: `0cb0a53` (`python -m pytest` → 15 passed)
-- T5 · S6 · inline · done · commit: `0239bf1` (+ UV/organización; `uv run pytest` → 15 passed, 1 skipped)
+- T3 · S4 · inline · done · commit: pending (`uv run pytest` → 17 passed, 1 skipped; periodic service test passed)
+- T4 · S5 · inline · done · commit: pending (`uv run pytest` → 17 passed, 1 skipped; token TTL/revocation/graph gateway tests passed)
+- T5 · S6 · inline · done · commit: pending (`uv run pytest -m integration` → 1 passed; PostgreSQL checkpoint reopen verified)
 
 ## Log
 
@@ -103,6 +104,23 @@ Se exportaron todos los enums de estado y decisión desde `cvagent` para simplif
 Se me olvido decirte que el proyecto lo hiciera con UV, crearas un entorno virtual y además dentro de la carpeta cvagent organizes los archivos no pongas todos los archivos regados
 
 Se reabrió T5 para migrar la instalación/verificación a UV, crear `.venv`, generar `uv.lock`, organizar la implementación en `domain/`, `workflow/`, `audit/`, `operations/`, `integration/` y `cli/`, y conservar fachadas compatibles. `uv run pytest` → 15 passed, 1 skipped; `uv run python -m cvagent.demo` → cierre simulado correcto. Risk: item 5 (entorno/dependencias) e item 3 (rutas públicas de integración).
+
+### L9 — Brechas funcionales reportadas por el usuario
+
+> Quedan dos brechas funcionales frente al plan:
+> - El gateway registra y bloquea herramientas, pero no implementa emisión ni vencimiento de tokens de 15 minutos. En [core.py (line 44)](/C:/Users/MSI/Documents/dev/HAUT/cvagent/operations/core.py:44) se indica que OperationalControls no acepta credenciales ni tokens.
+> - El vigilante de SLA evalúa casos cuando se invoca, pero no encontré un proceso que lo ejecute periódicamente para revisar los casos pendientes. Está implementado en [sla.py (line 60)](/C:/Users/MSI/Documents/dev/HAUT/cvagent/audit/sla.py:60).
+> La prueba de persistencia PostgreSQL también quedó omitida porque no estaba configurada CVAGENT_POSTGRES_URL; eso deja esa integración sin verificar en esta ejecución, aunque el repositorio incluye su configuración.
+
+Se reabrieron T3, T4 y T5 para implementar tokens con TTL, un servicio periódico de SLA y verificación PostgreSQL condicionada por infraestructura disponible.
+
+### L10 — Brechas corregidas y verificadas
+
+Se añadió `OperationalControls.issue_token()` con tokens opacos ligados a agente, `correlation_id` y vacante, TTL predeterminado de 15 minutos, revocación y rechazo registrado de tokens ausentes, inválidos o vencidos. El grafo emite un token efímero justo antes del efecto simulado y lo valida mediante la allowlist; el secreto no entra en `CaseState`, prompts, `ToolCall` ni `decision_log`.
+
+Se añadió `SLAWatchdogService`, separado del grafo, con `start()`, `stop()` y `run_once()`; ejecuta inspecciones periódicas del `CaseRegistry`, conserva los estados derivados y no aprueba ni descarta casos.
+
+La verificación PostgreSQL dejó de estar omitida en esta ejecución: se levantó el contenedor local, se inicializaron las tablas y `uv run pytest -m integration` → 1 passed. Verificaciones finales: `uv run pytest` → 17 passed, 1 skipped; `uv run python -m cvagent.demo` → pendiente de lista → pendiente de mensaje → cerrado con un efecto simulado; `uv run python -m compileall -q cvagent tests` → correcto; `git diff --check` → correcto. Risk: item 2 (tokens y guardas operativas), item 3 (estado persistido y contrato de workflow) e item 5 (persistencia PostgreSQL).
 
 ### L1 — Solicitud original del usuario
 

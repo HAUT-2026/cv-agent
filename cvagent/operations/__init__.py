@@ -1,6 +1,7 @@
 """Operational gateway controls and idempotent effects."""
 
 from .core import (
+    AgentToken,
     KillSwitchActiveError,
     OperationalControls,
     RetryExecutor,
@@ -8,10 +9,12 @@ from .core import (
     SimulatedDeliveryGateway,
     ToolCall,
     ToolNotAllowedError,
+    TokenValidationError,
     TransientOperationError,
 )
 
 __all__ = [
+    "AgentToken",
     "KillSwitchActiveError",
     "OperationalControls",
     "RetryExecutor",
@@ -19,5 +22,6 @@ __all__ = [
     "SimulatedDeliveryGateway",
     "ToolCall",
     "ToolNotAllowedError",
+    "TokenValidationError",
     "TransientOperationError",
 ]

@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from typing import Iterable
+from datetime import datetime, timedelta, timezone
+from threading import Event, RLock, Thread
+from typing import Callable, Iterable
 
 from .log import DecisionLog
 from ..domain.contracts import (
@@ -206,10 +207,92 @@ class SLAWatchdog:
         return SLAEvent(state.correlation_id, tipo, status, now, reason)
 
 
+class SLAWatchdogService:
+    """Run the standalone watchdog on a periodic background schedule."""
+
+    def __init__(
+        self,
+        *,
+        watchdog: SLAWatchdog,
+        registry: CaseRegistry,
+        interval: timedelta = timedelta(minutes=1),
+        clock: Callable[[], datetime] | None = None,
+        on_report: Callable[[SLAReport], None] | None = None,
+        on_error: Callable[[Exception], None] | None = None,
+    ) -> None:
+        if interval <= timedelta(0):
+            raise ValueError("interval must be positive")
+        self.watchdog = watchdog
+        self.registry = registry
+        self.interval = interval
+        self._clock = clock or (lambda: datetime.now(timezone.utc))
+        self._on_report = on_report
+        self._on_error = on_error
+        self._stop = Event()
+        self._lock = RLock()
+        self._thread: Thread | None = None
+        self._last_error: Exception | None = None
+
+    @property
+    def running(self) -> bool:
+        with self._lock:
+            return self._thread is not None and self._thread.is_alive()
+
+    @property
+    def last_error(self) -> Exception | None:
+        with self._lock:
+            return self._last_error
+
+    def run_once(self, *, now: datetime | None = None) -> SLAReport:
+        """Inspect and persist one registry snapshot; useful for operator probes."""
+
+        observed_at = now or self._clock()
+        report = self.watchdog.inspect_registry(self.registry, now=observed_at)
+        if self._on_report:
+            self._on_report(report)
+        return report
+
+    def start(self) -> None:
+        """Start periodic inspections without coupling the service to LangGraph."""
+
+        with self._lock:
+            if self._thread is not None and self._thread.is_alive():
+                return
+            self._stop.clear()
+            self._thread = Thread(target=self._run, name="cvagent-sla-watchdog", daemon=True)
+            self._thread.start()
+
+    def stop(self, *, timeout: float | None = 5.0) -> None:
+        """Request shutdown and wait for the current inspection to finish."""
+
+        with self._lock:
+            thread = self._thread
+            self._stop.set()
+        if thread is not None:
+            thread.join(timeout)
+        with self._lock:
+            if self._thread is thread and (thread is None or not thread.is_alive()):
+                self._thread = None
+
+    def _run(self) -> None:
+        while not self._stop.is_set():
+            try:
+                self.run_once()
+                with self._lock:
+                    self._last_error = None
+            except Exception as exc:  # pragma: no cover - exercised by operator integration
+                with self._lock:
+                    self._last_error = exc
+                if self._on_error:
+                    self._on_error(exc)
+            self._stop.wait(self.interval.total_seconds())
+
+
 __all__ = [
     "DEFAULT_POLICIES",
     "SLAEvent",
     "SLAPolicy",
     "SLAReport",
     "SLAWatchdog",
+    "SLAWatchdogService",
 ]

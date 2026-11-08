@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta, timezone
+from threading import Event
 from uuid import uuid4
 
 from cvagent.audit import DecisionLog
 from cvagent.clock import ManualClock
-from cvagent.contracts import CaseState, EstadoCaso, EstadoSLA, TipoSLA
+from cvagent.contracts import CaseState, EstadoAprobacion, EstadoCaso, EstadoSLA, TipoSLA
 from cvagent.graph import build_graph, run_case, thread_config
-from cvagent.sla import SLAPolicy, SLAWatchdog
+from cvagent.registry import CaseRegistry
+from cvagent.sla import SLAWatchdog, SLAWatchdogService, SLAPolicy
 
 
 def _state() -> CaseState:
@@ -113,3 +115,33 @@ def test_manual_clock_proves_deadlines_in_seconds() -> None:
     clock.advance(seconds=2)
     report = watchdog.inspect([pending], now=clock.now())
     assert [event.estado for event in report.events] == [EstadoSLA.RECORDATORIO]
+
+
+def test_sla_watchdog_service_inspects_registry_periodically() -> None:
+    pending, log, watchdog = _pending_list_case()
+    registry = CaseRegistry()
+    registry.record(pending)
+    reports = []
+    completed = Event()
+    current = [pending.actualizado_en + timedelta(hours=24)]
+
+    def on_report(report) -> None:
+        reports.append(report)
+        if len(reports) >= 2:
+            completed.set()
+
+    service = SLAWatchdogService(
+        watchdog=watchdog,
+        registry=registry,
+        interval=timedelta(milliseconds=1),
+        clock=lambda: current[0],
+        on_report=on_report,
+    )
+    service.start()
+    assert completed.wait(timeout=2)
+    service.stop()
+
+    assert len(reports) >= 2
+    assert registry.get(pending.correlation_id).estado_aprobacion_lista is EstadoAprobacion.SIN_RESPUESTA
+    assert [event.estado for event in reports[0].events] == [EstadoSLA.RECORDATORIO]
+    assert log.verify_integrity() is True

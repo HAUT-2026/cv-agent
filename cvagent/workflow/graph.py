@@ -8,6 +8,7 @@ from typing import Any
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
+from pydantic import ConfigDict
 
 from ..audit.log import DecisionLog
 from .clock import Clock, SystemClock
@@ -39,6 +40,12 @@ class GraphRuntime:
     clock: Clock
     registry: CaseRegistry
     retry_executor: RetryExecutor[str]
+
+
+class _GraphState(CaseState):
+    """Checkpoint boundary that accepts JSON enum values on process restart."""
+
+    model_config = ConfigDict(strict=False)
 
 
 def _state(value: Any) -> CaseState:
@@ -403,11 +410,17 @@ def _send(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
     state = _state(state_value)
     if state.propuesta_agenda is None:
         raise ValueError("delivery requires an agenda proposal")
-    runtime.controls.ensure_external_allowed(
+    token = runtime.controls.issue_token(
         correlation_id=state.correlation_id,
+        agente="envio",
         vacante_id=state.vacante_id,
+    )
+    runtime.controls.call_tool(
+        correlation_id=state.correlation_id,
         agente="envio",
         herramienta="simulated_delivery",
+        vacante_id=state.vacante_id,
+        token=token.token,
     )
     key = f"{state.correlation_id}:candidate-message:v1"
     result_ref, attempts = runtime.retry_executor.run(
@@ -456,15 +469,20 @@ def build_graph(
 ):
     """Build the graph; the caller owns the checkpointer context lifetime."""
 
+    effective_controls = controls or OperationalControls()
+    if not effective_controls.has_allowlist("envio"):
+        effective_controls.set_allowlist("envio", {"simulated_delivery"})
     runtime = GraphRuntime(
         adapters=adapters or synthetic_adapters(),
         decision_log=decision_log or DecisionLog(),
-        controls=controls or OperationalControls(),
+        controls=effective_controls,
         clock=clock or SystemClock(),
         registry=registry or CaseRegistry(),
         retry_executor=retry_executor or RetryExecutor(),
     )
-    builder = StateGraph(CaseState)
+    # PostgresSaver inlines str-enum values as strings. The lenient mapper
+    # restores those values to the strict shared contract before node execution.
+    builder = StateGraph(_GraphState)
     builder.add_node("receive", lambda state: _receive(runtime, state))
     builder.add_node("analyze", lambda state: _analyze(runtime, state))
     builder.add_node("evaluate", lambda state: _evaluate(runtime, state))

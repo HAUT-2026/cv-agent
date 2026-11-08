@@ -34,6 +34,21 @@ documentar qué rol consumidor se ve afectado.
 6. `EntradaDecisionLog` se escribe mediante el helper de solo anexado; el
    checkpoint de LangGraph no reemplaza este registro.
 
+## Controles operativos y SLA
+
+`OperationalControls.issue_token()` emite un token opaco ligado a
+`correlation_id`, agente y vacante, con TTL predeterminado de 15 minutos.
+`call_tool()` y `ensure_external_allowed()` exigen ese token y rechazan tokens
+ausentes, inválidos, revocados o vencidos. El secreto solo vive en memoria del
+gateway durante la operación: no se copia a `CaseState`, prompts,
+`ToolCall` ni `EntradaDecisionLog`.
+
+`SLAWatchdogService` ejecuta `SLAWatchdog.inspect_registry()` periódicamente
+fuera del grafo y actualiza el `CaseRegistry` con copias de los estados. Sus
+eventos se registran en `DecisionLog`; el servicio nunca aprueba ni descarta
+automáticamente un caso. `run_once()` permite integrarlo con un scheduler
+externo y `start()`/`stop()` ofrecen un ciclo de vida autónomo para el MVP.
+
 ## Interfaces de los roles
 
 Los adaptadores del grafo recibirán y devolverán los modelos anteriores. Los

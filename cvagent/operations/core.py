@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
+import secrets
 import sqlite3
 from threading import RLock
 import time
@@ -24,6 +26,10 @@ class TransientOperationError(RuntimeError):
     """A retryable adapter failure."""
 
 
+class TokenValidationError(PermissionError):
+    """Raised when an agent token is missing, invalid, or expired."""
+
+
 @dataclass(frozen=True)
 class ToolCall:
     correlation_id: str
@@ -31,6 +37,18 @@ class ToolCall:
     herramienta: str
     permitida: bool
     razon: str
+
+
+@dataclass(frozen=True)
+class AgentToken:
+    """Opaque runtime token; never place this object in graph state or prompts."""
+
+    token: str
+    correlation_id: str
+    agente: str
+    vacante_id: str
+    issued_at: datetime
+    expires_at: datetime
 
 
 @dataclass(frozen=True)
@@ -42,18 +60,35 @@ class KillSwitch:
 
 
 class OperationalControls:
-    """Gateway policy; credentials and tokens are intentionally not accepted."""
+    """Gateway policy with short-lived, case-bound agent tokens."""
 
-    def __init__(self, *, decision_log: DecisionLog | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        decision_log: DecisionLog | None = None,
+        clock: Callable[[], datetime] | None = None,
+        token_ttl: timedelta = timedelta(minutes=15),
+    ) -> None:
+        if token_ttl <= timedelta(0):
+            raise ValueError("token_ttl must be positive")
         self._allowlist: dict[str, frozenset[str]] = {}
         self._calls: list[ToolCall] = []
         self._switches: list[KillSwitch] = []
+        self._tokens: dict[str, AgentToken] = {}
         self._log = decision_log
+        self._clock = clock or time_now_utc
+        self._token_ttl = token_ttl
         self._lock = RLock()
 
     def set_allowlist(self, agente: str, herramientas: set[str] | frozenset[str]) -> None:
         with self._lock:
             self._allowlist[agente] = frozenset(herramientas)
+
+    def has_allowlist(self, agente: str) -> bool:
+        """Return whether an agent has an explicitly configured tool policy."""
+
+        with self._lock:
+            return agente in self._allowlist
 
     @property
     def calls(self) -> tuple[ToolCall, ...]:
@@ -65,6 +100,33 @@ class OperationalControls:
         with self._lock:
             return tuple(self._switches)
 
+    @property
+    def token_ttl(self) -> timedelta:
+        return self._token_ttl
+
+    def issue_token(self, *, correlation_id: str, agente: str, vacante_id: str) -> AgentToken:
+        """Issue an opaque token bound to one agent, case, and vacancy."""
+
+        issued_at = self._clock()
+        token = AgentToken(
+            token=secrets.token_urlsafe(32),
+            correlation_id=correlation_id,
+            agente=agente,
+            vacante_id=vacante_id,
+            issued_at=issued_at,
+            expires_at=issued_at + self._token_ttl,
+        )
+        with self._lock:
+            self._tokens[token.token] = token
+        self._log_token_event(token, "token_issued")
+        return token
+
+    def revoke_token(self, token: str) -> None:
+        """Revoke a runtime token without logging its secret value."""
+
+        with self._lock:
+            self._tokens.pop(token, None)
+
     def call_tool(
         self,
         *,
@@ -72,10 +134,21 @@ class OperationalControls:
         agente: str,
         herramienta: str,
         vacante_id: str,
+        token: str | None = None,
     ) -> None:
-        """Authorize a call and record both success and rejection."""
+        """Authorize a call only with a valid, case-bound, unexpired token."""
 
         with self._lock:
+            token_reason = self._validate_token_locked(
+                token=token,
+                correlation_id=correlation_id,
+                agente=agente,
+                vacante_id=vacante_id,
+            )
+            if token_reason is not None:
+                self._calls.append(ToolCall(correlation_id, agente, herramienta, False, token_reason))
+                self._log_policy_event(correlation_id, RazónParada[token_reason.upper()])
+                raise TokenValidationError(token_reason)
             allowed = herramienta in self._allowlist.get(agente, frozenset())
             reason = "allowlist_match" if allowed else "tool_not_allowed"
             self._calls.append(ToolCall(correlation_id, agente, herramienta, allowed, reason))
@@ -97,6 +170,47 @@ class OperationalControls:
                 vacante_id=vacante_id,
                 agente=agente,
                 herramienta=herramienta,
+            )
+
+    def _validate_token_locked(
+        self,
+        *,
+        token: str | None,
+        correlation_id: str,
+        agente: str,
+        vacante_id: str,
+    ) -> str | None:
+        if not token:
+            return "token_ausente"
+        issued = self._tokens.get(token)
+        if issued is None:
+            return "token_invalido"
+        if issued.correlation_id != correlation_id or issued.agente != agente or issued.vacante_id != vacante_id:
+            return "token_invalido"
+        if self._clock() >= issued.expires_at:
+            return "token_vencido"
+        return None
+
+    def _log_policy_event(self, correlation_id: str, reason: RazónParada) -> None:
+        if self._log:
+            self._log.append(
+                correlation_id=correlation_id,
+                tiempo=self._clock(),
+                componente="tool-gateway",
+                fuente=["token-service"],
+                versiones={"policy": "1.0.0"},
+                razon=reason.value,
+            )
+
+    def _log_token_event(self, token: AgentToken, reason: str) -> None:
+        if self._log:
+            self._log.append(
+                correlation_id=token.correlation_id,
+                tiempo=token.issued_at,
+                componente="token-service",
+                fuente=["token-service"],
+                versiones={"policy": "1.0.0", "ttl": str(int(self._token_ttl.total_seconds()))},
+                razon=reason,
             )
 
     def activate_kill_switch(self, *, alcance: str, valor: str, causa: str) -> KillSwitch:
@@ -124,9 +238,26 @@ class OperationalControls:
             return self._matching_switch_locked(vacante_id, agente) is not None
 
     def ensure_external_allowed(
-        self, *, correlation_id: str, vacante_id: str, agente: str, herramienta: str
+        self,
+        *,
+        correlation_id: str,
+        vacante_id: str,
+        agente: str,
+        herramienta: str,
+        token: str | None = None,
     ) -> None:
+        """Validate a token and kill switch before a non-tool-wrapper effect."""
+
         with self._lock:
+            token_reason = self._validate_token_locked(
+                token=token,
+                correlation_id=correlation_id,
+                agente=agente,
+                vacante_id=vacante_id,
+            )
+            if token_reason is not None:
+                self._log_policy_event(correlation_id, RazónParada[token_reason.upper()])
+                raise TokenValidationError(token_reason)
             self._ensure_external_allowed_locked(
                 correlation_id=correlation_id,
                 vacante_id=vacante_id,
@@ -264,6 +395,7 @@ def time_now_utc():
 
 
 __all__ = [
+    "AgentToken",
     "KillSwitchActiveError",
     "OperationalControls",
     "RetryExecutor",
@@ -271,5 +403,6 @@ __all__ = [
     "SimulatedDeliveryGateway",
     "ToolCall",
     "ToolNotAllowedError",
+    "TokenValidationError",
     "TransientOperationError",
 ]
