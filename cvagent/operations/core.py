@@ -8,8 +8,8 @@ from threading import RLock
 import time
 from typing import Callable, Generic, TypeVar
 
-from .audit import DecisionLog
-from .contracts import CaseState, RazónParada
+from ..audit.log import DecisionLog
+from ..domain.contracts import CaseState, RazónParada
 
 
 class ToolNotAllowedError(PermissionError):

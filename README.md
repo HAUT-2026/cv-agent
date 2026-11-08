@@ -6,9 +6,10 @@ sistemas externos reales.
 
 ## Ruta rápida
 
-1. Instalar dependencias: `python -m pip install -e ".[dev]"`.
-2. Ejecutar la demostración: `python -m cvagent.demo`.
-3. Ejecutar pruebas: `python -m pytest`.
+1. Instalar UV siguiendo la documentación oficial.
+2. Crear el entorno y sincronizar dependencias: `uv venv` y `uv sync`.
+3. Ejecutar la demostración: `uv run python -m cvagent.demo`.
+4. Ejecutar pruebas: `uv run pytest`.
 
 La demostración muestra el caso pendiente de aprobación de lista, el caso
 pendiente de aprobación del mensaje exacto y el cierre con un efecto simulado.
@@ -25,8 +26,8 @@ manual.
 ```bash
 docker compose up -d postgres
 export CVAGENT_POSTGRES_URL='postgresql://cvagent:cvagent_local_only@localhost:54329/cvagent'
-python -m cvagent.postgres_setup
-python -m pytest -m integration
+uv run python -m cvagent.postgres_setup
+uv run pytest -m integration
 ```
 
 En PowerShell:
@@ -34,8 +35,8 @@ En PowerShell:
 ```powershell
 docker compose up -d postgres
 $env:CVAGENT_POSTGRES_URL = "postgresql://cvagent:cvagent_local_only@localhost:54329/cvagent"
-python -m cvagent.postgres_setup
-python -m pytest -m integration
+uv run python -m cvagent.postgres_setup
+uv run pytest -m integration
 ```
 
 Para detener el servicio local: `docker compose down`.
@@ -45,12 +46,13 @@ El test de integración se omite de forma explícita si no existe
 
 ## Interfaces para los otros roles
 
-- `cvagent/contracts.py` es la única fuente de `CaseState`, `FichaCandidato`,
+- `cvagent/domain/contracts.py` es la única fuente de `CaseState`, `FichaCandidato`,
   `Veredicto`, `PropuestaAgenda`, `EntradaDecisionLog` y sus enums. Su versión
-  actual es `1.0.0`.
-- `cvagent.ports.RoleAdapters` recibe implementaciones de los Roles 2–4.
+  actual es `1.0.0`; `cvagent.contracts` es una fachada compatible.
+- `cvagent.integration.ports.RoleAdapters` recibe implementaciones de los Roles 2–4;
+  `cvagent.ports` es una fachada compatible.
   `synthetic_adapters()` solo sirve para la demo y las pruebas.
-- `build_graph(...)` permite inyectar adaptadores, checkpointer, reloj,
+- `cvagent.workflow.graph.build_graph(...)` permite inyectar adaptadores, checkpointer, reloj,
   `DecisionLog`, controles operativos y registro de snapshots.
 - `thread_config(correlation_id)` devuelve la configuración de persistencia
   oficial: `{"configurable": {"thread_id": correlation_id}}`.
@@ -62,6 +64,23 @@ El test de integración se omite de forma explícita si no existe
   sin llamar al grafo. `register_policy()` permite añadir plazos adicionales.
 - `OperationalControls` expone allowlist, registro de llamadas, reintentos,
   reconciliación por idempotency key y kill switch explícito.
+
+## Organización del paquete
+
+La implementación está agrupada dentro de `cvagent/`:
+
+```text
+cvagent/
+├── domain/       # contratos versionados
+├── workflow/     # grafo, persistencia, reloj y registro de casos
+├── audit/        # decision_log y SLA watchdog
+├── operations/   # allowlist, reintentos e idempotencia
+├── integration/  # puertos y dobles de Roles 2–4
+└── cli/          # demo y preparación de PostgreSQL
+```
+
+Los módulos planos como `cvagent.contracts` y `cvagent.graph` son fachadas de
+compatibilidad; el código fuente vive en esos subpaquetes.
 
 ## Alcance deliberadamente excluido
 

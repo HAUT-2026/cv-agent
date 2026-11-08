@@ -6,8 +6,9 @@ entrega; por tanto, no se modificó ningún contrato existente en silencio.
 
 ## Contrato versionado
 
-La única fuente de modelos de dominio es `cvagent/contracts.py` y su versión
-actual es `1.0.0`. Los modelos Pydantic son estrictos (`extra="forbid"` y sin
+La única fuente de modelos de dominio es `cvagent/domain/contracts.py` y su versión
+actual es `1.0.0`; `cvagent/contracts.py` se conserva como fachada de compatibilidad.
+Los modelos Pydantic son estrictos (`extra="forbid"` y sin
 coerción implícita). Una ampliación incompatible requiere subir la versión y
 documentar qué rol consumidor se ve afectado.
 
@@ -36,6 +37,7 @@ documentar qué rol consumidor se ve afectado.
 ## Interfaces de los roles
 
 Los adaptadores del grafo recibirán y devolverán los modelos anteriores. Los
-doubles del MVP están en `cvagent/ports.py` y `cvagent/graph.py`; un adaptador
+doubles del MVP están en `cvagent/integration/ports.py` y `cvagent/workflow/graph.py`;
+`cvagent/ports.py` y `cvagent/graph.py` son fachadas compatibles. Un adaptador
 real debe implementar el mismo protocolo sin acceder directamente al estado
 interno de otro agente.

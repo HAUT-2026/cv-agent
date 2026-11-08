@@ -8,7 +8,7 @@ import json
 from threading import RLock
 from typing import Iterable
 
-from .contracts import (
+from ..domain.contracts import (
     CONTRACT_VERSION,
     EntradaDecisionLog,
     EstadoCaso,

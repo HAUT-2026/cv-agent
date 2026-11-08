@@ -1,5 +1,5 @@
 # Rol 1 — Grafo y estado del MVP de CVAgent
-Branch: `feature/rol-1-grafo-estado` · Delivery: `ask-on-risk` · Test runner: `pytest`
+Branch: `feature/rol-1-grafo-estado` · Delivery: `ask-on-risk` · Test runner: `uv run pytest`
 Objetivo: entregar contratos versionados, grafo persistente, aprobaciones humanas, SLA/auditoría y controles operativos simulables para que los Roles 2–4 integren componentes sin asumir lógica de negocio ajena.
 
 ## Specs
@@ -54,6 +54,7 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 > Los Roles 2 y 3 implementan las reglas R1–R13, extracción y los tres agentes. El Rol 4 implementa bandeja, simuladores y suite de demo. Proporciona interfaces y dobles de prueba para integrarlos, sin apropiarte de su lógica.
 > Usa únicamente CV ficticios y datos de prueba. No hagas envíos reales ni escribas en sistemas externos reales.
 > No publiques, hagas push ni abras PR sin mi instrucción.
+> El proyecto debe usar UV, crear un entorno virtual y organizar los archivos dentro de la carpeta `cvagent` sin dejarlos regados.
 
 > - El esqueleto corre de punta a punta con componentes simulados.
 > - Las dos interrupciones pausan y reanudan realmente el caso; no existe avance por expiración del plazo.
@@ -69,7 +70,7 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 - T2 · S2–S3 · inline · done · commit: `6bf556e` (+ cleanup `62ea42a`; `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
 - T3 · S4 · inline · done · commit: `3109925` (`python -m pytest` → 11 passed)
 - T4 · S5 · inline · done · commit: `0cb0a53` (`python -m pytest` → 15 passed)
-- T5 · S6 · inline · done · commit: `b949d84` (`python -m pytest` → 15 passed, 1 skipped)
+- T5 · S6 · inline · done · commit: `b949d84` (+ UV/organización en `pending`; `uv run pytest` → 15 passed, 1 skipped)
 
 ## Log
 
@@ -96,6 +97,12 @@ Se añadió README con ruta rápida, interfaces de integración y procedimiento 
 ### L7 — Cierre técnico
 
 Se exportaron todos los enums de estado y decisión desde `cvagent` para simplificar el consumo de los Roles 2–4 sin duplicar imports del contrato. `python -m pytest` → 15 passed, 1 skipped. Risk: item 3 (superficie pública del contrato compartido).
+
+### L8 — Corrección solicitada por el usuario
+
+Se me olvido decirte que el proyecto lo hiciera con UV, crearas un entorno virtual y además dentro de la carpeta cvagent organizes los archivos no pongas todos los archivos regados
+
+Se reabrió T5 para migrar la instalación/verificación a UV, crear `.venv`, generar `uv.lock`, organizar la implementación en `domain/`, `workflow/`, `audit/`, `operations/`, `integration/` y `cli/`, y conservar fachadas compatibles. `uv run pytest` → 15 passed, 1 skipped; `uv run python -m cvagent.demo` → cierre simulado correcto. Risk: item 5 (entorno/dependencias) e item 3 (rutas públicas de integración).
 
 ### L1 — Solicitud original del usuario
 
