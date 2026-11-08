@@ -69,9 +69,9 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 
 - T1 · S1 · inline · done · commit: `ee56bf8` (`python -m pytest tests/test_contracts.py` → 4 passed)
 - T2 · S2–S3 · inline · done · commit: `6bf556e` (+ cleanup `62ea42a`; `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
-- T3 · S4 · inline · done · commit: pending (`uv run pytest` → 17 passed, 1 skipped; periodic service test passed)
-- T4 · S5 · inline · done · commit: pending (`uv run pytest` → 17 passed, 1 skipped; token TTL/revocation/graph gateway tests passed)
-- T5 · S6 · inline · done · commit: pending (`uv run pytest -m integration` → 1 passed; PostgreSQL checkpoint reopen verified)
+- T3 · S4 · inline · done · commit: `c1672ad` (`uv run pytest` → 17 passed, 1 skipped; periodic service test passed)
+- T4 · S5 · inline · done · commit: `c1672ad` (`uv run pytest` → 17 passed, 1 skipped; token TTL/revocation/graph gateway tests passed)
+- T5 · S6 · inline · done · commit: `c1672ad` (`uv run pytest -m integration` → 1 passed; PostgreSQL checkpoint reopen verified)
 
 ## Log
 
