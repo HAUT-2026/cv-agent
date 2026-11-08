@@ -19,6 +19,7 @@ def contract_serializer():
         "DecisionHumana",
         "EfectoExterno",
         "EstadoCaso",
+        "EstadoAprobacion",
         "EstadoSLA",
         "EstadoSLAInfo",
         "FichaCandidato",

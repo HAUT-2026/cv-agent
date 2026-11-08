@@ -300,6 +300,8 @@ class CaseState(StrictModel):
     veredicto: Veredicto | None = None
     propuesta_lista: PropuestaLista | None = None
     propuesta_agenda: PropuestaAgenda | None = None
+    estado_aprobacion_lista: EstadoAprobacion = EstadoAprobacion.PENDIENTE
+    estado_aprobacion_mensaje: EstadoAprobacion = EstadoAprobacion.PENDIENTE
     aprobacion_lista: AprobacionHumana | None = None
     aprobacion_mensaje: AprobacionHumana | None = None
     sla_lista: EstadoSLAInfo | None = None

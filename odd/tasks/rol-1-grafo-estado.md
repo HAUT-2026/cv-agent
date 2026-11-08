@@ -66,8 +66,8 @@ Acceptance: una herramienta prohibida queda bloqueada y registrada; un efecto si
 ## Tasks
 
 - T1 · S1 · inline · done · commit: `ee56bf8` (`python -m pytest tests/test_contracts.py` → 4 passed)
-- T2 · S2–S3 · inline · done · commit: pending (`python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
-- T3 · S4 · inline · pending · commit: —
+- T2 · S2–S3 · inline · done · commit: `6bf556e` (+ cleanup `62ea42a`; `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed)
+- T3 · S4 · inline · done · commit: pending (`python -m pytest` → 11 passed)
 - T4 · S5 · inline · pending · commit: —
 - T5 · S6 · inline · pending · commit: —
 
@@ -80,6 +80,10 @@ Se verificó que no existían contratos previos. Se creó `cvagent/contracts.py`
 ### L3 — T2 completado
 
 Se creó el grafo LangGraph con `correlation_id` como `configurable.thread_id`, adaptadores sintéticos explícitos, dos interrupciones independientes y ruta de `PostgresSaver` con serializer allowlisted. Se verificó reanudación después de recompilar el grafo y deduplicación por idempotency key con SQLite local. `python -m pytest tests/test_contracts.py tests/test_graph.py` → 7 passed; `python -m pytest` → 7 passed; `python -m cvagent.demo` → cerró con un efecto simulado. Risk: item 3 (persistencia y aprobaciones son contratos compartidos).
+
+### L4 — T3 completado
+
+Se añadió `DecisionLog` de solo anexado con hash encadenado y `SLAWatchdog` separado del grafo. Las políticas configurables cubren lista a 24/48/72 horas y mensaje a 4/8 horas; el reloj manual demuestra segundos, marca `sin_respuesta` y nunca aprueba. `python -m pytest` → 11 passed. Risk: item 3 (auditoría y vencimientos son estado operativo compartido).
 
 ### L1 — Solicitud original del usuario
 

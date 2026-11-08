@@ -18,7 +18,11 @@ from .contracts import (
     EfectoExterno,
     EstadoCaso,
     RazónParada,
+    EstadoAprobacion,
     TipoAprobacion,
+    EstadoSLA,
+    EstadoSLAInfo,
+    TipoSLA,
     VeredictoEstado,
 )
 from .operations import OperationalControls, RetryExecutor
@@ -203,6 +207,13 @@ def _prepare_shortlist(runtime: GraphRuntime, state_value: Any) -> dict[str, Any
         runtime,
         state,
         propuesta_lista=proposal,
+        estado_aprobacion_lista=EstadoAprobacion.PENDIENTE,
+        sla_lista=EstadoSLAInfo(
+            tipo=TipoSLA.LISTA_CORTA,
+            estado=EstadoSLA.PENDIENTE,
+            pendiente_desde=runtime.clock.now(),
+            observado_en=runtime.clock.now(),
+        ),
         estado=EstadoCaso.PENDIENTE_APROBACION_LISTA,
         razon_parada=RazónParada.APROBACION_LISTA_PENDIENTE,
     )
@@ -222,6 +233,7 @@ def _approve_shortlist(runtime: GraphRuntime, state_value: Any) -> dict[str, Any
             runtime,
             state,
             aprobacion_lista=approval,
+            estado_aprobacion_lista=EstadoAprobacion.APROBADA,
             estado=EstadoCaso.LISTA_APROBADA,
             razon_parada=None,
         )
@@ -243,6 +255,7 @@ def _approve_shortlist(runtime: GraphRuntime, state_value: Any) -> dict[str, Any
             state,
             propuesta_lista=adjusted,
             aprobacion_lista=approval,
+            estado_aprobacion_lista=EstadoAprobacion.AJUSTADA,
             estado=EstadoCaso.LISTA_AJUSTADA,
             razon_parada=None,
         )
@@ -250,6 +263,7 @@ def _approve_shortlist(runtime: GraphRuntime, state_value: Any) -> dict[str, Any
         runtime,
         state,
         aprobacion_lista=approval,
+        estado_aprobacion_lista=EstadoAprobacion.RECHAZADA,
         estado=EstadoCaso.LISTA_RECHAZADA,
         razon_parada=RazónParada.LISTA_RECHAZADA,
     )
@@ -280,6 +294,13 @@ def _schedule(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
         runtime,
         state,
         propuesta_agenda=agenda,
+        estado_aprobacion_mensaje=EstadoAprobacion.PENDIENTE,
+        sla_mensaje=EstadoSLAInfo(
+            tipo=TipoSLA.MENSAJE,
+            estado=EstadoSLA.PENDIENTE,
+            pendiente_desde=runtime.clock.now(),
+            observado_en=runtime.clock.now(),
+        ),
         estado=EstadoCaso.PENDIENTE_APROBACION_MENSAJE,
         razon_parada=RazónParada.APROBACION_MENSAJE_PENDIENTE,
     )
@@ -299,6 +320,7 @@ def _approve_message(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
             runtime,
             state,
             aprobacion_mensaje=approval,
+            estado_aprobacion_mensaje=EstadoAprobacion.APROBADA,
             estado=EstadoCaso.MENSAJE_APROBADO,
             razon_parada=None,
         )
@@ -315,6 +337,7 @@ def _approve_message(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
             state,
             propuesta_agenda=adjusted,
             aprobacion_mensaje=approval,
+            estado_aprobacion_mensaje=EstadoAprobacion.AJUSTADA,
             estado=EstadoCaso.MENSAJE_AJUSTADO,
             razon_parada=None,
         )
@@ -322,6 +345,7 @@ def _approve_message(runtime: GraphRuntime, state_value: Any) -> dict[str, Any]:
         runtime,
         state,
         aprobacion_mensaje=approval,
+        estado_aprobacion_mensaje=EstadoAprobacion.RECHAZADA,
         estado=EstadoCaso.MENSAJE_RECHAZADO,
         razon_parada=RazónParada.MENSAJE_RECHAZADO,
     )

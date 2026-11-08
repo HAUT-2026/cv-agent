@@ -26,7 +26,7 @@ class DecisionLog:
     @property
     def entries(self) -> tuple[EntradaDecisionLog, ...]:
         with self._lock:
-            return tuple(self._entries)
+            return tuple(entry.model_copy(deep=True) for entry in self._entries)
 
     def append(
         self,
