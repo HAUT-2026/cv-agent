@@ -1,0 +1,59 @@
+{
+  "cv_id": "CV-004",
+  "idioma": "es",
+  "formato": "prosa",
+  "persona": {
+    "nombre": "María Fernanda Quintero",
+    "email": "mf.quintero@correo-ejemplo.com",
+    "telefono": "+57 314 555 0104",
+    "ciudad": "Bogotá"
+  },
+  "resumen": "Estadística con dos años de experiencia laboral en analítica clínica y más de cuatro años apoyando técnicamente a fundaciones como voluntaria.",
+  "experiencia": [
+    {
+      "cargo": "Analista de Datos Junior",
+      "organizacion": "Clínica del Valle S.A.",
+      "tipo": "empleo",
+      "inicio": "2023-05",
+      "fin": "2025-04",
+      "descripcion": [
+        "Elaboré consultas SQL y reportes para la dirección médica. Consumí APIs internas para integrar admisiones con facturación."
+      ]
+    },
+    {
+      "cargo": "Voluntaria técnica de datos",
+      "organizacion": "Fundación Sonrisas del Pacífico",
+      "tipo": "voluntariado",
+      "inicio": "2019-01",
+      "fin": "2023-04",
+      "descripcion": [
+        "Durante más de cuatro años administré la base de datos de beneficiarios, construí reportes para donantes y conecté el formulario web con el CRM de la fundación."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Estadística",
+      "institucion": "Universidad Central Andina",
+      "anio_fin": 2022
+    }
+  ],
+  "habilidades": [
+    "SQL",
+    "PostgreSQL",
+    "Python",
+    "CRM",
+    "Excel avanzado"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-004.pdf"
+}

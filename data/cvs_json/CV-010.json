@@ -1,0 +1,74 @@
+{
+  "cv_id": "CV-010",
+  "idioma": "es",
+  "formato": "cronologico",
+  "persona": {
+    "nombre": "Natalia Andrea Gómez de Herrera",
+    "email": "natalia.gomez@correo-ejemplo.com",
+    "telefono": "+57 319 555 0110",
+    "ciudad": "Bogotá",
+    "barrio": "Usaquén",
+    "edad": 34,
+    "estado_civil": "Casada, dos hijos",
+    "foto": true,
+    "colegio": "Colegio San Carlos de Bogotá"
+  },
+  "resumen": "Analista de datos senior con más de siete años de experiencia en banca y seguros.",
+  "experiencia": [
+    {
+      "cargo": "Analista de Datos Senior",
+      "organizacion": "Banco Meridiano",
+      "tipo": "empleo",
+      "inicio": "2023-03",
+      "fin": null,
+      "descripcion": [
+        "Modelos de datos en SQL Server, integración de fuentes vía API y tableros en Power BI."
+      ]
+    },
+    {
+      "cargo": "Licencia de maternidad y cuidado familiar",
+      "organizacion": "-",
+      "tipo": "pausa",
+      "inicio": "2022-03",
+      "fin": "2023-02",
+      "descripcion": [
+        "Periodo de licencia de maternidad y cuidado familiar."
+      ]
+    },
+    {
+      "cargo": "Analista de Datos",
+      "organizacion": "Aseguradora Cóndor",
+      "tipo": "empleo",
+      "inicio": "2018-06",
+      "fin": "2022-02",
+      "descripcion": [
+        "Consultas SQL avanzadas, reportes regulatorios y automatización con Python."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad de los Andes del Norte (privada)",
+      "anio_fin": 2018
+    }
+  ],
+  "habilidades": [
+    "SQL Server",
+    "T-SQL",
+    "Python",
+    "Power BI",
+    "API REST"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-010.pdf"
+}

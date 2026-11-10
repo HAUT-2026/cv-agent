@@ -1,0 +1,63 @@
+{
+  "cv_id": "CV-001",
+  "idioma": "es",
+  "formato": "cronologico",
+  "persona": {
+    "nombre": "Laura Camila Rojas Prieto",
+    "email": "laura.rojas.prieto@correo-ejemplo.com",
+    "telefono": "+57 311 555 0101",
+    "ciudad": "Bogotá"
+  },
+  "resumen": "Ingeniera de Sistemas con más de siete años de experiencia en análisis de datos e integración de sistemas.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniera de Integraciones",
+      "organizacion": "Nexo Soluciones Digitales",
+      "tipo": "empleo",
+      "inicio": "2023-03",
+      "fin": null,
+      "descripcion": [
+        "Diseño y mantenimiento de integraciones vía API REST entre ERP, CRM y plataformas de reportes.",
+        "Automatización de cargas con Python y Airflow sobre PostgreSQL."
+      ]
+    },
+    {
+      "cargo": "Analista de Datos",
+      "organizacion": "Logística Andina S.A.S.",
+      "tipo": "empleo",
+      "inicio": "2019-09",
+      "fin": "2023-02",
+      "descripcion": [
+        "Consultas SQL avanzadas en PostgreSQL y tableros en Power BI para operación y finanzas.",
+        "Consumo de APIs de transportadores para conciliación diaria de entregas."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Central Andina",
+      "anio_fin": 2019
+    }
+  ],
+  "habilidades": [
+    "SQL",
+    "PostgreSQL",
+    "Python",
+    "Airflow",
+    "API REST",
+    "Power BI",
+    "Docker"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "C1"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-001.pdf"
+}

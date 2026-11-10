@@ -1,0 +1,71 @@
+{
+  "cv_id": "CV-003",
+  "idioma": "es",
+  "formato": "bullets",
+  "persona": {
+    "nombre": "Sebastián Torres Vega",
+    "email": "sebastian.torres.vega@correo-ejemplo.com",
+    "telefono": "+57 313 555 0103",
+    "ciudad": "Cali"
+  },
+  "resumen": "Ingeniero Industrial con más de 4 años de experiencia en datos y reportes.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador de Reportes",
+      "organizacion": "Comercial Pacífico Ltda.",
+      "tipo": "empleo",
+      "inicio": "2023-03",
+      "fin": "2025-02",
+      "descripcion": [
+        "Reportes en Power BI conectados a MySQL.",
+        "Consultas SQL de nivel intermedio."
+      ]
+    },
+    {
+      "cargo": "Analista de Datos Freelance",
+      "organizacion": "Independiente",
+      "tipo": "freelance",
+      "inicio": "2023-01",
+      "fin": "2025-02",
+      "descripcion": [
+        "Tableros y automatización de reportes para pymes.",
+        "Integración básica con APIs REST."
+      ]
+    },
+    {
+      "cargo": "Pasante de BI",
+      "organizacion": "Comercial Pacífico Ltda.",
+      "tipo": "pasantia",
+      "inicio": "2022-06",
+      "fin": "2022-12",
+      "descripcion": [
+        "Apoyo en tableros y limpieza de datos."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería Industrial",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2022
+    }
+  ],
+  "habilidades": [
+    "SQL",
+    "MySQL",
+    "Power BI",
+    "Excel",
+    "API REST (básico)"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-003.pdf"
+}

@@ -1,0 +1,71 @@
+{
+  "cv_id": "CV-005",
+  "idioma": "es",
+  "formato": "cronologico",
+  "persona": {
+    "nombre": "Andrés Felipe Cardona",
+    "email": "andres.cardona@correo-ejemplo.com",
+    "telefono": "+57 315 555 0105",
+    "ciudad": "Barranquilla"
+  },
+  "resumen": "Ingeniero de datos autodidacta con más de seis años construyendo integraciones y pipelines.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Datos",
+      "organizacion": "Aqua Data Startup",
+      "tipo": "empleo",
+      "inicio": "2024-02",
+      "fin": null,
+      "descripcion": [
+        "Pipelines en Airflow sobre PostgreSQL; APIs REST y GraphQL para clientes."
+      ]
+    },
+    {
+      "cargo": "Desarrollador de Integraciones",
+      "organizacion": "Tecnoservicios del Caribe",
+      "tipo": "empleo",
+      "inicio": "2020-06",
+      "fin": "2024-01",
+      "descripcion": [
+        "Integraciones entre sistemas contables y plataformas de e-commerce mediante APIs REST."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Bachiller académico",
+      "institucion": "Colegio Distrital del Caribe",
+      "anio_fin": 2014
+    },
+    {
+      "titulo": "Certificación Google Data Analytics",
+      "institucion": "Coursera",
+      "anio_fin": 2021
+    },
+    {
+      "titulo": "Certificación AWS Cloud Practitioner",
+      "institucion": "Amazon Web Services",
+      "anio_fin": 2022
+    }
+  ],
+  "habilidades": [
+    "SQL",
+    "PostgreSQL",
+    "Python",
+    "Airflow",
+    "API REST",
+    "GraphQL",
+    "Docker"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-005.pdf"
+}

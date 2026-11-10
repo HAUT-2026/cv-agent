@@ -1,0 +1,50 @@
+{
+  "cv_id": "CV-012",
+  "idioma": "es",
+  "formato": "bullets",
+  "persona": {
+    "nombre": "Isabella Moreno Duarte",
+    "email": "isabella.moreno@correo-ejemplo.com",
+    "telefono": "+57 321 555 0112",
+    "ciudad": "Bogotá"
+  },
+  "resumen": "Estadística con cinco años de experiencia en analítica de datos e integraciones.",
+  "experiencia": [
+    {
+      "cargo": "Analista de Datos Senior",
+      "organizacion": "Salud Integral EPS",
+      "tipo": "empleo",
+      "inicio": "2021-09",
+      "fin": null,
+      "descripcion": [
+        "SQL avanzado en Oracle, integración de sistemas clínicos vía APIs, tableros en Tableau."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Estadística",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2021
+    }
+  ],
+  "habilidades": [
+    "Oracle SQL",
+    "SQL",
+    "Tableau",
+    "R",
+    "API REST",
+    "Integración de sistemas"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "A1"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-012.pdf"
+}

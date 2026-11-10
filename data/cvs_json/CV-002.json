@@ -1,0 +1,64 @@
+{
+  "cv_id": "CV-002",
+  "idioma": "en",
+  "formato": "funcional",
+  "persona": {
+    "nombre": "Daniel Mesa Ortiz",
+    "email": "daniel.mesa.ortiz@correo-ejemplo.com",
+    "telefono": "+57 312 555 0102",
+    "ciudad": "Medellín"
+  },
+  "resumen": "Statistician specialized in healthcare analytics and system integrations for non-profit organizations.",
+  "experiencia": [
+    {
+      "cargo": "Data & Integration Specialist",
+      "organizacion": "CareBridge NGO",
+      "tipo": "empleo",
+      "inicio": "2024-07",
+      "fin": null,
+      "descripcion": [
+        "Built REST API integrations between the donor CRM and the reporting warehouse.",
+        "Owner of GDPR and Habeas Data compliance checks on patient datasets."
+      ]
+    },
+    {
+      "cargo": "Data Analyst",
+      "organizacion": "Meridian Health Analytics",
+      "tipo": "empleo",
+      "inicio": "2021-02",
+      "fin": "2024-06",
+      "descripcion": [
+        "Advanced T-SQL on SQL Server; Tableau dashboards for hospital KPIs.",
+        "Python scripts (pandas) for data cleaning."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Estadística",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2020
+    }
+  ],
+  "habilidades": [
+    "T-SQL",
+    "SQL Server",
+    "Tableau",
+    "Power BI",
+    "REST APIs",
+    "Python",
+    "pandas",
+    "CRM"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo"
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "C1"
+    }
+  ],
+  "archivo_pdf": "cvs_pdf/CV-002.pdf"
+}
