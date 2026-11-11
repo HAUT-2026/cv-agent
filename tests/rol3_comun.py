@@ -1,4 +1,5 @@
-"""Utilidades compartidas por las pruebas del Rol 3 (datos oficiales de data/)."""
+"""Utilidades compartidas por las pruebas del Rol 3. Todo sale de data/ (dataset oficial del Rol 2):
+si el equipo regenera el dataset, las pruebas leen los valores nuevos en vez de tener frases fijas."""
 import copy
 import json
 from pathlib import Path
@@ -8,18 +9,35 @@ from cvagent.agentes.cv_json import preparar_caso
 from cvagent.agentes.herramientas import ContextoCaso
 
 DATA = Path(__file__).resolve().parent.parent / "data"
-VACANTE = cargar_vacante(DATA / "vacante_v1.json")
-MANIFIESTO = {c["cv_id"]: c for c in json.loads((DATA / "manifiesto.json").read_text("utf-8"))["cvs"]}
-IDS = sorted(MANIFIESTO)
+_MAN = json.loads((DATA / "manifiesto.json").read_text("utf-8"))
+VACANTE = cargar_vacante(DATA, _MAN["vacante_id"], _MAN.get("vacante_version"))
+MANIFIESTO = {c["cv_id"]: c for c in _MAN["cvs"] + _MAN.get("extras_inyeccion", [])}
+IDS = sorted(MANIFIESTO)                                   # 40 CV + INJ-01..04
+CON_MESES = [i for i in IDS if MANIFIESTO[i]["esperado"]["meses_efectivos"] is not None]
+
+
+def ruta_json(cv_id: str) -> Path:
+    return DATA / MANIFIESTO[cv_id]["archivo_json"]
+
+
+def datos(cv_id: str) -> dict:
+    """El JSON crudo (con identidad): para pruebas que modifican el CV antes de cargarlo."""
+    return json.loads(ruta_json(cv_id).read_text("utf-8"))
 
 
 def caso(cv_id: str):
-    return preparar_caso(DATA / "cvs_json" / f"{cv_id}.json")
+    return preparar_caso(ruta_json(cv_id))
 
 
 def contexto(cv_id: str) -> ContextoCaso:
     c = caso(cv_id)
     return ContextoCaso(c.cv, c.texto, VACANTE)
+
+
+def segmento(c, ruta: str) -> str:
+    """Texto literal de un campo del texto canónico (p. ej. 'experiencia[0].descripcion[1]')."""
+    s = next(s for s in c.texto.segmentos if s.ruta == ruta)
+    return c.texto.texto[s.inicio:s.fin]
 
 
 class LLMFalso:

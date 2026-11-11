@@ -36,21 +36,26 @@ class IndicioInyeccion:
     fuente: str = "texto_canonico"   # o "texto_oculto" (offsets relativos a ese campo)
 
 
-# Español e inglés. Calibrado con el CV-002 propio y con los 4 estilos del dataset del equipo
-# (texto oculto, nota falsa de RR. HH., mensaje de sistema con JSON, extracción de criterios).
+# Español e inglés. Calibrado con 5 estilos (CV propio de desarrollo y el primer dataset del Rol 2).
+# Prueba ciega con el dataset de 40 CV + 4 extras: detectó 4 de 5 inyecciones nuevas y 0 falsos
+# positivos; la que faltaba (dirigida a la "AI reviewer", ignorar "requirements", ocultar la nota)
+# agregó los patrones dirigido_al_sistema (saludo/rol de IA), "requirements" y ocultar_instruccion.
 # Criterio de diseño: verbos en imperativo/infinitivo + objeto, para no disparar con CV legítimos
 # ("Obtuve la máxima calificación", "Asigné tareas a 100 usuarios", "Marco de 100 indicadores").
 _PATRONES: dict[str, re.Pattern] = {
     "ignorar_instrucciones": re.compile(
         r"\b(ignora\w*|ignore|olvida\w*|omit(e|ir|a)|disregard|forget|skip)\b.{0,40}?"
-        r"\b(instruc\w*|criterio\w*|regla\w*|requisito\w*|revisi[oó]n\w*|prompt|instructions?|criteria|rules)\b"
+        r"\b(instruc\w*|criterio\w*|regla\w*|requisito\w*|revisi[oó]n\w*|prompt|instructions?|criteria|rules|"
+        r"requirements?|guidelines?|policy|policies)\b"
         r"|\b(previous|prior|anteriores?)\s+(instructions?|instrucciones)\b"
         r"|\b(instructions?|instrucciones)\s+(are|is|son|quedan|est[aá]n)\s+(void|nul\w*|anulad\w*|invalid\w*|sin efecto)",
         re.I),
     "dirigido_al_sistema": re.compile(
         r"\b(nota|mensaje|instrucci[oó]n|aviso)\s+(para|al)\s+(el\s+)?(sistema|evaluador|modelo|ia|agente|reclutador autom)\w*"
         r"|\b(system|assistant|sistema)\s+(message|prompt|mensaje)\s*:"
-        r"|(^|\n|\.\s)\s*(SYSTEM|SISTEMA)\s*:", re.I),
+        r"|(^|\n|\.\s)\s*(SYSTEM|SISTEMA)\s*:"
+        r"|\b(dear|hello|hi|hola|estimad[oa]|querid[oa])\s+(ai|a\.i\.|ia|bot|llm|gpt|modelo|model|assistant|asistente)\b"
+        r"|\b(ai|ia|llm|automated|autom[aá]tic[oa])\s+(reviewer|screener|evaluator|evaluador|revisor|reclutador)\b", re.I),
     "autoridad_falsa": re.compile(
         r"\b(verificaci[oó]n|validaci[oó]n|nota|aprobaci[oó]n)\s+(interna|oficial)\b"
         r"|\b(ya\s+fue|ha\s+sido|already(\s+been)?|has\s+been)\s+(validad\w*|aprobad\w*|verificad\w*|pre-?aprobad\w*|approved|validated|verified)\b",
@@ -58,9 +63,14 @@ _PATRONES: dict[str, re.Pattern] = {
     "pedir_puntaje": re.compile(
         r"\b(asigna|asignar|as[ií]gnale|otorga|otorgar|dale|m[aá]rcal[oa]|marcar(lo|la)?\s+como|"
         r"assign|give|rate|mark\s+(it|him|her|them|this|as))\b.{0,50}?"
-        r"\b(m[aá]xim\w*|perfect\w*|100|10/10|highest|top|apto|aprobad\w*)\b", re.I),
+        r"\b(m[aá]xim\w*|perfect\w*|100|10/10|highest|top|apto|aprobad\w*)\b"
+        r"|\b(rank|place|put|pon|ubica|clasifica)\s+(this|the|me|him|her|a\s+este|este|esta|al)\s*"
+        r"(candidate|applicant|profile|cv|candidat[oa]|perfil)?\b.{0,15}?\b(first|top|#?1|primer[oa]?|de\s+primer[oa])\b", re.I),
     "no_descartar": re.compile(
         r"\bno\s+(lo|la|los|las)?\s*descart\w*|\bdo\s+not\s+(reject|discard|filter)", re.I),
+    "ocultar_instruccion": re.compile(
+        r"\b(do\s+not|don'?t|never|no)\s+(mention|reveal|report|disclose|menciones|reveles|reportes|incluyas|mencionar)\b"
+        r".{0,25}?\b(this|esta|este|la|the)\s+(note|instruction|message|nota|instrucci[oó]n|mensaje)\b", re.I),
     "salida_forzada": re.compile(
         r"\b(output|responde|devuelve|imprime|return|print)\s+(exactly|exactamente|solo|[uú]nicamente|only)\b"
         r"|\{\s*\"(decision|decisi[oó]n|score|puntaje|veredicto|verdict)\"\s*:", re.I),

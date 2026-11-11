@@ -7,7 +7,8 @@ educacion[] (titulo, institucion, anio_fin), habilidades, idiomas, otros[] y
 texto_oculto (lo que el extractor encontró oculto en el PDF).
 
 Decisiones:
-- `persona` NUNCA entra al texto canónico (R7, defensa en profundidad).
+- La ficha pasa primero por R7 del Rol 2 (`reglas.reglas.r7_anonimizar`); además
+  `persona` NUNCA entra al texto canónico (defensa en profundidad).
 - `otros` es contenido visible: entra al texto y pasa por el detector.
 - `texto_oculto` NO entra al texto que ve el analista ("bloquear fragmento", E6);
   se analiza aparte y queda como indicio con fuente "texto_oculto".
@@ -51,20 +52,25 @@ class ExperienciaJson(BaseModel):
     tipo: TipoExperiencia
     inicio: str = Field(pattern=_MES)
     fin: Optional[str] = Field(default=None, pattern=_MES)
+    tecnologias: list[str] = Field(default_factory=list)
     descripcion: list[str] = Field(default_factory=list)
+    fechas_alternas: list[dict] = Field(default_factory=list)   # contradicciones de fechas (E2); las evalúa R11
 
 
 class EducacionJson(BaseModel):
     model_config = _ESTRICTO
     titulo: str
-    institucion: str = ""
-    anio_fin: Optional[int] = None
+    institucion: Optional[str] = None      # R7 la enmascara (proxy)
+    anio_fin: Optional[int] = None         # R7 lo enmascara (proxy de edad)
+    nivel: Optional[str] = None
 
 
 class IdiomaJson(BaseModel):
     model_config = _ESTRICTO
     idioma: str
     nivel: str
+    acreditacion: Optional[str] = None     # certificado | prueba | ninguna (E5)
+    detalle: Optional[str] = None
 
 
 class OtroJson(BaseModel):
@@ -74,11 +80,18 @@ class OtroJson(BaseModel):
 
 
 class CVJson(BaseModel):
+    """Formato del dataset del Rol 2 (data/cvs_json). Acepta la ficha cruda o la anónima de R7."""
     model_config = _ESTRICTO
-    cv_id: str = Field(pattern=r"^CV-\d{3,}$")
+    cv_id: str = Field(pattern=r"^(CV|INJ)-\d{2,}$")
+    vacante_id: Optional[str] = None
+    vacante_version: Optional[int] = None
     idioma: str
-    formato: str
-    persona: dict                       # identidad: se valida que exista, nunca se usa
+    formato_layout: Optional[str] = None
+    fecha_recepcion: Optional[str] = None
+    consentimiento: Optional[dict] = None
+    declarado: Optional[dict] = None
+    archivo: Optional[dict] = None
+    persona: dict                       # identidad: nunca entra al texto
     resumen: str = ""
     experiencia: list[ExperienciaJson] = Field(default_factory=list)
     educacion: list[EducacionJson] = Field(default_factory=list)
@@ -86,7 +99,6 @@ class CVJson(BaseModel):
     idiomas: list[IdiomaJson] = Field(default_factory=list)
     otros: Optional[list[OtroJson]] = None
     texto_oculto: Optional[str] = None
-    archivo_pdf: Optional[str] = None
 
 
 # ------------------------------------------------------------------- limpieza
@@ -107,15 +119,19 @@ def _limpiar(obj, contador: list[int]):
     return obj
 
 
-def cargar_cv_desde_dict(datos: dict) -> tuple[CVJson, int]:
-    """Limpia y valida. Devuelve también cuántos caracteres invisibles o de control se quitaron."""
+def cargar_cv_desde_dict(datos: dict, anonimizar: bool = True) -> tuple[CVJson, int]:
+    """Limpia, anonimiza con R7 (motor del Rol 2) y valida.
+    Devuelve también cuántos caracteres invisibles o de control se quitaron."""
     contador = [0]
     limpio = _limpiar(datos, contador)
+    if anonimizar:
+        from reglas.reglas import r7_anonimizar   # R7 oficial; el analista solo ve la ficha anónima
+        limpio = r7_anonimizar(limpio)["ficha_anonima"]
     return CVJson.model_validate(limpio), contador[0]
 
 
-def cargar_cv(ruta: Path) -> tuple[CVJson, int]:
-    return cargar_cv_desde_dict(json.loads(Path(ruta).read_text("utf-8")))
+def cargar_cv(ruta: Path, anonimizar: bool = True) -> tuple[CVJson, int]:
+    return cargar_cv_desde_dict(json.loads(Path(ruta).read_text("utf-8")), anonimizar)
 
 
 # ------------------------------------------------------------- texto canónico
@@ -163,6 +179,8 @@ def construir_texto_canonico(cv: CVJson) -> TextoCanonico:
             c.campo("Organización", e.organizacion, f"experiencia[{i}].organizacion")
             c.campo("Tipo", _NOMBRE_TIPO[e.tipo.value], f"experiencia[{i}].tipo")
             c.campo("Periodo", f"{e.inicio} a {e.fin or 'actual'}", f"experiencia[{i}].periodo")
+            if e.tecnologias:
+                c.campo("Tecnologías", ", ".join(e.tecnologias), f"experiencia[{i}].tecnologias")
             for j, d in enumerate(e.descripcion):
                 c.campo("-", d, f"experiencia[{i}].descripcion[{j}]")
             c.vacia()
@@ -170,8 +188,8 @@ def construir_texto_canonico(cv: CVJson) -> TextoCanonico:
         c.titulo("Educación")
         for i, ed in enumerate(cv.educacion):
             c.campo("Título", ed.titulo, f"educacion[{i}].titulo")
-            c.campo("Institución", ed.institucion, f"educacion[{i}].institucion")
-            # anio_fin se omite a propósito: no evalúa ningún requisito y es proxy de edad (R7)
+            c.campo("Nivel", ed.nivel, f"educacion[{i}].nivel")
+            # institución y año de grado se omiten a propósito: R7 los trata como proxies
             c.vacia()
     if cv.habilidades:
         c.titulo("Habilidades")
@@ -181,7 +199,10 @@ def construir_texto_canonico(cv: CVJson) -> TextoCanonico:
     if cv.idiomas:
         c.titulo("Idiomas")
         for i, idm in enumerate(cv.idiomas):
-            c.campo("-", f"{idm.idioma} ({idm.nivel})", f"idiomas[{i}]")
+            acred = ""
+            if idm.acreditacion:
+                acred = f" · acreditación: {idm.acreditacion}" + (f" ({idm.detalle})" if idm.detalle else "")
+            c.campo("-", f"{idm.idioma} ({idm.nivel}){acred}", f"idiomas[{i}]")
         c.vacia()
     if cv.otros:
         c.titulo("Otros")

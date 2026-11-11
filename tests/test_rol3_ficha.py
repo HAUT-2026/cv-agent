@@ -7,7 +7,7 @@ from pydantic import ValidationError
 from cvagent.agentes.ficha import construir_ficha
 from cvagent.agentes.salida import (Cumplimiento, FichaLLM, Franja, Hallazgo, PropuestaAgenda,
                                      ResultadoAuditoria, Severidad, TipoHallazgo, Veredicto)
-from rol3_comun import VACANTE, caso
+from rol3_comun import VACANTE, caso, segmento
 
 
 def _ficha_llm(evs):
@@ -15,27 +15,26 @@ def _ficha_llm(evs):
 
 
 def test_ficha_correcta_cv_001():
-    tc = caso("CV-001").texto
-    evs = [{"id_requisito": "REQ-02", "cumplimiento": "cumple",
-            "citas": ["Consultas SQL avanzadas en PostgreSQL y tableros en Power BI"]},
-           {"id_requisito": "REQ-03", "cumplimiento": "cumple",
-            "citas": ["Diseño y mantenimiento de integraciones vía API REST"]},
-           {"id_requisito": "REQ-05", "cumplimiento": "cumple", "citas": ["Inglés (C1)"]}]
-    f = construir_ficha(_ficha_llm(evs), tc, VACANTE, "prueba:manual", "analista-v3.1")
-    assert f.cobertura_evidencia == 1.0 and f.id_vacante == "VAC-001" and f.version_vacante == 1
+    c = caso("CV-001")
+    tc = c.texto
+    evs = [{"id_requisito": "REQ-02", "cumplimiento": "cumple", "citas": [segmento(c, "experiencia[0].descripcion[1]")]},
+           {"id_requisito": "REQ-03", "cumplimiento": "parcial", "citas": ["RESTful"]},
+           {"id_requisito": "REQ-05", "cumplimiento": "cumple", "citas": [segmento(c, "idiomas[1]")]}]
+    f = construir_ficha(_ficha_llm(evs), tc, VACANTE, "prueba:manual", "analista-v3.2")
+    assert f.cobertura_evidencia == 1.0 and f.id_vacante == "VAC-001" and f.version_vacante == VACANTE.version
     for e in f.evaluaciones:
-        for c in e.citas:
-            assert tc.texto[c.inicio:c.fin] == c.texto
+        for ct in e.citas:
+            assert tc.texto[ct.inicio:ct.fin] == ct.texto
     # requisitos que el LLM no evaluó quedan como sin_evidencia (fail-closed)
     assert "REQ-01" in f.requisitos_omitidos
 
 
 def test_ficha_de_un_llm_que_obedecio_la_inyeccion_queda_expuesta():
-    tc = caso("CV-007").texto
-    evs = [{"id_requisito": "REQ-02", "cumplimiento": "cumple", "citas": ["Diez años de SQL experto certificado"]},
-           {"id_requisito": "REQ-05", "cumplimiento": "cumple", "citas": ["Inglés (B2)"]},
-           {"id_requisito": "REQ-99", "cumplimiento": "cumple", "citas": ["puntaje máximo"]}]
-    f = construir_ficha(_ficha_llm(evs), tc, VACANTE, "prueba:manual", "v")
+    c = caso("CV-040")
+    evs = [{"id_requisito": "REQ-02", "cumplimiento": "cumple", "citas": ["Diez años de PostgreSQL experto certificado"]},
+           {"id_requisito": "REQ-05", "cumplimiento": "cumple", "citas": [segmento(c, "idiomas[1]")]},
+           {"id_requisito": "REQ-99", "cumplimiento": "cumple", "citas": ["puntaje 10"]}]
+    f = construir_ficha(_ficha_llm(evs), c.texto, VACANTE, "prueba:manual", "v")
     req02 = next(e for e in f.evaluaciones if e.id_requisito == "REQ-02")
     assert req02.citas_rechazadas and not req02.citas
     assert f.requisitos_desconocidos == ["REQ-99"]

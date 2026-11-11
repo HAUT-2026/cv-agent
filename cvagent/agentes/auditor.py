@@ -36,6 +36,8 @@ _EN_CURSO = re.compile(r"\b(en\s+curso|in\s+progress|cursando|sin\s+terminar|inc
 
 _NIVELES = {"a1": 1, "a2": 2, "b1": 3, "b2": 4, "c1": 5, "c2": 6, "nativo": 7, "nativa": 7,
             "native": 7, "bilingue": 7, "bilingual": 7}
+_ACREDITADO = re.compile(r"acreditacion:\s*(certificado|prueba)|\b(certificad[oa]|certificate|toefl|ielts|cambridge|"
+                         r"fce|cae|cpe|michigan|dele|aptis|linguaskill)\b")
 _RX_NIVEL = re.compile(r"\b(a1|a2|b1|b2|c1|c2|nativ[oa]|native|biling[uü]e|bilingual)\b", re.I)
 
 
@@ -147,8 +149,28 @@ def auditar(ficha: FichaCandidato, caso, vacante: Vacante,
                 elif ev.cumplimiento == Cumplimiento.NO_CUMPLE and mejor >= minimo:
                     hallazgos.append(_h(TipoHallazgo.NIVEL_IDIOMA_INCOHERENTE, A, r.id, c.inicio, c.fin, c.campo,
                                         f"'no_cumple' con «{c.texto}», que alcanza el mínimo {r.nivel_minimo}"))
+            # 3g) La vacante exige acreditación (E5): «Inglés avanzado» sin certificado no es «cumple»
+            if (ev.cumplimiento == Cumplimiento.CUMPLE and "acredit" in _norm(r.descripcion)
+                    and not any(_ACREDITADO.search(_norm(c.texto)) for c in ev.citas)):
+                c = ev.citas[0]
+                hallazgos.append(_h(TipoHallazgo.NIVEL_IDIOMA_INCOHERENTE, B, r.id, c.inicio, c.fin, c.campo,
+                                    f"'cumple' sin acreditación en la evidencia («{c.texto[:100]}»): "
+                                    "la vacante exige certificado o prueba (E5: no acreditado ≠ cumple)"))
 
-    # 4) Cobertura (R4)
+    # 4) Criterio crítico sin evidencia (R4 del SDD): un obligatorio sin cita no puede ir al ranking.
+    #    Atrapa también al analista «perezoso» que marca todo sin_evidencia (cobertura 1,0 por vacío).
+    sin_ev = [e.id_requisito for e in ficha.evaluaciones
+              if e.obligatorio and e.cumplimiento == Cumplimiento.SIN_EVIDENCIA and e.id_requisito in reqs]
+    for rid in sin_ev:
+        if rid not in ficha.requisitos_omitidos:            # el omitido ya tiene su propio hallazgo
+            hallazgos.append(_h(TipoHallazgo.OBLIGATORIO_SIN_EVIDENCIA, B, rid,
+                                detalle="obligatorio sin evidencia en el CV: revisión humana (R4)"))
+    if any(r in ficha.requisitos_omitidos for r in sin_ev):
+        hallazgos.append(_h(TipoHallazgo.OBLIGATORIO_SIN_EVIDENCIA, B,
+                            detalle="obligatorios omitidos por el analista: " +
+                                    ", ".join(r for r in sin_ev if r in ficha.requisitos_omitidos)))
+
+    # 5) Cobertura (R4)
     if ficha.cobertura_evidencia < umbral_cobertura:
         hallazgos.append(_h(TipoHallazgo.COBERTURA_INSUFICIENTE, B,
                             detalle=f"cobertura {ficha.cobertura_evidencia:.2f} < {umbral_cobertura:.2f} (R4)"))

@@ -1,12 +1,12 @@
-"""Rol 3 · vacante versionada y decisión provisional del banco de evaluación (sin LLM)."""
-from cvagent.agentes.evaluacion import decision_provisional
+"""Rol 3 · vacante versionada, ruta final y comparación con el manifiesto (sin LLM)."""
+import pytest
+
+from cvagent.agentes.evaluacion import A_ESTADO_MOTOR, Comparacion, estados_del_analista, ruta_final
 from cvagent.agentes.salida import CitaVerificada, Cumplimiento, EvaluacionRequisito, FichaCandidato
-from rol3_comun import VACANTE
-
-EXP_OK = {"total_meses_sin_solapes": 40, "meses_que_no_cuentan": {}}
+from rol3_comun import IDS, MANIFIESTO, VACANTE
 
 
-def _ficha(estados=None, cobertura=1.0):
+def _ficha(estados=None):
     estados = estados or {}
     evs = []
     for r in VACANTE.requisitos:
@@ -16,30 +16,44 @@ def _ficha(estados=None, cobertura=1.0):
         evs.append(EvaluacionRequisito(id_requisito=r.id, obligatorio=r.obligatorio, peso=r.peso,
                                        cumplimiento=est, citas=citas))
     return FichaCandidato(id_cv="CV-000", id_vacante="VAC-001", version_vacante=1, evaluaciones=evs, fit=1.0,
-                          cumple_obligatorios=True, cobertura_evidencia=cobertura, modelo="t", version_prompt="t")
+                          cumple_obligatorios=True, cobertura_evidencia=1.0, modelo="t", version_prompt="t")
 
 
-def test_vacante_se_convierte_sin_perder_criterios():
+def test_vacante_versionada_y_diccionario_sin_perder_criterios():
+    assert VACANTE.version == 1                                         # la v2 es borrador sin aprobar (R13)
     assert len(VACANTE.requisitos) == 10 and sum(r.obligatorio for r in VACANTE.requisitos) == 5
-    assert "T-SQL" in next(r for r in VACANTE.requisitos if r.id == "REQ-02").equivalencias
-    assert next(r for r in VACANTE.requisitos if r.id == "REQ-05").nivel_minimo == "B2"
+    req = {r.id: r for r in VACANTE.requisitos}
+    assert "Postgres" in req["REQ-02"].equivalencias and "Kotlin" in req["REQ-01"].equivalencias
+    assert req["REQ-05"].nivel_minimo == "B2" and req["REQ-01"].anios_minimos == 3
+    assert "Ingeniería de Sistemas" in req["REQ-04"].titulos_aceptados
 
 
-def test_apto_y_inyeccion():
-    assert decision_provisional(_ficha(), VACANTE, EXP_OK, False)[0] == "apto"
-    assert decision_provisional(_ficha(), VACANTE, EXP_OK, True)[0] == "revision_humana"
+def test_ruta_final_solo_cambia_lo_evaluable():
+    assert ruta_final("evaluable", False) == "ranking"
+    assert ruta_final("evaluable", True) == "bandeja"
+    for r in ["bandeja", "no_apto_declarado", "duplicado", "en_espera_consentimiento", "carga_manual"]:
+        assert ruta_final(r, False) == r and ruta_final(r, True) == r     # el Rol 3 nunca saca de la bandeja
 
 
-def test_sin_evidencia_en_obligatorio_es_revision_no_descarte():
-    assert decision_provisional(_ficha({"REQ-02": Cumplimiento.SIN_EVIDENCIA}), VACANTE, EXP_OK, False)[0] == "revision_humana"
+@pytest.mark.parametrize("cv_id", IDS)
+def test_manifiesto_es_coherente_con_ruta_final(cv_id):
+    e = MANIFIESTO[cv_id]["esperado"]
+    marca = "inyeccion" in e["debe_marcar"]
+    assert ruta_final(e["ruta_motor_reglas"], marca) == e["ruta_final"]
 
 
-def test_anios_los_decide_el_calculo_no_el_llm():
-    f = _ficha()
-    assert decision_provisional(f, VACANTE, {"total_meses_sin_solapes": 25, "meses_que_no_cuentan": {"pasantia": 6}}, False)[0] == "no_apto"
-    assert decision_provisional(f, VACANTE, {"total_meses_sin_solapes": 23, "meses_que_no_cuentan": {"voluntariado": 51}}, False)[0] == "revision_humana"
+def test_vocabulario_del_motor_cubre_todos_los_estados():
+    assert set(A_ESTADO_MOTOR) == set(Cumplimiento)
+    assert set(A_ESTADO_MOTOR.values()) == {"cumple", "incumple", "no_acreditado", "por_confirmar"}
 
 
-def test_titulo_con_nota_de_revision_y_idioma():
-    assert decision_provisional(_ficha({"REQ-04": Cumplimiento.NO_CUMPLE}), VACANTE, EXP_OK, False)[0] == "revision_humana"
-    assert decision_provisional(_ficha({"REQ-05": Cumplimiento.NO_CUMPLE}), VACANTE, EXP_OK, False)[0] == "no_apto"
+def test_estados_del_analista_solo_obligatorios():
+    est = estados_del_analista(_ficha({"REQ-05": Cumplimiento.PARCIAL, "DES-01": Cumplimiento.NO_CUMPLE}))
+    assert set(est) == {r.id for r in VACANTE.requisitos if r.obligatorio}
+    assert est["REQ-05"] == "por_confirmar" and est["REQ-01"] == "cumple"
+
+
+def test_comparacion_cuenta_aciertos():
+    c = Comparacion("CV-001", "evaluable", "evaluable", "ranking", "ranking",
+                    {"REQ-01": "cumple", "REQ-05": "cumple"}, {"REQ-01": "cumple", "REQ-05": "por_confirmar"})
+    assert c.acierta_ruta_final and c.acierta_motor and c.coincidencias_requisitos == (1, 2)

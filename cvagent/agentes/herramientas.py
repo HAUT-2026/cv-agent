@@ -92,9 +92,9 @@ def _consultar_equivalencias(args: dict, ctx: ContextoCaso) -> dict:
     t = _norm(termino)
     # 1) Equivalencias OFICIALES y versionadas de la vacante (R8)
     for r in ctx.vacante.requisitos:
-        grupo = r.equivalencias + r.titulos_aceptados
+        grupo = r.equivalencias + r.titulos_aceptados + r.palabras_afines
         if grupo and any(_norm(g) == t or (len(t) >= 3 and t in _norm(g)) for g in grupo):
-            return {"termino": termino, "requisito": r.id, "equivalentes": r.equivalencias + r.titulos_aceptados,
+            return {"termino": termino, "requisito": r.id, "equivalentes": r.equivalencias + r.titulos_aceptados + r.palabras_afines,
                     "fuente": f"vacante {ctx.vacante.id_vacante} v{ctx.vacante.version}"}
     # 2) Respaldo provisional (se elimina cuando el Rol 2 publique su diccionario)
     for grupo in _EQUIVALENCIAS:
@@ -104,43 +104,20 @@ def _consultar_equivalencias(args: dict, ctx: ContextoCaso) -> dict:
             "nota": "Sin equivalencias registradas: no asumas sinónimos."}
 
 
-def _meses(aaaa_mm: str) -> int:
-    a, m = aaaa_mm.split("-")
-    return int(a) * 12 + int(m)
-
-
-_CUENTAN = {"empleo", "freelance"}   # nota de REQ-01 en la vacante del equipo; ajustar a R11 oficial
-
-
-def _union(intervalos: list[tuple[int, int]]) -> int:
-    total, actual = 0, None
-    for ini, fin in sorted(intervalos):
-        if actual is None or ini > actual[1]:
-            if actual:
-                total += actual[1] - actual[0]
-            actual = [ini, fin]
-        else:
-            actual[1] = max(actual[1], fin)
-    return total + (actual[1] - actual[0] if actual else 0)
-
-
-def _experiencia_por_cargo(args: dict, ctx: ContextoCaso, hoy: str = "2026-11") -> dict:
-    """Provisional hasta tener R11 del Rol 2. Meses = fin − inicio (intervalo [inicio, fin)),
-    'actual' = 2026-11, periodos solapados cuentan una vez. Coincide con el manifiesto del equipo."""
-    cargos, cuentan, por_tipo = [], [], {}
-    for i, e in enumerate(ctx.cv.experiencia):
-        ini_s = getattr(e, "inicio", None) or e.fecha_inicio
-        fin_s = getattr(e, "fin", None) if hasattr(e, "inicio") else e.fecha_fin
-        tipo = getattr(getattr(e, "tipo", None), "value", None) or "empleo"
-        ini, fin = _meses(ini_s), _meses(fin_s or hoy)
-        cuenta = tipo in _CUENTAN
-        cargos.append({"indice": i, "cargo": e.cargo, "tipo": tipo, "meses": fin - ini, "cuenta": cuenta})
-        (cuentan if cuenta else por_tipo.setdefault(tipo, [])).append((ini, fin))
-    total = _union(cuentan)
-    return {"por_cargo": cargos, "total_meses_sin_solapes": total, "total_anios": round(total / 12, 2),
-            "meses_que_no_cuentan": {t: _union(v) for t, v in por_tipo.items()},
-            "nota": "Cuentan empleo y freelance sin solapes; pasantía, voluntariado y pausas no "
-                    "(nota de la vacante). Cálculo provisional; el oficial es R11."}
+def _experiencia_por_cargo(args: dict, ctx: ContextoCaso) -> dict:
+    """Experiencia efectiva con R11 OFICIAL del Rol 2 (meses únicos, sin solapes; fechas
+    contradictorias → no fiable). El agente decide con esto, no con lo que el candidato declara."""
+    from reglas.reglas import r11_experiencia_efectiva
+    exp = [e.model_dump() if hasattr(e, "model_dump") else dict(e) for e in ctx.cv.experiencia]
+    for e in exp:
+        e["tipo"] = getattr(e.get("tipo"), "value", e.get("tipo"))
+    r11 = r11_experiencia_efectiva(exp)
+    por_cargo = [{"indice": i, "cargo": e.get("cargo"), "tipo": e["tipo"], "inicio": e.get("inicio"),
+                  "fin": e.get("fin") or "actual"} for i, e in enumerate(exp)]
+    return {"por_cargo": por_cargo, "total_meses_sin_solapes": r11["meses_efectivos"],
+            "total_anios": round(r11["meses_efectivos"] / 12, 2), "meses_nominales": r11["meses_nominales"],
+            "fiable": r11["fiable"], "motivos": r11["motivos"],
+            "nota": "R11 oficial (Rol 2): meses únicos de empleo y freelance. Si no es fiable, el caso va a revisión humana."}
 
 
 # --------------------------------------------------------------- recuperación de evidencia
@@ -194,7 +171,7 @@ def claves_de_requisito(req) -> tuple[set[str], list[str]]:
     for k, rel in _RELACIONADOS.items():
         if _raiz(k) in claves:
             claves |= {_raiz(x) for x in rel}
-    frases_eq = [_norm(x) for x in req.equivalencias + req.titulos_aceptados]
+    frases_eq = [_norm(x) for x in req.equivalencias + req.titulos_aceptados + getattr(req, "palabras_afines", [])]
     for x in frases_eq:
         claves |= _terminos(x)
     return claves, frases_eq
@@ -214,14 +191,32 @@ def _frases_relacionadas(args: dict, ctx: ContextoCaso) -> dict:
     req = next((r for r in ctx.vacante.requisitos if r.id == rid), None)
     if req is None:
         return {"error": f"No existe el requisito {rid}. Usa los ids de la lista de la vacante."}
-    claves, frases_eq = claves_de_requisito(req)
+    # Educación e idioma tienen sección propia en el CV: se devuelven TODOS sus registros
+    # (un «Bachiller académico» no comparte palabras con «Ingeniería de Sistemas», pero es
+    # justo la evidencia que el analista necesita para decir no_cumple o por confirmar).
+    tipo = getattr(req.tipo, "value", req.tipo)
+    estructurales = {"educacion": r"^educacion\[\d+\]\.titulo$", "idioma": r"^idiomas\[\d+\]$"}
     puntuadas = []
     for i, (ruta, frase) in enumerate(_frases_del_cv(ctx.tc)):
+        if tipo in estructurales:
+            if re.match(estructurales[tipo], ruta):
+                puntuadas.append((-(relacion_con_requisito(frase, req) + 100), i, ruta, frase))
+            elif tipo == "educacion":
+                puntos = relacion_con_requisito(frase, req)
+                if puntos:
+                    puntuadas.append((-puntos, i, ruta, frase))
+            continue  # idioma: solo la sección de idiomas (evita el ruido de «prueba», «certificado»…)
         puntos = relacion_con_requisito(frase, req)
         if puntos:
             puntuadas.append((-puntos, i, ruta, frase))
     puntuadas.sort()
-    frases = [{"texto": f, "seccion": r} for _, _, r, f in puntuadas[:5]]
+    frases, vistas = [], set()
+    for _, _, r, f in puntuadas:
+        if f not in vistas:
+            vistas.add(f)
+            frases.append({"texto": f, "seccion": r})
+        if len(frases) == 5:
+            break
     if not frases:
         return {"id_requisito": rid, "frases": [],
                 "nota": "Ninguna frase del CV se relaciona con este requisito: probablemente sin_evidencia."}
@@ -247,7 +242,7 @@ CONSULTAR_EQUIVALENCIAS = Herramienta(
 )
 EXPERIENCIA_POR_CARGO = Herramienta(
     "experiencia_por_cargo",
-    "Calcula cuántos meses duró cada cargo según las fechas y el total sin solapes. "
+    "Experiencia efectiva con R11 oficial (meses únicos, sin solapes) y si el cálculo es fiable. "
     "Úsala para requisitos de años de experiencia en vez de confiar en lo que el candidato dice.",
     {"type": "object", "properties": {}},
     _experiencia_por_cargo,

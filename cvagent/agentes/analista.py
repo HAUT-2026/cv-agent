@@ -21,7 +21,7 @@ from .salida import FichaCandidato, FichaLLM
 from .sanitizacion import IndicioInyeccion
 from .texto import TextoCanonico
 
-VERSION_PROMPT = "analista-v3.1"   # v3.1: la tarea incluye equivalencias, títulos y notas de la vacante
+VERSION_PROMPT = "analista-v3.2"   # v3.2: acreditación de idioma (E5); v3.1: equivalencias, títulos y notas
 ALLOWLIST = ["frases_relacionadas", "buscar_en_cv", "consultar_equivalencias", "experiencia_por_cargo"]
 
 # Historial (medido con qwen2.5:7b local, 2026-11-09):
@@ -59,6 +59,8 @@ CÓMO CALIFICAR (evidencia graduada):
   relación real). NO es lo mismo que no cumplir: la ausencia de datos no prueba nada.
 
 NIVELES DE IDIOMA, de menor a mayor: A1 < A2 < B1 < B2 < C1 < C2 < nativo.
+Si el requisito exige ACREDITACIÓN (certificado o prueba) y el CV declara el nivel con
+"acreditación: ninguna" o sin certificado, el juicio es "parcial" (no acreditado), nunca "cumple".
 
 EJEMPLO HIPOTÉTICO (no pertenece a ningún CV de este proceso): si un requisito pidiera
 "manejo de hojas de cálculo" y un CV dijera "Elaboré reportes mensuales en Excel con tablas

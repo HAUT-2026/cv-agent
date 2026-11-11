@@ -1,12 +1,12 @@
 # Rol 3 — Agentes del MVP de CVAgent
-Paquete: `cvagent/agentes/` · Test runner: `uv run pytest tests/test_rol3_*.py`
+Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (298) · Guía: `docs/rol-3-ejecucion.md`
 Objetivo: agentes analista, auditor y agendador con salidas en esquemas estrictos, citas verificables por código y herramientas bajo allowlist, sin asumir lógica de negocio de otros roles.
 
 ## Specs
 
 ### S1 — Extracción y sanitización con offsets ✅
 CV en JSON → texto canónico determinista; identidad y año de grado fuera (R7); `texto_oculto` bloqueado e indicio (E6); inyección y proxies con offsets.
-Acceptance: 12/12 en detección contra el manifiesto; ningún valor de `persona` aparece en el texto.
+Acceptance: ruta final 44/44 contra el manifiesto (4/5 en prueba ciega antes de ajustar patrones); R7 oficial del Rol 2; ningún valor de `persona` aparece en el texto.
 
 ### S2 — Citas verificables ✅
 El LLM devuelve citas literales; el código calcula offsets exactos. Paráfrasis, invenciones y cifras alteradas se rechazan.
@@ -18,13 +18,19 @@ Acceptance: pruebas `test_rol3_agente.py` con LLM falso.
 
 ### S4 — Agente analista ✅ (sin conectar al grafo)
 Evidencia graduada, `frases_relacionadas` con equivalencias versionadas, citas obligatorias por esquema.
-Acceptance: CV-007 con LLM real: decisión, fallidos e inyección iguales al manifiesto (`docs/rol-3-evaluacion.md`).
+Acceptance: CV-007 (dataset previo) con LLM real: decisión, fallidos e inyección iguales al manifiesto; `experiencia_por_cargo` con R11 oficial 41/41 (`docs/rol-3-evaluacion.md`).
 
 ### S5 — Auditor determinista ✅
-`auditor.py`: hallazgos con severidad y offset (inyección, citas no encontradas, cobertura < 0,70, idioma incoherente, cita con proxy, cita sin relación, evidencia solo de lista, calificadores débiles, estados incoherentes, proxies de R7). Bloquea, no aprueba.
+`auditor.py`: hallazgos con severidad y offset (inyección, citas no encontradas, obligatorio sin evidencia y cobertura < 0,70 (R4), idioma bajo el mínimo o sin acreditar (E5), idioma incoherente, cita con proxy, cita sin relación, evidencia solo de lista, calificadores débiles, estados incoherentes, proxies de R7). Bloquea, no aprueba.
 Acceptance: `test_rol3_auditor.py` reproduce los errores reales medidos; sobre la ficha real de CV-007 (corrida 2) bloquea solo por inyección, sin falsos positivos.
 
 ### S6 — Auditor LLM ⏳ · S7 — Agendador ⏳
+
+### S9 — Puntaje y cobertura para `armar_staging` ⏳
+El motor del Rol 2 recibe `[{cv_id, puntaje, cobertura, contradiccion_material}]`. Pendiente: rúbrica de pesos (RR. HH.) y definición acordada de cobertura.
+
+### S10 — Ejecución reproducible por el equipo ✅
+`docs/rol-3-ejecucion.md` (personas, paso a paso con Docker y Ollama) y `cvagent/agentes/AGENTS.md` (asistentes de IA: lista de verificación y árbol de errores).
 
 ### S8 — Integración con el grafo ⏳
 Bloqueado por la propuesta de contrato v1.1 (`docs/rol-3-propuesta-contratos.md`). Herramientas vía `OperationalControls.call_tool`.

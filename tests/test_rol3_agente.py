@@ -10,8 +10,8 @@ from cvagent.agentes.salida import FichaLLM
 from rol3_comun import LLMFalso, contexto, llamar
 
 CONFIG = ConfigLLM(base_url="http://falso/v1", modelo="falso", reintentos=0)
-CITA = "Consultas SQL avanzadas en PostgreSQL y tableros en Power BI"
-FICHA_OK = {"evaluaciones": [{"id_requisito": "REQ-02", "cumplimiento": "cumple", "citas": [CITA]}]}
+CITA = "Contenedorización con Docker y despliegue en AWS."   # frase literal de CV-001
+FICHA_OK = {"evaluaciones": [{"id_requisito": "DES-03", "cumplimiento": "cumple", "citas": [CITA]}]}
 
 
 def correr(guion, allowlist=("buscar_en_cv",), max_pasos=6):
@@ -38,7 +38,7 @@ def test_herramienta_fuera_de_allowlist_no_se_ejecuta():
 
 
 def test_resultado_invalido_vuelve_para_corregir():
-    malo = {"evaluaciones": [{"id_requisito": "REQ-02", "cumplimiento": "excelente", "citas": [CITA]}]}
+    malo = {"evaluaciones": [{"id_requisito": "DES-03", "cumplimiento": "excelente", "citas": [CITA]}]}
     res, falso, _ = correr([llamar("entregar_resultado", malo), llamar("entregar_resultado", FICHA_OK)])
     assert [e.tipo for e in res.traza] == ["resultado_invalido", "entrega"]
 

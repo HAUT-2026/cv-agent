@@ -57,6 +57,7 @@ class TipoHallazgo(str, Enum):
     REQUISITO_OMITIDO = "requisito_omitido"
     REQUISITO_DESCONOCIDO = "requisito_desconocido"      # evaluó un id que no existe en la vacante
     COBERTURA_INSUFICIENTE = "cobertura_insuficiente"    # R4
+    OBLIGATORIO_SIN_EVIDENCIA = "obligatorio_sin_evidencia"  # R4: criterio crítico sin evidencia → revisión humana
     INDICIO_INYECCION = "indicio_inyeccion"
     CITA_SIN_RELACION = "cita_sin_relacion"              # la cita no comparte términos con el requisito
     EVIDENCIA_SOLO_LISTA = "evidencia_solo_lista"        # "cumple" respaldado solo por la lista de habilidades
