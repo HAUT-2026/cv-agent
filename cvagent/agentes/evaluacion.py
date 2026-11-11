@@ -46,13 +46,14 @@ class Comparacion:
 
 
 def decision_provisional(ficha: FichaCandidato, vacante: Vacante, experiencia: dict,
-                         hay_inyeccion: bool) -> tuple[str, list[str]]:
-    """apto | no_apto | revision_humana, con los motivos. Ver advertencia del módulo."""
+                         auditor_bloquea: bool) -> tuple[str, list[str]]:
+    """apto | no_apto | revision_humana, con los motivos. Ver advertencia del módulo.
+    Si el auditor bloquea, el caso va a revisión humana (salvo que ya sea no_apto)."""
     reqs = {r.id: r for r in vacante.requisitos}
     motivos: list[str] = []
-    no_apto, revision = False, hay_inyeccion
-    if hay_inyeccion:
-        motivos.append("indicios de inyección → el auditor bloquea → revisión humana")
+    no_apto, revision = False, auditor_bloquea
+    if auditor_bloquea:
+        motivos.append("el auditor bloquea → revisión humana")
 
     for e in ficha.evaluaciones:
         r = reqs[e.id_requisito]

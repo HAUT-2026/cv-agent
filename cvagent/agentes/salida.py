@@ -38,7 +38,9 @@ VALOR_CUMPLIMIENTO = {
 
 
 class ResultadoAuditoria(str, Enum):
-    PASA = "pasa"
+    """El auditor puede bloquear, NO aprobar (AGENTS.md): sin objeciones ≠ aprobado.
+    La aprobación es siempre humana."""
+    SIN_OBJECIONES = "sin_objeciones"
     BLOQUEA = "bloquea"
 
 
@@ -48,14 +50,20 @@ class Severidad(str, Enum):
 
 
 class TipoHallazgo(str, Enum):
-    # capa determinista (Parte 4)
-    CITA_NO_ENCONTRADA = "cita_no_encontrada"
+    # capa determinista (auditor.py)
+    CITA_NO_ENCONTRADA = "cita_no_encontrada"            # el LLM citó algo que no está en el CV
     CITA_CRUZA_CAMPOS = "cita_cruza_campos"
-    AFIRMACION_SIN_CITA = "afirmacion_sin_cita"
+    AFIRMACION_SIN_CITA = "afirmacion_sin_cita"          # afirma y ninguna cita sobrevivió a la verificación
     REQUISITO_OMITIDO = "requisito_omitido"
-    REQUISITO_DESCONOCIDO = "requisito_desconocido"
-    COBERTURA_INSUFICIENTE = "cobertura_insuficiente"
+    REQUISITO_DESCONOCIDO = "requisito_desconocido"      # evaluó un id que no existe en la vacante
+    COBERTURA_INSUFICIENTE = "cobertura_insuficiente"    # R4
     INDICIO_INYECCION = "indicio_inyeccion"
+    CITA_SIN_RELACION = "cita_sin_relacion"              # la cita no comparte términos con el requisito
+    EVIDENCIA_SOLO_LISTA = "evidencia_solo_lista"        # "cumple" respaldado solo por la lista de habilidades
+    CALIFICADOR_DEBIL = "calificador_debil"              # "cumple" con "básico", "en curso"…
+    ESTADO_INCOHERENTE = "estado_incoherente"            # p. ej. estudios "en curso" marcados no_cumple
+    NIVEL_IDIOMA_INCOHERENTE = "nivel_idioma_incoherente"  # nivel citado vs. nivel mínimo
+    CITA_CON_PROXY = "cita_con_proxy"                    # la evidencia usada contiene un proxy de R7
     # capa LLM (Parte 5)
     SENAL_SESGO = "senal_sesgo"
     INYECCION_SUTIL = "inyeccion_sutil"
@@ -141,8 +149,10 @@ class Hallazgo(BaseModel):
     tipo: TipoHallazgo
     severidad: Severidad
     id_requisito: Optional[str] = None
-    inicio: Optional[int] = None   # offset en el texto canónico cuando aplica
+    inicio: Optional[int] = None   # offset cuando aplica (en el texto canónico, salvo que `campo` diga otra fuente)
     fin: Optional[int] = None
+    campo: Optional[str] = None    # ruta del campo, o "texto_oculto" si el offset es relativo a ese campo
+    detalle: Optional[str] = Field(default=None, max_length=240)   # lo genera el CÓDIGO, nunca el LLM
 
 
 class Veredicto(BaseModel):

@@ -1,4 +1,4 @@
-"""Rol 3 — agentes de CVAgent (analista; auditor y agendador en construcción).
+"""Rol 3 — agentes de CVAgent (analista y auditor determinista; auditor LLM y agendador en construcción).
 
 Módulos:
     criterios     Vacante y requisitos versionados (con equivalencias) que consumen los agentes.
@@ -11,6 +11,7 @@ Módulos:
     herramientas  Herramientas de los agentes y registro central.
     agente        Motor razonar → actuar → observar, con allowlist, freno de bucles y traza.
     analista      Agente analista (prompt, allowlist, analizar_caso).
+    auditor       Auditor determinista: Veredicto con hallazgos (severidad + offset); bloquea, no aprueba.
     evaluacion    Banco de evaluación contra data/manifiesto.json (solo para medir).
 
 Ver docs/rol-3-agentes.md.

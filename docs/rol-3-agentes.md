@@ -1,6 +1,6 @@
 # Rol 3 — Agentes (analista, auditor, agendador)
 
-Estado: **analista operativo como módulo** (`cvagent/agentes/`), probado con LLM real y con el dataset del Rol 2. **Todavía no está conectado al grafo**: falta que `CaseState` referencie el CV (ver [propuesta de contrato](rol-3-propuesta-contratos.md)). El auditor y el agendador están en construcción.
+Estado: **analista y auditor determinista operativos como módulo** (`cvagent/agentes/`), probados con LLM real y con el dataset del Rol 2. **Todavía no están conectados al grafo**: falta que `CaseState` referencie el CV (ver [propuesta de contrato](rol-3-propuesta-contratos.md)). El auditor LLM y el agendador están en construcción.
 
 ## Principio de diseño: «el código busca y verifica, el LLM juzga»
 
@@ -32,6 +32,7 @@ El modelo solo decide lo que el código no puede decidir: si una frase del CV de
 | `herramientas.py` | `frases_relacionadas`, `buscar_en_cv`, `consultar_equivalencias`, `experiencia_por_cargo` y el registro central |
 | `agente.py` | Motor razonar → actuar → observar: allowlist por agente, freno de llamadas repetidas, rechazo de entrega prematura, límite de pasos (fail-closed) y traza |
 | `analista.py` | Prompt `analista-v3.1`, allowlist, `analizar_caso()` |
+| `auditor.py` | Auditor **determinista**: `auditar(ficha, caso, vacante)` → `Veredicto` (`bloquea` / `sin_objeciones`; **no aprueba**) con hallazgos de severidad y offset |
 | `evaluacion.py` | Comparación contra `data/manifiesto.json` (solo para medir) |
 
 ## Cómo correrlo
@@ -41,13 +42,32 @@ uv run pytest tests/test_rol3_*.py                       # 94 pruebas, sin LLM n
 uv run python scripts/rol3/probar_banco.py --sin-llm     # 12 CV: experiencia (R11) e inyección contra el manifiesto
 cp .env.example .env                                     # configurar el LLM (Ollama, OpenAI…)
 uv run python scripts/rol3/probar_banco.py CV-007        # analista real sobre un CV
-uv run python scripts/rol3/probar_banco.py todos         # banco completo
+uv run python scripts/rol3/probar_banco.py todos         # banco completo (incluye el veredicto del auditor)
+uv run python scripts/rol3/auditar.py                    # re-audita fichas guardadas en resultados/rol3/ sin llamar al LLM
 ```
+
+## Auditor determinista
+
+Independiente del analista (ADR-002): solo ve la ficha, el texto canónico, la vacante y los indicios de la sanitización. Bloquea, nunca aprueba.
+
+| Hallazgo | Severidad | Origen (error real medido) |
+|---|---|---|
+| `indicio_inyeccion` (incluye `texto_oculto`) | 🔴 | CV-006, 007, 008, 011 |
+| `cita_no_encontrada`, `afirmacion_sin_cita`, `requisito_desconocido` | 🔴 | LLM que inventa evidencia |
+| `cobertura_insuficiente` (< 0,70, R4) | 🔴 | |
+| `nivel_idioma_incoherente` (cumple con nivel < mínimo) | 🔴 | «Inglés (A2)» aceptado como B1 (v1) |
+| `cita_con_proxy` (la evidencia contiene un proxy de R7) | 🔴 | CV-010 |
+| `cita_sin_relacion` | 🔴 obligatorio / 🟡 deseable o experiencia | CV-007 corrida 1: REQ-01 y DES-04 |
+| `evidencia_solo_lista` (cumple solo con la lista de habilidades) | 🟡 | CV-007 corrida 1: REQ-03 |
+| `calificador_debil` (cumple con «básico», «en curso»…) | 🟡 | CV-007 corrida 1: DES-01 |
+| `estado_incoherente` (estudios en curso marcados no_cumple) | 🟡 | CV propio de desarrollo |
+| `nivel_idioma_incoherente` (no_cumple con nivel suficiente) | 🟡 | |
+| `requisito_omitido` | 🟡 | |
+| `senal_sesgo` (proxies de R7 en el CV) | 🟡 | CV-010 |
 
 ## Lo que falta
 
 - **Integración al grafo** (`AnalistaPort`): depende de la propuesta de contrato v1.1 (referencia al CV, evaluaciones por requisito y hallazgos en `Veredicto`).
-- **Auditor determinista** (siguiente): inyección, citas no encontradas, cobertura < 0,70, nivel de idioma inferior al mínimo, cita sin relación con el requisito, evidencia solo de la lista de habilidades, calificadores débiles («básico», «en curso») y proxies de R7.
 - **Auditor LLM**: lo semántico (SOAP ≠ REST; consumir ≠ diseñar).
 - **Agendador**.
 - Reemplazar las piezas provisionales cuando el Rol 2 las publique: R11 oficial y diccionario de equivalencias.

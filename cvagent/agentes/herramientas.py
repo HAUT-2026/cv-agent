@@ -187,24 +187,37 @@ def _frases_del_cv(tc: TextoCanonico):
                 yield seg.ruta, frase.strip()
 
 
+def claves_de_requisito(req) -> tuple[set[str], list[str]]:
+    """Términos (con raíz) y frases de equivalencia de un requisito. La usan
+    `frases_relacionadas` (para recuperar) y el auditor (para verificar relación)."""
+    claves = _terminos(req.descripcion)
+    for k, rel in _RELACIONADOS.items():
+        if _raiz(k) in claves:
+            claves |= {_raiz(x) for x in rel}
+    frases_eq = [_norm(x) for x in req.equivalencias + req.titulos_aceptados]
+    for x in frases_eq:
+        claves |= _terminos(x)
+    return claves, frases_eq
+
+
+def relacion_con_requisito(texto: str, req) -> int:
+    """Puntos de relación entre un texto y un requisito (0 = sin relación)."""
+    claves, frases_eq = claves_de_requisito(req)
+    fn = _norm(texto)
+    puntos = len(claves & _terminos(texto))
+    puntos += 2 * sum(1 for x in frases_eq if re.search(rf"(?<![a-z0-9]){re.escape(x)}(?![a-z0-9])", fn))
+    return puntos
+
+
 def _frases_relacionadas(args: dict, ctx: ContextoCaso) -> dict:
     rid = str(args.get("id_requisito", "")).strip()
     req = next((r for r in ctx.vacante.requisitos if r.id == rid), None)
     if req is None:
         return {"error": f"No existe el requisito {rid}. Usa los ids de la lista de la vacante."}
-    claves = _terminos(req.descripcion)
-    for k, rel in _RELACIONADOS.items():
-        if _raiz(k) in claves:
-            claves |= {_raiz(x) for x in rel}
-    # Equivalencias y títulos versionados de la vacante: frase completa (peso 2) y sus términos (peso 1)
-    frases_eq = [_norm(x) for x in req.equivalencias + req.titulos_aceptados]
-    for x in frases_eq:
-        claves |= _terminos(x)
+    claves, frases_eq = claves_de_requisito(req)
     puntuadas = []
     for i, (ruta, frase) in enumerate(_frases_del_cv(ctx.tc)):
-        fn = _norm(frase)
-        puntos = len(claves & _terminos(frase))
-        puntos += 2 * sum(1 for x in frases_eq if re.search(rf"(?<![a-z0-9]){re.escape(x)}(?![a-z0-9])", fn))
+        puntos = relacion_con_requisito(frase, req)
         if puntos:
             puntuadas.append((-puntos, i, ruta, frase))
     puntuadas.sort()

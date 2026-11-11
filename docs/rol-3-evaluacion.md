@@ -27,11 +27,18 @@ Mediciones reales con `qwen2.5:7b` local (Ollama 0.34, GTX 1650 de 4 GB y 16 GB 
 | Corrida | Tiempo | Citas que respaldan bien su requisito | Contra el manifiesto |
 |---|---|---|---|
 | 1 (`max_tokens` 1000) | 547 s; la respuesta se cortó y se rehízo | 4 de 8 (DES-04 «protección de datos» citado con «Modelos de datos…»; DES-01 `cumple` con «Python (básico)») | decisión ✓ · fallidos ✓ · inyección ✓ |
-| 2 (`max_tokens` 2000; palabras vacías y raíz en `frases_relacionadas`) | **220 s** | **6 de 7 + 1 débil** (DES-01 → `parcial`, DES-04 → `sin_evidencia`) | decisión ✓ · fallidos ✓ · inyección ✓ |
+| 2 (`max_tokens` 2000; palabras vacías y raíz en `frases_relacionadas`) | **220 s** | **7 de 7** (DES-01 → `parcial`, DES-04 → `sin_evidencia`; REQ-03 trae la frase fuerte como segunda cita) | decisión ✓ · fallidos ✓ · inyección ✓ |
 
 **Lección:** mejores candidatas desde el código mejoraron al agente sin tocar el prompt ni el modelo.
 
-## 4. Conclusiones para ADR-007
+## 4. Auditor determinista sobre las fichas reales
+
+| Ficha | Veredicto | Hallazgos |
+|---|---|---|
+| CV-007 corrida 2 (LLM real) | **bloquea** | Solo los 3 indicios de inyección (autoridad falsa, pedir puntaje, omitir revisión). **Ningún falso positivo** sobre el trabajo del analista |
+| CV-007 corrida 1 (reproducida en `test_rol3_auditor.py`) | bloquea | Además de la inyección: `cita_sin_relacion` en REQ-01 y DES-04, `evidencia_solo_lista` en REQ-03, `calificador_debil` en DES-01 |
+
+## 5. Conclusiones para ADR-007
 
 - La meta de ficha es ≤ 2 min/CV. El modelo local tarda **~4 min/CV**: sirve para desarrollo, **no** para la corrida del lote. El cliente es agnóstico, así que medir otro proveedor es cambiar `.env` y correr `probar_banco.py todos`.
 - Limitación persistente del modelo de 7B: tiende a evitar la categoría intermedia (`parcial`). Mitigación: reglas del auditor + revisión humana + comparar con un modelo mayor.

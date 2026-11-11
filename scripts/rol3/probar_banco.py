@@ -19,6 +19,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(RAIZ))
 
+from cvagent.agentes.auditor import auditar  # noqa: E402
 from cvagent.agentes.criterios import cargar_vacante  # noqa: E402
 from cvagent.agentes.cv_json import preparar_caso  # noqa: E402
 from cvagent.agentes.evaluacion import Comparacion, decision_provisional, fallidos_del_analista  # noqa: E402
@@ -112,7 +113,8 @@ for cv_id in ids:
 
     exp = experiencia(caso)
     hay_iny = bool(caso.indicios)
-    dec, motivos = decision_provisional(r.ficha, vac, exp, hay_iny)
+    veredicto = auditar(r.ficha, caso, vac)
+    dec, motivos = decision_provisional(r.ficha, vac, exp, veredicto.resultado.value == "bloquea")
     comp = Comparacion(cv_id, m["esperado"]["decision"], dec, m["esperado"]["requisitos_fallidos"],
                        fallidos_del_analista(r.ficha), m["esperado"]["meses_efectivos"],
                        exp["total_meses_sin_solapes"], m["esperado"]["debe_marcar"],
@@ -124,6 +126,11 @@ for cv_id in ids:
     for e in f.evaluaciones:
         print(f"    {e.id_requisito} {'(oblig.)' if e.obligatorio else '        '} {e.cumplimiento.value:<14}"
               f"{'«' + e.citas[0].texto[:70] + '»' if e.citas else ''}{' ✗' * len(e.citas_rechazadas)}")
+        for extra in e.citas[1:]:
+            print(f"    {'':<24}«{extra.texto[:70]}»")
+    print(f"  Auditor: {veredicto.resultado.value.upper()}")
+    for h in veredicto.hallazgos:
+        print(f"    {'🔴' if h.severidad.value == 'bloqueante' else '🟡'} {h.tipo.value:<26}{h.id_requisito or '':<8}{h.detalle or ''}")
     print(f"  Decisión provisional: {dec}  ·  esperada: {comp.decision_esperada}  "
           f"{'✓' if comp.acierta_decision else '✗'}")
     print(f"  Obligatorios no_cumple (analista): {comp.fallidos_analista} · esperados: {comp.fallidos_esperados} "
@@ -133,6 +140,7 @@ for cv_id in ids:
     (SALIDA / f"{cv_id}.json").write_text(json.dumps({
         "ficha": f.model_dump(mode="json"), "indicios": [asdict(i) for i in caso.indicios],
         "proxies": [asdict(p) for p in caso.proxies], "traza": [asdict(e) for e in r.agente.traza],
+        "veredicto": veredicto.model_dump(mode="json"),
         "comparacion": {**asdict(comp), "acierta_decision": comp.acierta_decision,
                         "acierta_fallidos": comp.acierta_fallidos},
     }, ensure_ascii=False, indent=2, default=str), "utf-8")

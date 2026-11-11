@@ -20,8 +20,9 @@ Acceptance: pruebas `test_rol3_agente.py` con LLM falso.
 Evidencia graduada, `frases_relacionadas` con equivalencias versionadas, citas obligatorias por esquema.
 Acceptance: CV-007 con LLM real: decisión, fallidos e inyección iguales al manifiesto (`docs/rol-3-evaluacion.md`).
 
-### S5 — Auditor determinista ⏳
-Hallazgos con severidad y offset: inyección, citas no encontradas, cobertura < 0,70, idioma bajo el mínimo, cita sin relación, evidencia solo de lista, calificadores débiles, proxies de R7.
+### S5 — Auditor determinista ✅
+`auditor.py`: hallazgos con severidad y offset (inyección, citas no encontradas, cobertura < 0,70, idioma incoherente, cita con proxy, cita sin relación, evidencia solo de lista, calificadores débiles, estados incoherentes, proxies de R7). Bloquea, no aprueba.
+Acceptance: `test_rol3_auditor.py` reproduce los errores reales medidos; sobre la ficha real de CV-007 (corrida 2) bloquea solo por inyección, sin falsos positivos.
 
 ### S6 — Auditor LLM ⏳ · S7 — Agendador ⏳
 

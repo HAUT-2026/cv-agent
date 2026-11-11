@@ -65,7 +65,7 @@ def test_sin_texto_libre_ni_citas_gigantes():
 def test_veredicto_debe_ser_coherente():
     h = Hallazgo(tipo=TipoHallazgo.CITA_NO_ENCONTRADA, severidad=Severidad.BLOQUEANTE, id_requisito="REQ-02")
     with pytest.raises(ValidationError):
-        Veredicto(id_cv="CV-007", resultado=ResultadoAuditoria.PASA, hallazgos=[h],
+        Veredicto(id_cv="CV-007", resultado=ResultadoAuditoria.SIN_OBJECIONES, hallazgos=[h],
                   cobertura_evidencia=0.5, capas_ejecutadas=["determinista"])
     with pytest.raises(ValidationError):
         Veredicto(id_cv="CV-001", resultado=ResultadoAuditoria.BLOQUEA, hallazgos=[],
