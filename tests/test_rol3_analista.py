@@ -141,7 +141,30 @@ def test_baranda_rechaza_sin_evidencia_sin_buscar_y_el_agente_corrige():
     assert r.agente.traza[-1].tipo == "entrega" and r.agente.pasos == 4
     # el motor le dijo al modelo exactamente qué llamar
     ultimo_tool = [m for m in falso.recibidos[2]["messages"] if m["role"] == "tool"][-1]["content"]
-    assert "DES-01" in ultimo_tool and "frases_relacionadas" in ultimo_tool
+    assert "DES-01" in ultimo_tool
+
+
+def test_b2_el_rechazo_trae_la_evidencia_fuerte():
+    """B2: el modelo no necesita buscar para verla. La frase fuerte de DES-03, que con B
+    nunca vio (citó «Docker, AWS, Git, Jenkins»), viene dentro del rechazo."""
+    entrega = {"evaluaciones": _todas()}
+    falso = LLMFalso([_buscar(OBLIG), llamar("entregar_resultado", entrega), llamar("entregar_resultado", entrega),
+                      llamar("entregar_resultado", entrega)])
+    c = caso("CV-001")
+    analizar_caso(c, VACANTE, CLIENTE(falso))
+    rechazo = [m for m in falso.recibidos[2]["messages"] if m["role"] == "tool"][-1]["content"]
+    for rid, ruta in [("DES-03", "experiencia[0].descripcion[0]"), ("DES-04", "experiencia[1].descripcion[0]")]:
+        assert rid in rechazo and segmento(c, ruta) in rechazo
+    assert "DES-05" not in rechazo
+
+
+def test_b2_puede_confirmar_sin_evidencia_tras_ver_la_evidencia():
+    """Tras ver las frases en el rechazo, confirmar sin_evidencia es una decisión informada:
+    se acepta en el siguiente turno (y el auditor la deja como advertencia)."""
+    entrega = llamar("entregar_resultado", {"evaluaciones": _todas()})
+    falso = LLMFalso([_buscar(OBLIG), entrega, entrega])
+    r = analizar_caso(caso("CV-001"), VACANTE, CLIENTE(falso))
+    assert [t.tipo for t in r.agente.traza].count("entrega_incompleta") == 1 and r.agente.pasos == 3
 
 
 def test_baranda_no_exige_buscar_lo_que_no_existe():
@@ -152,16 +175,16 @@ def test_baranda_no_exige_buscar_lo_que_no_existe():
     assert "entrega_incompleta" not in [t.tipo for t in r.agente.traza]
 
 
-def test_baranda_cede_tras_dos_rechazos_y_el_auditor_lo_senala():
-    """Un modelo terco no consume los 15 pasos: tras 2 rechazos se acepta, y el auditor (C)
-    lo deja visible para el reclutador como evidencia ignorada."""
+def test_baranda_y_auditor_ante_un_modelo_terco():
+    """Un modelo terco no consume los 15 pasos: con B2 se le rechaza una vez (ya vio la evidencia)
+    y luego se acepta; el auditor (C) lo deja visible para el reclutador como evidencia ignorada."""
     from cvagent.agentes.auditor import auditar
     from cvagent.agentes.salida import TipoHallazgo
     entrega = llamar("entregar_resultado", {"evaluaciones": _todas()})
     falso = LLMFalso([_buscar(OBLIG), entrega, entrega, entrega])
     c = caso("CV-001")
     r = analizar_caso(c, VACANTE, CLIENTE(falso))
-    assert [t.tipo for t in r.agente.traza].count("entrega_incompleta") == 2 and r.agente.pasos == 4
+    assert [t.tipo for t in r.agente.traza].count("entrega_incompleta") == 1 and r.agente.pasos == 3
     v = auditar(r.ficha, c, VACANTE)
     ignorados = {h.id_requisito for h in v.hallazgos if h.tipo == TipoHallazgo.EVIDENCIA_IGNORADA}
     assert {"DES-01", "DES-02", "DES-03", "DES-04"} <= ignorados and "DES-05" not in ignorados

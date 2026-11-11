@@ -1,5 +1,5 @@
 # Rol 3 — Agentes del MVP de CVAgent
-Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (302) · Guía: `docs/rol-3-ejecucion.md`
+Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (304) · Guía: `docs/rol-3-ejecucion.md`
 Objetivo: agentes analista, auditor y agendador con salidas en esquemas estrictos, citas verificables por código y herramientas bajo allowlist, sin asumir lógica de negocio de otros roles.
 
 ## Specs

@@ -174,7 +174,7 @@ def ejecutar_agente(
                         traza.append(EventoTraza(paso, "entrega_incompleta", nombre_h, args, problemas))
                         mensajes.append({"role": "tool", "tool_call_id": id_ll, "content": json.dumps(
                             {"error": "Entrega rechazada: decidiste sin revisar la evidencia disponible. "
-                                      "Haz las llamadas indicadas, juzga con sus resultados y vuelve a entregar.",
+                                      "Lee los detalles, juzga con esa evidencia y vuelve a entregar.",
                              "detalles": problemas}, ensure_ascii=False)})
                         continue
                 traza.append(EventoTraza(paso, "entrega", nombre_h, args))

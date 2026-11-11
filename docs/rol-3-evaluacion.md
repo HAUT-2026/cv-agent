@@ -66,7 +66,7 @@ Problemas observados (no los ve la métrica de obligatorios):
 
 | Problema | Evidencia | Impacto | Estado |
 |---|---|---|---|
-| **Deseables sin buscar** | CV-001: el modelo solo llamó `frases_relacionadas` para REQ-01 a 05 y marcó DES-01 a 04 `sin_evidencia`, aunque el CV dice «Spring Boot», «JUnit, Mockito», «Contenedorización con Docker y despliegue en AWS» y «Pipelines de integración continua con Git y Jenkins» | Subestima el puntaje de un buen candidato (los deseables pesan en la rúbrica). El auditor no lo detectaba | **Corregido (B + C)**, ver abajo |
+| **Deseables sin buscar** | CV-001: el modelo solo llamó `frases_relacionadas` para REQ-01 a 05 y marcó DES-01 a 04 `sin_evidencia`, aunque el CV dice «Spring Boot», «JUnit, Mockito», «Contenedorización con Docker y despliegue en AWS» y «Pipelines de integración continua con Git y Jenkins» | Subestima el puntaje de un buen candidato (los deseables pesan en la rúbrica). El auditor no lo detectaba | **Corregido (B2 + C)**, ver abajo |
 | **Relación léxica engañosa** | CV-014 e INJ-04: DES-04 (CI/CD) marcado `parcial` con «Pruebas unitarias y de **integración**» / «…to **integrate** internal systems» | Suma puntaje por una palabra compartida, no por el concepto. El auditor determinista no lo distingue | Caso de uso del **auditor LLM** (Parte 5) |
 | **Entrega inválida y reintento** | CV-014: `no_cumple` sin cita en DES-03 y DES-05; el esquema la rechazó y el modelo corrigió con `sin_evidencia` en el paso 3 | +327 s. El esquema hizo su trabajo (fail-closed), pero cuesta tiempo | Aceptable; se puede reforzar en el prompt |
 | **Tiempo** | 332 a 739 s por CV (promedio ~450 s); el paso que genera la ficha de 10 requisitos toma 250 a 350 s | Lejos de la meta de ≤ 2 min/CV | Ver conclusiones |
@@ -76,6 +76,31 @@ Problemas observados (no los ve la métrica de obligatorios):
 - **C, red de seguridad en el auditor:** 🟡 `evidencia_ignorada`, con la frase resaltada, si a pesar de todo queda un `sin_evidencia` con evidencia disponible.
 - **Alternativa descartada por ahora, A (recuperación previa):** el código calcularía las frases de los 10 requisitos y se las pasaría al modelo. Elimina el problema y ahorra un viaje, pero reduce la parte agéntica. Queda como opción para el lote de producción si el tiempo manda (ADR-007).
 - **Costo de B:** un turno más del modelo (unos 250 a 350 s) solo cuando el modelo se salta la búsqueda; cero cuando busca bien, como en CV-014.
+
+**Verificación de B + C con el LLM real (CV-001, 11-nov):**
+
+| Prueba | Resultado |
+|---|---|
+| C sobre la ficha «perezosa» de la mañana (`auditar.py`, sin LLM) | 🟡 `evidencia_ignorada` en DES-01 a 04, cada una con su frase (p. ej. DES-03: «Contenedorización con Docker y despliegue en AWS.»). DES-05 sin hallazgo (no hay frases). ✓ |
+| B con el LLM: ¿se repitió la pereza? | Sí: paso 1 solo buscó REQ-01 a 05, y en el paso 2 entregó DES-01 a 04 `sin_evidencia` → **`entrega_incompleta`** ✓ |
+| B con el LLM: ¿corrigió? | **A medias.** En el paso 3 entregó DES-01 a 04 como `parcial` con citas literales, pero **sin llamar** `frases_relacionadas`: recortó la lista de tecnologías («Docker, AWS, Git, Jenkins», «Git, Jenkins»). Las frases fuertes («Contenedorización con Docker y despliegue en AWS.», «Pipelines de integración continua con Git y Jenkins.») no las vio, así que DES-03 y DES-04 quedaron `parcial` cuando eran `cumple` |
+| Costo | 533 s (antes 334 s): +199 s por el turno extra |
+
+Lectura: B pasó los deseables de `sin_evidencia` (0 puntos) a `parcial` (puntaje parcial): mejora, pero sigue subestimando. El modelo obedeció el rechazo **en la forma** (dejó de usar `sin_evidencia`) pero no **en el fondo** (no fue a buscar). Mismo patrón que el v1: con un 7B, una instrucción en texto no garantiza la acción. Nota: el manifiesto solo trae estados esperados de los **obligatorios**, así que la métrica 5/5 no ve este problema; para medir deseables haría falta acordar estados esperados con el Rol 2.
+
+**B2 (11-nov): el rechazo trae la evidencia.** En lugar de solo ordenar «llama frases_relacionadas», el rechazo incluye lo que el CV dice sobre cada requisito («DES-03: El CV dice: «Contenedorización con Docker y despliegue en AWS.» · …»). Es la observación del entorno en el ciclo razonar → actuar → observar: el modelo sigue juzgando y eligiendo citas. Un requisito cuya evidencia ya se mostró cuenta como revisado, así que el modelo puede confirmar `sin_evidencia` con conocimiento de causa sin un segundo rechazo. Resultado con el LLM real (CV-001):
+
+| Deseable | Sin baranda (334 s) | B (533 s) | **B2 (524 s)** |
+|---|---|---|---|
+| DES-01 Spring Boot | sin_evidencia | parcial · lista de tecnologías | **cumple** · lista de tecnologías de la experiencia |
+| DES-02 Pruebas | sin_evidencia | parcial · «JUnit, Mockito, Docker, AWS…» | **cumple** · «JUnit» (🟡 `evidencia_solo_lista`: el auditor lo señala como evidencia débil) |
+| DES-03 Docker / nube | sin_evidencia | parcial · «Docker, AWS, Git, Jenkins» | **cumple** · «Contenedorización con Docker y despliegue en AWS.» ✓ |
+| DES-04 Git / CI | sin_evidencia | parcial · «Git, Jenkins» | **cumple** · «Pipelines de integración continua con Git y Jenkins.» ✓ |
+| DES-05 ONG / salud | sin_evidencia | sin_evidencia | sin_evidencia ✓ (no hay evidencia; no se le exigió) |
+
+El modelo repitió la pereza en el paso 2 (otra vez buscó solo los obligatorios), el rechazo con evidencia llegó en el paso 3 y esta vez **eligió las frases fuertes**. Mismo costo que B (un turno extra, ~200 s); obligatorios 5/5 y ruta final ✓. DES-02 citado solo con «JUnit» muestra que las capas se complementan: la baranda consigue que el modelo juzgue, y el auditor marca la evidencia débil para el reclutador.
+
+**Conclusión del experimento:** con un modelo pequeño, *decirle qué hacer* (prompt, rechazo con orden) no basta; *mostrarle lo que hay* (observación) sí cambia el juicio. B2 se queda como diseño del analista.
 
 ## 7. Conclusiones para ADR-007
 

@@ -9,7 +9,7 @@ Esta guía te lleva desde cero hasta ver a los agentes del Rol 3 (analista y aud
 | Paso | Qué haces | ¿Necesita LLM? | Tiempo |
 |---|---|---|---|
 | 1-3 | Instalar lo básico, traer el código y comprobar Docker | No | 10-20 min (una vez) |
-| 4 | Correr las **434 pruebas** (Rol 2 + Rol 3) | No | 1 min |
+| 4 | Correr las **436 pruebas** (Rol 2 + Rol 3) | No | 1 min |
 | 5 | Correr el **banco sin LLM**: los 44 CV por el motor de reglas y la sanitización | No | 1 min |
 | 6-7 | Preparar Ollama y el archivo `.env` | Sí | 15-30 min (una vez; la descarga del modelo pesa 4,7 GB) |
 | 8 | Ver al **analista** (LLM) y al **auditor** evaluar un CV | Sí | 3-5 min por CV en un portátil |
@@ -70,7 +70,7 @@ docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q 
 | `pip install -q pydantic pytest pypdf` | Lo único que se necesita. `pypdf` es para las pruebas del Rol 2 que leen los PDF |
 | `python -m pytest ...` | Corre las pruebas del Rol 2 (`test_reglas`, `test_dataset`) y las 7 del Rol 3 |
 
-**Qué esperar:** filas de puntos y, al final, `434 passed`. Son 132 del Rol 2 y 302 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
+**Qué esperar:** filas de puntos y, al final, `436 passed`. Son 132 del Rol 2 y 304 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
 
 > No corras `pytest` a secas: también recogería las pruebas del Rol 1, que necesitan LangGraph (`pip install -e .`). Por eso se listan los archivos.
 

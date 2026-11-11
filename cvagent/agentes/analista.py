@@ -98,7 +98,7 @@ def construir_tarea(vacante: Vacante, tc: TextoCanonico) -> str:
 
 
 def evidencia_sin_revisar(salida: FichaLLM, traza: list, ctx: ContextoCaso) -> list[str]:
-    """Baranda B (medida el 11-nov con qwen2.5:7b en CV-001): el modelo buscó solo los obligatorios
+    """Baranda B/B2 (medida el 11-nov con qwen2.5:7b en CV-001): el modelo buscó solo los obligatorios
     y marcó los deseables «sin_evidencia» aunque el CV decía «Spring Boot», «JUnit, Mockito»…
     El prompt ya pedía buscar CADA requisito: la regla tiene que vivir en el código.
 
@@ -107,15 +107,23 @@ def evidencia_sin_revisar(salida: FichaLLM, traza: list, ctx: ContextoCaso) -> l
     (p. ej. «ONG o salud» en un CV sin eso), sin_evidencia sin buscar es correcto y no se rechaza."""
     buscados = {(t.argumentos or {}).get("id_requisito") for t in traza
                 if t.herramienta == "frases_relacionadas" and t.tipo in ("llamada", "repetida")}
+    # B2: si un rechazo anterior ya le mostró la evidencia de un requisito, cuenta como revisado
+    # (puede confirmar sin_evidencia con conocimiento de causa: no se le vuelve a rechazar).
+    buscados |= {p.split(":")[0] for t in traza if t.tipo == "entrega_incompleta" for p in (t.resultado or [])}
     problemas = []
     for ev in salida.evaluaciones:
         if ev.cumplimiento != Cumplimiento.SIN_EVIDENCIA or ev.id_requisito in buscados:
             continue
         frases = REGISTRO["frases_relacionadas"].funcion({"id_requisito": ev.id_requisito}, ctx).get("frases") or []
         if frases:
-            problemas.append(f"{ev.id_requisito}: marcado sin_evidencia sin haberlo buscado, y "
-                             f"frases_relacionadas encuentra {len(frases)} frase(s). Llama "
-                             f'frases_relacionadas con {{"id_requisito": "{ev.id_requisito}"}} y juzga.')
+            # B2 (11-nov): el rechazo trae la OBSERVACIÓN, no solo la orden. Con B («llama
+            # frases_relacionadas») el modelo no buscó: cambió a «parcial» citando la lista de
+            # tecnologías y nunca vio «Contenedorización con Docker y despliegue en AWS.».
+            evidencia = " · ".join(f"«{f['texto'][:160]}»" for f in frases[:5])
+            problemas.append(f"{ev.id_requisito}: marcado sin_evidencia sin haberlo buscado. "
+                             f"El CV dice sobre este requisito: {evidencia}. Juzga {ev.id_requisito} "
+                             "con esta evidencia (cumple, parcial o no_cumple, citando la frase que "
+                             "lo demuestre) o confirma sin_evidencia si ninguna lo respalda.")
     return problemas
 
 

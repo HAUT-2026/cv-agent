@@ -31,7 +31,7 @@ Avanza **un paso a la vez**. Pide a la persona que te pegue la salida y compára
 | 1 | Herramientas | `git --version` · `docker --version` · (LLM) `ollama --version` | Las tres responden con una versión |
 | 2 | Código | `git clone https://github.com/HAUT-2026/cv-agent.git`, `cd cv-agent` y, si el PR no está fusionado, `git checkout feature/rol-3-agentes` | `git branch` muestra la rama correcta y existe `cvagent/agentes/` |
 | 3 | Docker encendido | `docker version` | Aparece el bloque `Server:` |
-| 4 | Pruebas | Comando del paso 4 de la guía (pydantic, pytest y pypdf; lista explícita de archivos) | Termina en `434 passed` |
+| 4 | Pruebas | Comando del paso 4 de la guía (pydantic, pytest y pypdf; lista explícita de archivos) | Termina en `436 passed` |
 | 5 | Banco sin LLM | `... python scripts/rol3/probar_banco.py --sin-llm` | Última línea: `44/44 · ... 44/44 · Meses R11: 41/41` |
 | 6a | Modelo | `ollama pull qwen2.5:7b` y `ollama show qwen2.5:7b` | `Capabilities` incluye `tools` |
 | 6b | Ollama accesible desde Docker | `setx OLLAMA_HOST 0.0.0.0` y `setx OLLAMA_CONTEXT_LENGTH 8192`, reiniciar Ollama y probar `/api/tags` desde un contenedor | La respuesta lista `qwen2.5:7b` |
@@ -94,6 +94,6 @@ Los comandos completos y la explicación de cada parte están en `docs/rol-3-eje
 
 1. Corre las pruebas (paso 4) **antes**, para tener una línea base.
 2. Cambia el código del Rol 3 y agrega una prueba que reproduzca el caso, con datos de `data/` o una copia modificada en memoria (ver `datos()` en `tests/rol3_comun.py`). Nunca escribas en `data/`.
-3. Corre las pruebas y el banco sin LLM: deben seguir en `434 passed` (o más) y `44/44`.
+3. Corre las pruebas y el banco sin LLM: deben seguir en `436 passed` (o más) y `44/44`.
 4. Si tocaste el prompt, sube `VERSION_PROMPT` y anota el cambio en el historial del encabezado de `analista.py`.
 5. Para subir los cambios: rama propia, `git status` (que no aparezcan `.env` ni `resultados/`), commit y PR. Avisa al grupo de qué cambió.
