@@ -1,0 +1,98 @@
+{
+  "cv_id": "CV-027",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Nicolás Vega Bermúdez",
+    "sexo": "M",
+    "documento_identidad": "CC 1.011.562.295",
+    "email": "nicolas.vega.bermudez@correo-ejemplo.net",
+    "telefono": "+57 318 962 4644",
+    "ciudad": "Barranquilla",
+    "direccion": "Cra 54 # 48-31",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1994-09-04"
+  },
+  "resumen": "Profesional de desarrollo backend con 2 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Nexo Soluciones Digitales",
+      "tipo": "empleo",
+      "inicio": "2025-09",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "Web services REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Diseño y consumo de Web services REST para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Nexo Soluciones Digitales",
+      "tipo": "empleo",
+      "inicio": "2024-07",
+      "fin": "2025-09",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "Web services REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre SQL Server.",
+        "Diseño y consumo de Web services REST para integrar sistemas internos y de terceros."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Tecnológica del Eje",
+      "anio_fin": 2024,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "SQL Server",
+    "Web services REST",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 2
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-27",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-27"
+  },
+  "archivo": {
+    "nombre": "CV-027.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 745,
+    "hash_sha256": "59e5b1fab075284da343beffa40520254e76e228764576eba39924c4b1bb20d2"
+  }
+}

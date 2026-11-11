@@ -1,0 +1,123 @@
+{
+  "cv_id": "CV-038",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "bullets",
+  "persona": {
+    "nombre": "Daniela Uribe Valencia",
+    "sexo": "F",
+    "documento_identidad": "CC 1.064.328.493",
+    "email": "daniela.uribe.valencia@correo-ejemplo.com",
+    "telefono": "+57 311 518 4907",
+    "ciudad": "Bucaramanga",
+    "direccion": "Cra 85 # 57-11",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1992-06-11"
+  },
+  "resumen": "Desarrollador backend Java con 7 años de experiencia acumulada en tres proyectos simultáneos.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2022-11",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "PostgreSQL",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre PostgreSQL.",
+        "Pruebas unitarias y de integración con JUnit y Mockito."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2023-05",
+      "fin": "2025-05",
+      "tecnologias": [
+        "Java",
+        "PostgreSQL",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Agroredes S.A.S.",
+      "tipo": "empleo",
+      "inicio": "2024-05",
+      "fin": "2025-05",
+      "tecnologias": [
+        "Java",
+        "PostgreSQL",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre PostgreSQL.",
+        "Diseño y consumo de RESTful para integrar sistemas internos y de terceros."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2022,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "PostgreSQL",
+    "RESTful",
+    "Spring Boot",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 7
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-24",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-24"
+  },
+  "archivo": {
+    "nombre": "CV-038.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 887,
+    "hash_sha256": "74328adfedd1af7829765a81602b22b2923596d275d5157479e248dfe8bce32e"
+  }
+}

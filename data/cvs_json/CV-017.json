@@ -1,0 +1,103 @@
+{
+  "cv_id": "CV-017",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "funcional",
+  "persona": {
+    "nombre": "Nicolás Orozco Escobar",
+    "sexo": "M",
+    "documento_identidad": "CC 1.133.343.729",
+    "email": "nicolas.orozco.escobar@mail-ejemplo.co",
+    "telefono": "+57 319 999 6704",
+    "ciudad": "Barranquilla",
+    "direccion": "Cra 41 # 56-66",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1990-11-11",
+    "edad": 36,
+    "estado_civil": "Casado/a, dos hijos",
+    "barrio": "Suba",
+    "foto": true,
+    "colegio": "Colegio San Carlos de Barranquilla"
+  },
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2025-01",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "PostgreSQL",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2023-03",
+      "fin": "2025-01",
+      "tecnologias": [
+        "Java",
+        "PostgreSQL",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2022,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "PostgreSQL",
+    "REST",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-03",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-03"
+  },
+  "archivo": {
+    "nombre": "CV-017.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 796,
+    "hash_sha256": "3b6c238db36f5c0d7ba22f67c4fd17e929365a1aee0ea9321f55725d84f528e9"
+  }
+}

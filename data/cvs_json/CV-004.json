@@ -1,59 +1,110 @@
 {
   "cv_id": "CV-004",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
   "idioma": "es",
-  "formato": "prosa",
+  "formato_layout": "prosa",
   "persona": {
-    "nombre": "María Fernanda Quintero",
-    "email": "mf.quintero@correo-ejemplo.com",
-    "telefono": "+57 314 555 0104",
-    "ciudad": "Bogotá"
+    "nombre": "Kevin Alexander Ferrer Durán",
+    "sexo": "M",
+    "documento_identidad": "CC 1.059.591.755",
+    "email": "kevin.alexander.ferrer.duran@mail-ejemplo.co",
+    "telefono": "+57 313 742 6271",
+    "ciudad": "Medellín",
+    "direccion": "Cra 15 # 58-77",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1991-07-27"
   },
-  "resumen": "Estadística con dos años de experiencia laboral en analítica clínica y más de cuatro años apoyando técnicamente a fundaciones como voluntaria.",
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Java.",
   "experiencia": [
     {
-      "cargo": "Analista de Datos Junior",
-      "organizacion": "Clínica del Valle S.A.",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Nexo Soluciones Digitales",
       "tipo": "empleo",
-      "inicio": "2023-05",
-      "fin": "2025-04",
+      "inicio": "2024-08",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Elaboré consultas SQL y reportes para la dirección médica. Consumí APIs internas para integrar admisiones con facturación."
+        "Pipelines de integración continua con Git y Jenkins.",
+        "Implementación de microservicios con Spring Boot."
       ]
     },
     {
-      "cargo": "Voluntaria técnica de datos",
-      "organizacion": "Fundación Sonrisas del Pacífico",
-      "tipo": "voluntariado",
-      "inicio": "2019-01",
-      "fin": "2023-04",
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Mercantil Soft",
+      "tipo": "empleo",
+      "inicio": "2022-05",
+      "fin": "2024-08",
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Durante más de cuatro años administré la base de datos de beneficiarios, construí reportes para donantes y conecté el formulario web con el CRM de la fundación."
+        "Implementación de microservicios con Spring Boot.",
+        "Pipelines de integración continua con Git y Jenkins."
       ]
     }
   ],
   "educacion": [
     {
-      "titulo": "Estadística",
+      "titulo": "Ingeniería de Sistemas",
       "institucion": "Universidad Central Andina",
-      "anio_fin": 2022
+      "anio_fin": 2022,
+      "nivel": "profesional"
     }
   ],
   "habilidades": [
-    "SQL",
-    "PostgreSQL",
-    "Python",
-    "CRM",
-    "Excel avanzado"
+    "Java",
+    "MySQL",
+    "REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Git",
+    "Jenkins"
   ],
   "idiomas": [
     {
       "idioma": "Español",
-      "nivel": "Nativo"
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "Inglés",
-      "nivel": "B2"
+      "nivel": "B2",
+      "acreditacion": "prueba",
+      "detalle": "Prueba de nivel institucional"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-004.pdf"
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-29",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-29"
+  },
+  "archivo": {
+    "nombre": "CV-004.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 682,
+    "hash_sha256": "2d8adbd3780457e71f22e602b8272dfb71d8e84f4cf6fc4e5d75fda8c168888e"
+  }
 }

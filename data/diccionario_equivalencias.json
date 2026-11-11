@@ -1,0 +1,156 @@
+{
+  "version": "1.0.0",
+  "nota": "Construido por RR. HH. con el líder técnico en el caso real; aquí es una propuesta para el ejercicio.",
+  "equivalencias": {
+    "Java": [
+      {
+        "termino": "Java",
+        "peso": 1.0
+      },
+      {
+        "termino": "Kotlin sobre JVM",
+        "peso": 0.9
+      },
+      {
+        "termino": "Kotlin",
+        "peso": 0.9
+      }
+    ],
+    "Base de datos relacional": [
+      {
+        "termino": "PostgreSQL",
+        "peso": 1.0
+      },
+      {
+        "termino": "Postgres",
+        "peso": 1.0
+      },
+      {
+        "termino": "PSQL",
+        "peso": 1.0
+      },
+      {
+        "termino": "MySQL",
+        "peso": 1.0
+      },
+      {
+        "termino": "Oracle",
+        "peso": 1.0
+      },
+      {
+        "termino": "SQL Server",
+        "peso": 1.0
+      },
+      {
+        "termino": "MariaDB",
+        "peso": 1.0
+      }
+    ],
+    "API REST": [
+      {
+        "termino": "API REST",
+        "peso": 1.0
+      },
+      {
+        "termino": "REST",
+        "peso": 1.0
+      },
+      {
+        "termino": "RESTful",
+        "peso": 1.0
+      },
+      {
+        "termino": "Web services REST",
+        "peso": 1.0
+      }
+    ],
+    "Spring Boot": [
+      {
+        "termino": "Spring Boot",
+        "peso": 1.0
+      },
+      {
+        "termino": "Spring Framework",
+        "peso": 0.9
+      },
+      {
+        "termino": "Spring",
+        "peso": 0.9
+      }
+    ],
+    "Pruebas automatizadas": [
+      {
+        "termino": "JUnit",
+        "peso": 1.0
+      },
+      {
+        "termino": "Mockito",
+        "peso": 1.0
+      },
+      {
+        "termino": "TestNG",
+        "peso": 1.0
+      },
+      {
+        "termino": "Pruebas unitarias",
+        "peso": 1.0
+      }
+    ],
+    "Contenedores y nube": [
+      {
+        "termino": "Docker",
+        "peso": 1.0
+      },
+      {
+        "termino": "Kubernetes",
+        "peso": 1.0
+      },
+      {
+        "termino": "AWS",
+        "peso": 1.0
+      },
+      {
+        "termino": "GCP",
+        "peso": 1.0
+      },
+      {
+        "termino": "Azure",
+        "peso": 1.0
+      }
+    ],
+    "Control de versiones y CI": [
+      {
+        "termino": "Git",
+        "peso": 1.0
+      },
+      {
+        "termino": "Jenkins",
+        "peso": 1.0
+      },
+      {
+        "termino": "GitHub Actions",
+        "peso": 1.0
+      },
+      {
+        "termino": "GitLab CI",
+        "peso": 1.0
+      }
+    ]
+  },
+  "no_equivalentes": {
+    "Java": [
+      "Python",
+      "Django",
+      "PHP",
+      ".NET",
+      "C#",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Angular",
+      "Go",
+      "Ruby",
+      "C++"
+    ]
+  }
+}

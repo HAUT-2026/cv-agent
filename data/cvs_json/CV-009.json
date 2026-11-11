@@ -1,63 +1,110 @@
 {
   "cv_id": "CV-009",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
   "idioma": "en",
-  "formato": "funcional",
+  "formato_layout": "cronologico",
   "persona": {
-    "nombre": "Laura Camila Rojas Prieto",
-    "email": "lcrojas.prieto@correo-ejemplo.net",
-    "telefono": "+57 311 555 0101",
-    "ciudad": "Bogotá"
+    "nombre": "María Fernanda Delgado Lozano",
+    "sexo": "F",
+    "documento_identidad": "CC 1.194.733.092",
+    "email": "maria.fernanda.delgado.lozano@mail-ejemplo.co",
+    "telefono": "+57 313 130 7980",
+    "ciudad": "Cartagena",
+    "direccion": "Cra 57 # 51-61",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1991-06-25"
   },
-  "resumen": "Systems Engineer with over seven years of experience in data analysis and systems integration.",
+  "resumen": "Backend developer with 4 years of experience in Java.",
   "experiencia": [
     {
-      "cargo": "Integration Engineer",
+      "cargo": "Java Backend Developer",
       "organizacion": "Nexo Soluciones Digitales",
       "tipo": "empleo",
-      "inicio": "2023-03",
+      "inicio": "2024-10",
       "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "Web services REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Design and maintenance of REST API integrations between ERP, CRM and reporting platforms.",
-        "Automated loads with Python and Airflow on PostgreSQL."
+        "Built backend services in Java on Postgres.",
+        "Designed and consumed Web services REST to integrate internal and third-party systems."
       ]
     },
     {
-      "cargo": "Data Analyst",
-      "organizacion": "Logística Andina S.A.S.",
+      "cargo": "Java Backend Developer",
+      "organizacion": "Transportes Altiplano TI",
       "tipo": "empleo",
-      "inicio": "2019-09",
-      "fin": "2023-02",
+      "inicio": "2022-09",
+      "fin": "2024-10",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "Web services REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Advanced SQL queries on PostgreSQL and Power BI dashboards for operations and finance.",
-        "Consumed carrier APIs for daily delivery reconciliation."
+        "Unit and integration tests with JUnit and Mockito.",
+        "Continuous integration pipelines with Git and Jenkins."
       ]
     }
   ],
   "educacion": [
     {
       "titulo": "Ingeniería de Sistemas",
-      "institucion": "Universidad Central Andina",
-      "anio_fin": 2019
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2022,
+      "nivel": "profesional"
     }
   ],
   "habilidades": [
-    "SQL",
-    "PostgreSQL",
-    "Python",
-    "Airflow",
-    "REST API",
-    "Power BI",
-    "Docker"
+    "Java",
+    "Postgres",
+    "Web services REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Git",
+    "Jenkins"
   ],
   "idiomas": [
     {
       "idioma": "Spanish",
-      "nivel": "Native"
+      "nivel": "Native",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "English",
-      "nivel": "C1"
+      "nivel": "C1",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge CAE"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-009.pdf"
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-21",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-21"
+  },
+  "archivo": {
+    "nombre": "CV-009.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 704,
+    "hash_sha256": "3c4c367af0aa7015a68b665a3776df78a6ab57928e218cdf2a209b1a390988af"
+  }
 }

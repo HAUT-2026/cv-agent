@@ -1,71 +1,139 @@
 {
   "cv_id": "CV-003",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
   "idioma": "es",
-  "formato": "bullets",
+  "formato_layout": "bullets",
   "persona": {
-    "nombre": "Sebastián Torres Vega",
-    "email": "sebastian.torres.vega@correo-ejemplo.com",
-    "telefono": "+57 313 555 0103",
-    "ciudad": "Cali"
+    "nombre": "Daniel Torres Rojas",
+    "sexo": "M",
+    "documento_identidad": "CC 1.124.074.871",
+    "email": "daniel.torres.rojas@mail-ejemplo.co",
+    "telefono": "+57 310 243 2400",
+    "ciudad": "Manizales",
+    "direccion": "Cra 13 # 94-3",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1992-09-19"
   },
-  "resumen": "Ingeniero Industrial con más de 4 años de experiencia en datos y reportes.",
+  "resumen": "Profesional de desarrollo backend con 7 años de experiencia en Java.",
   "experiencia": [
     {
-      "cargo": "Desarrollador de Reportes",
-      "organizacion": "Comercial Pacífico Ltda.",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Grupo Orión Software",
       "tipo": "empleo",
-      "inicio": "2023-03",
-      "fin": "2025-02",
+      "inicio": "2024-07",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Reportes en Power BI conectados a MySQL.",
-        "Consultas SQL de nivel intermedio."
+        "Implementación de microservicios con Spring Boot.",
+        "Contenedorización con Docker y despliegue en AWS."
       ]
     },
     {
-      "cargo": "Analista de Datos Freelance",
-      "organizacion": "Independiente",
-      "tipo": "freelance",
-      "inicio": "2023-01",
-      "fin": "2025-02",
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2022-03",
+      "fin": "2024-07",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Tableros y automatización de reportes para pymes.",
-        "Integración básica con APIs REST."
+        "Implementación de microservicios con Spring Boot.",
+        "Desarrollo de servicios backend en Java sobre Postgres."
       ]
     },
     {
-      "cargo": "Pasante de BI",
-      "organizacion": "Comercial Pacífico Ltda.",
-      "tipo": "pasantia",
-      "inicio": "2022-06",
-      "fin": "2022-12",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Tecnoservicios del Caribe",
+      "tipo": "empleo",
+      "inicio": "2019-11",
+      "fin": "2022-03",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Apoyo en tableros y limpieza de datos."
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Pipelines de integración continua con Git y Jenkins."
       ]
     }
   ],
   "educacion": [
     {
-      "titulo": "Ingeniería Industrial",
-      "institucion": "Universidad del Pacífico",
-      "anio_fin": 2022
+      "titulo": "Ingeniería de Software",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2017,
+      "nivel": "profesional"
     }
   ],
   "habilidades": [
-    "SQL",
-    "MySQL",
-    "Power BI",
-    "Excel",
-    "API REST (básico)"
+    "Java",
+    "Postgres",
+    "API REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Docker",
+    "AWS",
+    "Git",
+    "Jenkins"
   ],
   "idiomas": [
     {
       "idioma": "Español",
-      "nivel": "Nativo"
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "Inglés",
-      "nivel": "B2"
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-003.pdf"
+  "declarado": {
+    "anios_experiencia": 7
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-21",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-21"
+  },
+  "archivo": {
+    "nombre": "CV-003.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 843,
+    "hash_sha256": "9e7a5e5c9199f3fbadd8dccb6a80c0dbc626ceaee858613347a6020f8c0e42fc"
+  }
 }

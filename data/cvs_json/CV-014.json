@@ -1,0 +1,104 @@
+{
+  "cv_id": "CV-014",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Ángela María Cruz Cardona",
+    "sexo": "F",
+    "documento_identidad": "CC 1.016.990.574",
+    "email": "angela.maria.cruz.cardona@mail-ejemplo.co",
+    "telefono": "+57 311 243 6214",
+    "ciudad": "Medellín",
+    "direccion": "Cra 58 # 72-45",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1992-03-20"
+  },
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Kotlin sobre JVM.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Kotlin",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2024-11",
+      "fin": null,
+      "tecnologias": [
+        "Kotlin sobre JVM",
+        "Oracle",
+        "Web services REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Desarrollo de servicios backend en Kotlin sobre JVM sobre Oracle."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Kotlin",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2022-11",
+      "fin": "2024-11",
+      "tecnologias": [
+        "Kotlin sobre JVM",
+        "Oracle",
+        "Web services REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2022,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Kotlin sobre JVM",
+    "Oracle",
+    "Web services REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-24",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-24"
+  },
+  "archivo": {
+    "nombre": "CV-014.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 724,
+    "hash_sha256": "13480ae4fbfae43a99f2c4197f22aff31e5c8267ca26838b1d4327e30bf87292"
+  }
+}

@@ -1,74 +1,110 @@
 {
   "cv_id": "CV-010",
-  "idioma": "es",
-  "formato": "cronologico",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "mixto",
+  "formato_layout": "funcional",
   "persona": {
-    "nombre": "Natalia Andrea Gómez de Herrera",
-    "email": "natalia.gomez@correo-ejemplo.com",
-    "telefono": "+57 319 555 0110",
-    "ciudad": "Bogotá",
-    "barrio": "Usaquén",
-    "edad": 34,
-    "estado_civil": "Casada, dos hijos",
-    "foto": true,
-    "colegio": "Colegio San Carlos de Bogotá"
+    "nombre": "Daniel Cruz Salamanca",
+    "sexo": "M",
+    "documento_identidad": "CC 1.149.723.403",
+    "email": "daniel.cruz.salamanca@mail-ejemplo.co",
+    "telefono": "+57 316 482 2345",
+    "ciudad": "Medellín",
+    "direccion": "Cra 26 # 81-32",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1995-05-23"
   },
-  "resumen": "Analista de datos senior con más de siete años de experiencia en banca y seguros.",
+  "resumen": "Backend developer con 3 años de experiencia en Java.",
   "experiencia": [
     {
-      "cargo": "Analista de Datos Senior",
-      "organizacion": "Banco Meridiano",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Pacífico Fintech",
       "tipo": "empleo",
-      "inicio": "2023-03",
+      "inicio": "2024-12",
       "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS"
+      ],
       "descripcion": [
-        "Modelos de datos en SQL Server, integración de fuentes vía API y tableros en Power BI."
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre SQL Server."
       ]
     },
     {
-      "cargo": "Licencia de maternidad y cuidado familiar",
-      "organizacion": "-",
-      "tipo": "pausa",
-      "inicio": "2022-03",
-      "fin": "2023-02",
-      "descripcion": [
-        "Periodo de licencia de maternidad y cuidado familiar."
-      ]
-    },
-    {
-      "cargo": "Analista de Datos",
-      "organizacion": "Aseguradora Cóndor",
+      "cargo": "Software Engineer (Java)",
+      "organizacion": "Agroredes S.A.S.",
       "tipo": "empleo",
-      "inicio": "2018-06",
-      "fin": "2022-02",
+      "inicio": "2023-02",
+      "fin": "2024-12",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS"
+      ],
       "descripcion": [
-        "Consultas SQL avanzadas, reportes regulatorios y automatización con Python."
+        "Implemented microservices with Spring Boot.",
+        "Unit and integration tests with JUnit and Mockito."
       ]
     }
   ],
   "educacion": [
     {
-      "titulo": "Ingeniería de Sistemas",
-      "institucion": "Universidad de los Andes del Norte (privada)",
-      "anio_fin": 2018
+      "titulo": "Ciencias de la Computación",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2021,
+      "nivel": "profesional"
     }
   ],
   "habilidades": [
+    "Java",
     "SQL Server",
-    "T-SQL",
-    "Python",
-    "Power BI",
-    "API REST"
+    "API REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Docker",
+    "AWS"
   ],
   "idiomas": [
     {
       "idioma": "Español",
-      "nivel": "Nativo"
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "Inglés",
-      "nivel": "B2"
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-010.pdf"
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-24",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-24"
+  },
+  "archivo": {
+    "nombre": "CV-010.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 684,
+    "hash_sha256": "bd7106115d09bf47a5122d63da84bab3cd0cefc0d62213be7147b3cad399ec90"
+  }
 }

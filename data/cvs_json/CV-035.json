@@ -1,0 +1,110 @@
+{
+  "cv_id": "CV-035",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Paula Andrea Vega Quintero",
+    "sexo": "F",
+    "documento_identidad": "CC 1.116.983.853",
+    "email": "paula.andrea.vega.quintero@correo-ejemplo.net",
+    "telefono": "+57 310 922 7779",
+    "ciudad": "Cartagena",
+    "direccion": "Cra 41 # 31-5",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1995-11-15"
+  },
+  "resumen": "Profesional de desarrollo backend con 5 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2024-05",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Pruebas unitarias y de integración con JUnit y Mockito."
+      ]
+    },
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Mercantil Soft",
+      "tipo": "empleo",
+      "inicio": "2021-11",
+      "fin": "2024-05",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Pruebas unitarias y de integración con JUnit y Mockito."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "SQL Server",
+    "REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Git",
+    "Jenkins"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 5
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-30",
+  "consentimiento": {
+    "registrado": false,
+    "fecha": null
+  },
+  "archivo": {
+    "nombre": "CV-035.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 687,
+    "hash_sha256": "190cccccde0b14aaf1017164d037471cad0282b50b477bbfdeb33315e8ff302d"
+  }
+}

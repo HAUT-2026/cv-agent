@@ -1,0 +1,101 @@
+{
+  "cv_id": "CV-019",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "en",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Valentina Benavides Cardona",
+    "sexo": "F",
+    "documento_identidad": "CC 1.176.170.931",
+    "email": "valentina.benavides.cardona@correo-ejemplo.net",
+    "telefono": "+57 318 602 7576",
+    "ciudad": "Cartagena",
+    "direccion": "Cra 23 # 47-62",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1992-01-08"
+  },
+  "resumen": "Backend developer with 3 years of experience in Java.",
+  "experiencia": [
+    {
+      "cargo": "Java Backend Developer",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2025-02",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Oracle",
+        "Web services REST",
+        "Docker",
+        "AWS"
+      ],
+      "descripcion": [
+        "Built backend services in Java on Oracle.",
+        "Designed and consumed Web services REST to integrate internal and third-party systems."
+      ]
+    },
+    {
+      "cargo": "Java Backend Developer",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2023-06",
+      "fin": "2025-02",
+      "tecnologias": [
+        "Java",
+        "Oracle",
+        "Web services REST",
+        "Docker",
+        "AWS"
+      ],
+      "descripcion": [
+        "Built backend services in Java on Oracle.",
+        "Containerized with Docker and deployed on AWS."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2022,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Oracle",
+    "Web services REST",
+    "Docker",
+    "AWS"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Spanish",
+      "nivel": "Native",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "English",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-26",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-26"
+  },
+  "archivo": {
+    "nombre": "CV-019.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 651,
+    "hash_sha256": "ef8df0dc9e24293b4c51ba4b014ea515b2ee26087ba0c5e50b1b3661bf744a61"
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "cv_id": "CV-021",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "bullets",
+  "persona": {
+    "nombre": "Diana Marcela Naranjo Benavides",
+    "sexo": "F",
+    "documento_identidad": "CC 1.094.991.914",
+    "email": "diana.marcela.naranjo.benavides@correo-ejemplo.com",
+    "telefono": "+57 311 519 4349",
+    "ciudad": "Bucaramanga",
+    "direccion": "Cra 15 # 30-18",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1997-01-05"
+  },
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "DataPulse LATAM",
+      "tipo": "empleo",
+      "inicio": "2025-01",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "Web services REST",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Diseño y consumo de Web services REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre SQL Server."
+      ]
+    },
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Logística Andina S.A.S.",
+      "tipo": "empleo",
+      "inicio": "2023-04",
+      "fin": "2025-01",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "Web services REST",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Desarrollo de servicios backend en Java sobre SQL Server."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "SQL Server",
+    "Web services REST",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-21",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-21"
+  },
+  "archivo": {
+    "nombre": "CV-021.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 731,
+    "hash_sha256": "9f6e2984ea2fde468549356fe72383a3585bde3d67cb99ec28e5390115df4839"
+  }
+}

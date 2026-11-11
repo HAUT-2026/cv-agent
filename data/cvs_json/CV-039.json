@@ -1,0 +1,104 @@
+{
+  "cv_id": "CV-039",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Daniel Uribe Ortiz",
+    "sexo": "M",
+    "documento_identidad": "CC 1.090.280.565",
+    "email": "daniel.uribe.ortiz@correo-ejemplo.net",
+    "telefono": "+57 320 235 7043",
+    "ciudad": "Cali",
+    "direccion": "Cra 75 # 47-50",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "2000-10-27"
+  },
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Mercantil Soft",
+      "tipo": "empleo",
+      "inicio": "2024-08",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Diseño y consumo de RESTful para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2022-05",
+      "fin": "2024-08",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2020,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "SQL Server",
+    "RESTful",
+    "Spring Boot",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "Avanzado",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-25",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-25"
+  },
+  "archivo": {
+    "nombre": "CV-039.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 659,
+    "hash_sha256": "b630de26a87ab30ef8a380481e6c1e43226c9166336e1f832523e86a217b55ee"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "cv_id": "CV-036",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Carlos Andrés Muñoz Lozano",
+    "sexo": "M",
+    "documento_identidad": "CC 1.076.612.508",
+    "email": "carlos.andres.munoz.lozano@correo-ejemplo.net",
+    "telefono": "+57 319 746 3956",
+    "ciudad": "Barranquilla",
+    "direccion": "Cra 6 # 38-3",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1995-07-23"
+  },
+  "resumen": "Profesional de desarrollo backend con 5 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Cafetera Digital S.A.",
+      "tipo": "empleo",
+      "inicio": "2024-05",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre SQL Server.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2021-11",
+      "fin": "2024-05",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros.",
+        "Pruebas unitarias y de integración con JUnit y Mockito."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "SQL Server",
+    "REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 5
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-04",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-04"
+  },
+  "archivo": {
+    "nombre": "CV-036.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 0,
+    "hash_sha256": "b0c03d0979e5a9a9cfeb64195b6872d3a69ce0983b61b64d30536f28d540356f"
+  }
+}

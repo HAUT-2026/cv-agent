@@ -1,0 +1,95 @@
+{
+  "cv_id": "CV-013",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "prosa",
+  "persona": {
+    "nombre": "Camilo Andrés Arias Correa",
+    "sexo": "M",
+    "documento_identidad": "CC 1.117.326.225",
+    "email": "camilo.andres.arias.correa@correo-ejemplo.com",
+    "telefono": "+57 317 211 7419",
+    "ciudad": "Pereira",
+    "direccion": "Cra 52 # 65-19",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1990-10-03"
+  },
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Banca Digital Meridiano",
+      "tipo": "empleo",
+      "inicio": "2025-03",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Oracle",
+        "Web services REST"
+      ],
+      "descripcion": [
+        "Diseño y consumo de Web services REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre Oracle."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Andes Cloud Labs",
+      "tipo": "empleo",
+      "inicio": "2023-07",
+      "fin": "2025-03",
+      "tecnologias": [
+        "Java",
+        "Oracle",
+        "Web services REST"
+      ],
+      "descripcion": [
+        "Diseño y consumo de Web services REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre Oracle."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Industrial del Oriente",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Oracle",
+    "Web services REST"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-26",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-26"
+  },
+  "archivo": {
+    "nombre": "CV-013.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 721,
+    "hash_sha256": "ca5808f7e2326499fdb9b2eecd6973a41b07ae6bf960e2841f402db72a171025"
+  }
+}

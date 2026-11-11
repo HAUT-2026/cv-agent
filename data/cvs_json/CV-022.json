@@ -1,0 +1,95 @@
+{
+  "cv_id": "CV-022",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "prosa",
+  "persona": {
+    "nombre": "Carolina Orozco Duarte",
+    "sexo": "F",
+    "documento_identidad": "CC 1.164.232.304",
+    "email": "carolina.orozco.duarte@correo-ejemplo.net",
+    "telefono": "+57 318 298 6336",
+    "ciudad": "Manizales",
+    "direccion": "Cra 46 # 36-26",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1992-10-24"
+  },
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Aseguradora Cóndor TI",
+      "tipo": "empleo",
+      "inicio": "2024-10",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST"
+      ],
+      "descripcion": [
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre Postgres."
+      ]
+    },
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Pacífico Fintech",
+      "tipo": "empleo",
+      "inicio": "2022-09",
+      "fin": "2024-10",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST"
+      ],
+      "descripcion": [
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre Postgres."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Central Andina",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Postgres",
+    "API REST"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-04",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-04"
+  },
+  "archivo": {
+    "nombre": "CV-022.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 689,
+    "hash_sha256": "45b571b7abc34789bc87a3e029c06f1809ab1c3b4266d75bf70276c22f190ca5"
+  }
+}

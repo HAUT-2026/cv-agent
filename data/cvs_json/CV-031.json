@@ -1,0 +1,93 @@
+{
+  "cv_id": "CV-031",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Ángela María Benavides Escobar",
+    "sexo": "F",
+    "documento_identidad": "CC 1.152.541.328",
+    "email": "angela.maria.benavides.escobar@correo-ejemplo.com",
+    "telefono": "+57 317 940 6982",
+    "ciudad": "Bucaramanga",
+    "direccion": "Cra 43 # 23-94",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1990-08-24"
+  },
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2024-09",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Swing",
+        "Postgres"
+      ],
+      "descripcion": [
+        "Aplicaciones de escritorio con Java Swing y acceso a Postgres."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Cafetera Digital S.A.",
+      "tipo": "empleo",
+      "inicio": "2022-07",
+      "fin": "2024-09",
+      "tecnologias": [
+        "Java",
+        "Swing",
+        "Postgres"
+      ],
+      "descripcion": [
+        "Aplicaciones de escritorio con Java Swing y acceso a Postgres."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2020,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Swing",
+    "Postgres"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-01",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-01"
+  },
+  "archivo": {
+    "nombre": "CV-031.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 585,
+    "hash_sha256": "eac7ee6b75ad3106937bbec570dd3365b7be62b96d32baa1fb353a6e73bbc157"
+  }
+}

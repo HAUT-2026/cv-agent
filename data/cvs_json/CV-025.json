@@ -1,0 +1,98 @@
+{
+  "cv_id": "CV-025",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Jhon Edison Moreno Escobar",
+    "sexo": "M",
+    "documento_identidad": "CC 1.154.522.981",
+    "email": "jhon.edison.moreno.escobar@correo-ejemplo.net",
+    "telefono": "+57 314 783 5466",
+    "ciudad": "Bucaramanga",
+    "direccion": "Cra 21 # 86-51",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1995-10-25"
+  },
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2025-03",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Desarrollo de servicios backend en Java sobre Postgres."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Cafetera Digital S.A.",
+      "tipo": "empleo",
+      "inicio": "2023-07",
+      "fin": "2025-03",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre Postgres.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Postgres",
+    "REST",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-31",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-31"
+  },
+  "archivo": {
+    "nombre": "CV-025.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 676,
+    "hash_sha256": "6f6f3006a890f635df113a701420bd60a8a3b57c67fe010c1a4f9ec935b50c55"
+  }
+}
