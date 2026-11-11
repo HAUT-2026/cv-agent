@@ -1,0 +1,79 @@
+{
+  "cv_id": "CV-034",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Camilo Andrés Arias Correa",
+    "sexo": "M",
+    "documento_identidad": "CC 1.117.326.225",
+    "email": "camilo.andres.arias.correa@correo-ejemplo.com",
+    "telefono": "+57 317 211 7419",
+    "ciudad": "Pereira",
+    "direccion": "Cra 52 # 65-19",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1990-10-03"
+  },
+  "resumen": "Profesional de desarrollo backend con 2 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Andes Cloud Labs",
+      "tipo": "empleo",
+      "inicio": "2023-07",
+      "fin": "2025-11",
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "API REST"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre MySQL.",
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Tecnológica del Eje",
+      "anio_fin": 2024,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "MySQL",
+    "API REST"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 2
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-05",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-05"
+  },
+  "archivo": {
+    "nombre": "CV-034.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 522,
+    "hash_sha256": "2f098c310a6bfe88a4c053c8760f965656841f93b1de1a55b6f65ead174ec9f5"
+  }
+}

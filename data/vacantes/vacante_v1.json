@@ -1,0 +1,110 @@
+{
+  "vacante_id": "VAC-001",
+  "version": 1,
+  "estado": "vigente",
+  "nota_version": "Versión inicial.",
+  "titulo": "Desarrollador/a Backend Java (semi-senior)",
+  "organizacion": "Operación Sonrisa Colombia (organización ficticia para el ejercicio)",
+  "ubicacion": "Bogotá, modalidad híbrida",
+  "contrato": "Término indefinido",
+  "rango_salarial_cop": {
+    "min": 8000000,
+    "max": 11000000
+  },
+  "mision": "Construir y mantener los servicios backend que conectan el registro de pacientes y misiones, la gestión de donantes y los reportes a la sede, cuidando el manejo de datos sensibles.",
+  "requisitos": [
+    {
+      "id": "REQ-01",
+      "tipo": "obligatorio",
+      "categoria": "experiencia",
+      "concepto": "Java",
+      "min_anios": 3,
+      "descripcion": "3 años de experiencia efectiva desarrollando backend con Java (o equivalente en el diccionario)",
+      "nota": "Se cuentan meses calendario únicos de empleo y freelance (R11). Pasantías y voluntariado no cuentan (supuesto)."
+    },
+    {
+      "id": "REQ-02",
+      "tipo": "obligatorio",
+      "categoria": "habilidad",
+      "concepto": "Base de datos relacional",
+      "descripcion": "Experiencia con bases de datos relacionales (PostgreSQL o equivalente)"
+    },
+    {
+      "id": "REQ-03",
+      "tipo": "obligatorio",
+      "categoria": "habilidad",
+      "concepto": "API REST",
+      "descripcion": "Experiencia diseñando o consumiendo APIs REST"
+    },
+    {
+      "id": "REQ-04",
+      "tipo": "obligatorio",
+      "categoria": "educacion",
+      "descripcion": "Título profesional en Ingeniería de Sistemas o afines, o experiencia equivalente demostrable",
+      "titulos_aceptados": [
+        "Ingeniería de Sistemas",
+        "Ingeniería de Software",
+        "Ciencias de la Computación",
+        "Ingeniería Informática",
+        "Ingeniería Telemática"
+      ],
+      "palabras_afines": [
+        "sistemas",
+        "software",
+        "computacion",
+        "informatica",
+        "telematica"
+      ],
+      "experiencia_equivalente_meses": 60,
+      "nota": "Sin título, la experiencia equivalente nunca descarta: va a revisión humana (fail-closed)."
+    },
+    {
+      "id": "REQ-05",
+      "tipo": "obligatorio",
+      "categoria": "idioma",
+      "idioma": "Inglés",
+      "nivel_minimo": "B2",
+      "descripcion": "Inglés B2 o superior, acreditado con certificado o prueba",
+      "nota": "«Inglés avanzado» sin certificado ni prueba = no acreditado (E5), distinto de incumplido."
+    },
+    {
+      "id": "DES-01",
+      "tipo": "deseable",
+      "categoria": "habilidad",
+      "concepto": "Spring Boot",
+      "descripcion": "Spring Boot"
+    },
+    {
+      "id": "DES-02",
+      "tipo": "deseable",
+      "categoria": "habilidad",
+      "concepto": "Pruebas automatizadas",
+      "descripcion": "Pruebas automatizadas (JUnit, Mockito)"
+    },
+    {
+      "id": "DES-03",
+      "tipo": "deseable",
+      "categoria": "habilidad",
+      "concepto": "Contenedores y nube",
+      "descripcion": "Docker y despliegue en la nube"
+    },
+    {
+      "id": "DES-04",
+      "tipo": "deseable",
+      "categoria": "habilidad",
+      "concepto": "Control de versiones y CI",
+      "descripcion": "Git y pipelines de integración continua"
+    },
+    {
+      "id": "DES-05",
+      "tipo": "deseable",
+      "categoria": "experiencia",
+      "concepto": "ONG o salud",
+      "descripcion": "Experiencia en ONG o salud"
+    }
+  ],
+  "condiciones": {
+    "disponibilidad": "Bogotá (híbrido)",
+    "inicio": "Dentro de los siguientes 45 días"
+  }
+}

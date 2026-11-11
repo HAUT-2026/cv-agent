@@ -1,0 +1,79 @@
+{
+  "cv_id": "CV-026",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Daniela Ramírez Lozano",
+    "sexo": "F",
+    "documento_identidad": "CC 1.031.876.066",
+    "email": "daniela.ramirez.lozano@correo-ejemplo.net",
+    "telefono": "+57 312 817 4754",
+    "ciudad": "Manizales",
+    "direccion": "Cra 62 # 37-67",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1997-01-17"
+  },
+  "resumen": "Profesional de desarrollo backend con 1 año de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Mercantil Soft",
+      "tipo": "empleo",
+      "inicio": "2025-09",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "PostgreSQL",
+        "RESTful"
+      ],
+      "descripcion": [
+        "Diseño y consumo de RESTful para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre PostgreSQL."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Industrial del Oriente",
+      "anio_fin": 2024,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "PostgreSQL",
+    "RESTful"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 1
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-07",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-07"
+  },
+  "archivo": {
+    "nombre": "CV-026.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 524,
+    "hash_sha256": "6bad6461b12360d229df3d7b1402943d4eef03790a098aa0762c51b289eb4af8"
+  }
+}

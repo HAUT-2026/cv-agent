@@ -1,0 +1,116 @@
+{
+  "cv_id": "CV-024",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Camilo Andrés Patiño Cruz",
+    "sexo": "M",
+    "documento_identidad": "CC 1.185.227.332",
+    "email": "camilo.andres.patino.cruz@correo-ejemplo.com",
+    "telefono": "+57 313 152 3576",
+    "ciudad": "Manizales",
+    "direccion": "Cra 20 # 77-26",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1988-11-04"
+  },
+  "resumen": "Profesional de desarrollo backend con 6 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2023-11",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Diseño y consumo de RESTful para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "DataPulse LATAM",
+      "tipo": "empleo",
+      "inicio": "2020-11",
+      "fin": "2023-11",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Bachiller académico",
+      "institucion": "Colegio Distrital Cartagena",
+      "anio_fin": 2015,
+      "nivel": "bachiller"
+    },
+    {
+      "titulo": "Certificación Google Data Analytics (Coursera)",
+      "institucion": "Coursera",
+      "anio_fin": 2022,
+      "nivel": "certificacion"
+    },
+    {
+      "titulo": "Certificación Oracle Certified Professional Java SE",
+      "institucion": "Oracle",
+      "anio_fin": 2023,
+      "nivel": "certificacion"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Postgres",
+    "RESTful",
+    "Spring Boot",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 6
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-25",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-25"
+  },
+  "archivo": {
+    "nombre": "CV-024.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 813,
+    "hash_sha256": "5f1b32227afe28494803036a4d2a4c3b6210711c4dd341380fabfe34c64730ed"
+  }
+}

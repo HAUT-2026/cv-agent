@@ -1,0 +1,95 @@
+{
+  "cv_id": "CV-018",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "bullets",
+  "persona": {
+    "nombre": "Santiago Ramírez Mesa",
+    "sexo": "M",
+    "documento_identidad": "CC 1.184.592.768",
+    "email": "santiago.ramirez.mesa@mail-ejemplo.co",
+    "telefono": "+57 315 895 1907",
+    "ciudad": "Medellín",
+    "direccion": "Cra 47 # 94-85",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1987-11-07"
+  },
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Agroredes S.A.S.",
+      "tipo": "empleo",
+      "inicio": "2025-05",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "RESTful"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre MySQL.",
+        "Diseño y consumo de RESTful para integrar sistemas internos y de terceros."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Agroredes S.A.S.",
+      "tipo": "empleo",
+      "inicio": "2023-11",
+      "fin": "2025-05",
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "RESTful"
+      ],
+      "descripcion": [
+        "Diseño y consumo de RESTful para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre MySQL."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2023,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "MySQL",
+    "RESTful"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "prueba",
+      "detalle": "Prueba de nivel institucional"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-07",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-07"
+  },
+  "archivo": {
+    "nombre": "CV-018.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 671,
+    "hash_sha256": "83f6a85a1162c42ff5ce6b839c1c3fa5906d9936eae0c0413715305f8d563c03"
+  }
+}

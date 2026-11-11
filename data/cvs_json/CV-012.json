@@ -1,50 +1,98 @@
 {
   "cv_id": "CV-012",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
   "idioma": "es",
-  "formato": "bullets",
+  "formato_layout": "bullets",
   "persona": {
-    "nombre": "Isabella Moreno Duarte",
-    "email": "isabella.moreno@correo-ejemplo.com",
-    "telefono": "+57 321 555 0112",
-    "ciudad": "Bogotá"
+    "nombre": "María Fernanda Moreno Giraldo",
+    "sexo": "F",
+    "documento_identidad": "CC 1.157.299.016",
+    "email": "maria.fernanda.moreno.giraldo@correo-ejemplo.com",
+    "telefono": "+57 317 715 1290",
+    "ciudad": "Cali",
+    "direccion": "Cra 50 # 43-86",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1995-09-02"
   },
-  "resumen": "Estadística con cinco años de experiencia en analítica de datos e integraciones.",
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
   "experiencia": [
     {
-      "cargo": "Analista de Datos Senior",
-      "organizacion": "Salud Integral EPS",
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Transportes Altiplano TI",
       "tipo": "empleo",
-      "inicio": "2021-09",
+      "inicio": "2025-04",
       "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "API REST",
+        "Spring Boot"
+      ],
       "descripcion": [
-        "SQL avanzado en Oracle, integración de sistemas clínicos vía APIs, tableros en Tableau."
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre SQL Server."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Pacífico Fintech",
+      "tipo": "empleo",
+      "inicio": "2023-09",
+      "fin": "2025-04",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "API REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros."
       ]
     }
   ],
   "educacion": [
     {
-      "titulo": "Estadística",
+      "titulo": "Ingeniería de Sistemas",
       "institucion": "Universidad Nacional del Centro",
-      "anio_fin": 2021
+      "anio_fin": 2023,
+      "nivel": "profesional"
     }
   ],
   "habilidades": [
-    "Oracle SQL",
-    "SQL",
-    "Tableau",
-    "R",
+    "Java",
+    "SQL Server",
     "API REST",
-    "Integración de sistemas"
+    "Spring Boot"
   ],
   "idiomas": [
     {
       "idioma": "Español",
-      "nivel": "Nativo"
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "Inglés",
-      "nivel": "A1"
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-012.pdf"
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-20",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-20"
+  },
+  "archivo": {
+    "nombre": "CV-012.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 713,
+    "hash_sha256": "05738dfa7f4432416c57e70bdf5d51c62943fc79ca5d7cc1e6eb2f2e619b2daa"
+  }
 }

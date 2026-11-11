@@ -1,63 +1,122 @@
 {
   "cv_id": "CV-001",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
   "idioma": "es",
-  "formato": "cronologico",
+  "formato_layout": "cronologico",
   "persona": {
-    "nombre": "Laura Camila Rojas Prieto",
-    "email": "laura.rojas.prieto@correo-ejemplo.com",
-    "telefono": "+57 311 555 0101",
-    "ciudad": "Bogotá"
+    "nombre": "Jhon Edison Fonseca Ortiz",
+    "sexo": "M",
+    "documento_identidad": "CC 1.046.872.315",
+    "email": "jhon.edison.fonseca.ortiz@mail-ejemplo.co",
+    "telefono": "+57 320 608 9872",
+    "ciudad": "Barranquilla",
+    "direccion": "Cra 24 # 30-27",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1993-12-03"
   },
-  "resumen": "Ingeniera de Sistemas con más de siete años de experiencia en análisis de datos e integración de sistemas.",
+  "resumen": "Profesional de desarrollo backend con 6 años de experiencia en Java.",
   "experiencia": [
     {
-      "cargo": "Ingeniera de Integraciones",
-      "organizacion": "Nexo Soluciones Digitales",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Transportes Altiplano TI",
       "tipo": "empleo",
-      "inicio": "2023-03",
+      "inicio": "2023-11",
       "fin": null,
+      "tecnologias": [
+        "Java",
+        "Oracle",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Diseño y mantenimiento de integraciones vía API REST entre ERP, CRM y plataformas de reportes.",
-        "Automatización de cargas con Python y Airflow sobre PostgreSQL."
+        "Contenedorización con Docker y despliegue en AWS.",
+        "Desarrollo de servicios backend en Java sobre Oracle."
       ]
     },
     {
-      "cargo": "Analista de Datos",
-      "organizacion": "Logística Andina S.A.S.",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Grupo Orión Software",
       "tipo": "empleo",
-      "inicio": "2019-09",
-      "fin": "2023-02",
+      "inicio": "2020-11",
+      "fin": "2023-11",
+      "tecnologias": [
+        "Java",
+        "Oracle",
+        "RESTful",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Consultas SQL avanzadas en PostgreSQL y tableros en Power BI para operación y finanzas.",
-        "Consumo de APIs de transportadores para conciliación diaria de entregas."
+        "Pipelines de integración continua con Git y Jenkins.",
+        "Desarrollo de servicios backend en Java sobre Oracle."
       ]
     }
   ],
   "educacion": [
     {
       "titulo": "Ingeniería de Sistemas",
-      "institucion": "Universidad Central Andina",
-      "anio_fin": 2019
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2019,
+      "nivel": "profesional"
+    },
+    {
+      "titulo": "Certificación Oracle Certified Professional Java SE",
+      "institucion": "Oracle",
+      "anio_fin": 2023,
+      "nivel": "certificacion"
     }
   ],
   "habilidades": [
-    "SQL",
-    "PostgreSQL",
-    "Python",
-    "Airflow",
-    "API REST",
-    "Power BI",
-    "Docker"
+    "Java",
+    "Oracle",
+    "RESTful",
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Docker",
+    "AWS",
+    "Git",
+    "Jenkins"
   ],
   "idiomas": [
     {
       "idioma": "Español",
-      "nivel": "Nativo"
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "Inglés",
-      "nivel": "C1"
+      "nivel": "C1",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge CAE"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-001.pdf"
+  "declarado": {
+    "anios_experiencia": 6
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-23",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-23"
+  },
+  "archivo": {
+    "nombre": "CV-001.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 759,
+    "hash_sha256": "1c109444bad504d60abfa079bdb093a75ab90178754b2a35277032f5d4a9b25b"
+  }
 }

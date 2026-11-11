@@ -1,0 +1,79 @@
+{
+  "cv_id": "CV-033",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Miguel Ángel Giraldo Ortiz",
+    "sexo": "M",
+    "documento_identidad": "CC 1.165.859.827",
+    "email": "miguel.angel.giraldo.ortiz@correo-ejemplo.net",
+    "telefono": "+57 314 786 4016",
+    "ciudad": "Manizales",
+    "direccion": "Cra 56 # 74-75",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1998-09-09"
+  },
+  "resumen": "Profesional de desarrollo backend con 1 año de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2025-03",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST"
+      ],
+      "descripcion": [
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros.",
+        "Desarrollo de servicios backend en Java sobre MySQL."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Administración de Empresas",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2023,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "MySQL",
+    "REST"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 1
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-31",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-31"
+  },
+  "archivo": {
+    "nombre": "CV-033.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 521,
+    "hash_sha256": "984cad26339f396fc14170eec6f66aeb87af656a785da1e5b2b4e50503e92437"
+  }
+}

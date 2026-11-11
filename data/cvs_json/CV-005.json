@@ -1,71 +1,121 @@
 {
   "cv_id": "CV-005",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
   "idioma": "es",
-  "formato": "cronologico",
+  "formato_layout": "cronologico",
   "persona": {
-    "nombre": "Andrés Felipe Cardona",
-    "email": "andres.cardona@correo-ejemplo.com",
-    "telefono": "+57 315 555 0105",
-    "ciudad": "Barranquilla"
+    "nombre": "Natalia Andrea Torres Sandoval",
+    "sexo": "F",
+    "documento_identidad": "CC 1.098.124.082",
+    "email": "natalia.andrea.torres.sandoval@correo-ejemplo.com",
+    "telefono": "+57 315 423 8952",
+    "ciudad": "Manizales",
+    "direccion": "Cra 58 # 93-17",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1997-05-17",
+    "edad": 29,
+    "estado_civil": "Casado/a, dos hijos",
+    "barrio": "Teusaquillo",
+    "foto": true,
+    "colegio": "Colegio San Carlos de Manizales"
   },
-  "resumen": "Ingeniero de datos autodidacta con más de seis años construyendo integraciones y pipelines.",
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Java.",
   "experiencia": [
     {
-      "cargo": "Ingeniero de Datos",
-      "organizacion": "Aqua Data Startup",
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Cafetera Digital S.A.",
       "tipo": "empleo",
-      "inicio": "2024-02",
+      "inicio": "2024-11",
       "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Pipelines en Airflow sobre PostgreSQL; APIs REST y GraphQL para clientes."
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Pipelines de integración continua con Git y Jenkins."
       ]
     },
     {
-      "cargo": "Desarrollador de Integraciones",
-      "organizacion": "Tecnoservicios del Caribe",
+      "cargo": "Desarrollador Java",
+      "organizacion": "Aseguradora Cóndor TI",
       "tipo": "empleo",
-      "inicio": "2020-06",
-      "fin": "2024-01",
+      "inicio": "2022-11",
+      "fin": "2024-11",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "API REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito",
+        "Docker",
+        "AWS",
+        "Git",
+        "Jenkins"
+      ],
       "descripcion": [
-        "Integraciones entre sistemas contables y plataformas de e-commerce mediante APIs REST."
+        "Implementación de microservicios con Spring Boot.",
+        "Pipelines de integración continua con Git y Jenkins."
       ]
     }
   ],
   "educacion": [
     {
-      "titulo": "Bachiller académico",
-      "institucion": "Colegio Distrital del Caribe",
-      "anio_fin": 2014
-    },
-    {
-      "titulo": "Certificación Google Data Analytics",
-      "institucion": "Coursera",
-      "anio_fin": 2021
-    },
-    {
-      "titulo": "Certificación AWS Cloud Practitioner",
-      "institucion": "Amazon Web Services",
-      "anio_fin": 2022
+      "titulo": "Ingeniería de Software",
+      "institucion": "Universidad Central Andina",
+      "anio_fin": 2020,
+      "nivel": "profesional"
     }
   ],
   "habilidades": [
-    "SQL",
-    "PostgreSQL",
-    "Python",
-    "Airflow",
+    "Java",
+    "Postgres",
     "API REST",
-    "GraphQL",
-    "Docker"
+    "Spring Boot",
+    "JUnit",
+    "Mockito",
+    "Docker",
+    "AWS",
+    "Git",
+    "Jenkins"
   ],
   "idiomas": [
     {
       "idioma": "Español",
-      "nivel": "Nativo"
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
     },
     {
       "idioma": "Inglés",
-      "nivel": "B2"
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
     }
   ],
-  "archivo_pdf": "cvs_pdf/CV-005.pdf"
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-03",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-03"
+  },
+  "archivo": {
+    "nombre": "CV-005.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 814,
+    "hash_sha256": "1e948012b4ed5e4bbba22c8daca0c4195dc8350beda51c9c7f62dcb857b12d37"
+  }
 }

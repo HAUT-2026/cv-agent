@@ -1,0 +1,96 @@
+{
+  "cv_id": "CV-028",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Daniel Quintero Correa",
+    "sexo": "M",
+    "documento_identidad": "CC 1.196.348.799",
+    "email": "daniel.quintero.correa@mail-ejemplo.co",
+    "telefono": "+57 321 382 5500",
+    "ciudad": "Cali",
+    "direccion": "Cra 47 # 84-88",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "2000-09-05"
+  },
+  "resumen": "Profesional de desarrollo backend con 5 años de experiencia en Python.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Python",
+      "organizacion": "DataPulse LATAM",
+      "tipo": "empleo",
+      "inicio": "2024-05",
+      "fin": null,
+      "tecnologias": [
+        "Python",
+        "Django",
+        "SQL Server",
+        "REST"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios web con Python y Django sobre SQL Server."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Python",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2021-11",
+      "fin": "2024-05",
+      "tecnologias": [
+        "Python",
+        "Django",
+        "SQL Server",
+        "REST"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios web con Python y Django sobre SQL Server."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Valle Norte",
+      "anio_fin": 2019,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Python",
+    "Django",
+    "SQL Server",
+    "REST"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 5
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-04",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-04"
+  },
+  "archivo": {
+    "nombre": "CV-028.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 574,
+    "hash_sha256": "48b2dcfb14c444fac50ba5c223258196d5f4a0525d7b5b29b014c59176ed7bab"
+  }
+}

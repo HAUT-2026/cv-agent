@@ -1,0 +1,104 @@
+{
+  "cv_id": "CV-029",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Mateo Giraldo Valencia",
+    "sexo": "M",
+    "documento_identidad": "CC 1.136.896.887",
+    "email": "mateo.giraldo.valencia@correo-ejemplo.com",
+    "telefono": "+57 312 929 5882",
+    "ciudad": "Manizales",
+    "direccion": "Cra 39 # 90-29",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1997-01-09"
+  },
+  "resumen": "Profesional de desarrollo backend con 5 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Ingeniero de Software Java",
+      "organizacion": "Banca Digital Meridiano",
+      "tipo": "empleo",
+      "inicio": "2024-05",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "Web services REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2021-11",
+      "fin": "2024-05",
+      "tecnologias": [
+        "Java",
+        "Postgres",
+        "Web services REST",
+        "Spring Boot",
+        "JUnit",
+        "Mockito"
+      ],
+      "descripcion": [
+        "Diseño y consumo de Web services REST para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Tecnológica del Eje",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "Postgres",
+    "Web services REST",
+    "Spring Boot",
+    "JUnit",
+    "Mockito"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "A2",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 5
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-31",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-31"
+  },
+  "archivo": {
+    "nombre": "CV-029.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 695,
+    "hash_sha256": "9bdb516dce242c499dac99f72f5569ae69193033597da199c10d0eefde657d78"
+  }
+}

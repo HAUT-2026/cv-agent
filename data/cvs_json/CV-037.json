@@ -1,0 +1,88 @@
+{
+  "cv_id": "CV-037",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Santiago Orozco Uribe",
+    "sexo": "M",
+    "documento_identidad": "CC 1.133.649.618",
+    "email": "santiago.orozco.uribe@correo-ejemplo.net",
+    "telefono": "+57 315 920 5601",
+    "ciudad": "Barranquilla",
+    "direccion": "Cra 89 # 73-75",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1997-02-18"
+  },
+  "resumen": "Desarrollador backend Java desde 2021 hasta 2024, con experiencia en APIs REST y bases de datos relacionales.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Java",
+      "organizacion": "Aseguradora Cóndor TI",
+      "tipo": "empleo",
+      "inicio": "2019-01",
+      "fin": "2024-12",
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ],
+      "fechas_alternas": [
+        {
+          "fuente": "resumen",
+          "inicio": "2021-01",
+          "fin": "2024-12"
+        }
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Tecnológica del Eje",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "MySQL",
+    "REST",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 5
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-27",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-27"
+  },
+  "archivo": {
+    "nombre": "CV-037.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 555,
+    "hash_sha256": "cf1c9430a218fc6e0967419540390fb2e36447bc2a9ad6b848abb3b91a0ca0a8"
+  }
+}

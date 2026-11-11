@@ -1,0 +1,98 @@
+{
+  "cv_id": "CV-023",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Luisa Fernanda Ramírez Giraldo",
+    "sexo": "F",
+    "documento_identidad": "CC 1.153.271.580",
+    "email": "luisa.fernanda.ramirez.giraldo@correo-ejemplo.net",
+    "telefono": "+57 315 906 4944",
+    "ciudad": "Manizales",
+    "direccion": "Cra 60 # 86-90",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1994-09-19"
+  },
+  "resumen": "Profesional de desarrollo backend con 4 años de experiencia en Scala.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Scala",
+      "organizacion": "Banca Digital Meridiano",
+      "tipo": "empleo",
+      "inicio": "2024-11",
+      "fin": null,
+      "tecnologias": [
+        "Scala",
+        "Postgres",
+        "API REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Desarrollo de servicios backend en Scala sobre Postgres."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Scala",
+      "organizacion": "Andes Cloud Labs",
+      "tipo": "empleo",
+      "inicio": "2022-11",
+      "fin": "2024-11",
+      "tecnologias": [
+        "Scala",
+        "Postgres",
+        "API REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Diseño y consumo de API REST para integrar sistemas internos y de terceros.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Tecnológica del Eje",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Scala",
+    "Postgres",
+    "API REST",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-20",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-20"
+  },
+  "archivo": {
+    "nombre": "CV-023.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 708,
+    "hash_sha256": "708ea09c849a73c9af34c48b77112ef66092c15e2c13654880ef3f3a81c1195f"
+  }
+}

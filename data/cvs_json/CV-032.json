@@ -1,0 +1,100 @@
+{
+  "cv_id": "CV-032",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Nicolás Salamanca Sandoval",
+    "sexo": "M",
+    "documento_identidad": "CC 1.080.675.799",
+    "email": "nicolas.salamanca.sandoval@mail-ejemplo.co",
+    "telefono": "+57 312 467 9579",
+    "ciudad": "Bogotá",
+    "direccion": "Cra 90 # 83-66",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1997-11-10"
+  },
+  "resumen": "Profesional de desarrollo backend con 5 años de experiencia en desarrollo frontend.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Frontend",
+      "organizacion": "Cafetera Digital S.A.",
+      "tipo": "empleo",
+      "inicio": "2024-05",
+      "fin": null,
+      "tecnologias": [
+        "JavaScript",
+        "React",
+        "Web services REST"
+      ],
+      "descripcion": [
+        "Desarrollo de interfaces con React y JavaScript consumiendo Web services REST."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Frontend",
+      "organizacion": "Tecnoservicios del Caribe",
+      "tipo": "empleo",
+      "inicio": "2021-11",
+      "fin": "2024-05",
+      "tecnologias": [
+        "JavaScript",
+        "React",
+        "Web services REST"
+      ],
+      "descripcion": [
+        "Desarrollo de interfaces con React y JavaScript consumiendo Web services REST."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2021,
+      "nivel": "profesional"
+    },
+    {
+      "titulo": "Certificación Oracle Certified Professional Java SE",
+      "institucion": "Oracle",
+      "anio_fin": 2023,
+      "nivel": "certificacion"
+    }
+  ],
+  "habilidades": [
+    "JavaScript",
+    "React",
+    "Web services REST",
+    "Java (curso introductorio)"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 5
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-23",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-23"
+  },
+  "archivo": {
+    "nombre": "CV-032.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 724,
+    "hash_sha256": "4f11fe95850aff040bd6576c84890f5cbed1210e3a682226f9be3d5b431061ff"
+  }
+}

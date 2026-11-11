@@ -1,0 +1,98 @@
+{
+  "cv_id": "CV-015",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "en",
+  "formato_layout": "funcional",
+  "persona": {
+    "nombre": "Nicolás Salamanca Delgado",
+    "sexo": "M",
+    "documento_identidad": "CC 1.151.328.608",
+    "email": "nicolas.salamanca.delgado@mail-ejemplo.co",
+    "telefono": "+57 320 181 4849",
+    "ciudad": "Manizales",
+    "direccion": "Cra 60 # 48-62",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1985-10-04"
+  },
+  "resumen": "Backend developer with 3 years of experience in Kotlin sobre JVM.",
+  "experiencia": [
+    {
+      "cargo": "Kotlin Backend Developer",
+      "organizacion": "Logística Andina S.A.S.",
+      "tipo": "empleo",
+      "inicio": "2025-02",
+      "fin": null,
+      "tecnologias": [
+        "Kotlin sobre JVM",
+        "Oracle",
+        "RESTful",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Implemented microservices with Spring Boot.",
+        "Designed and consumed RESTful to integrate internal and third-party systems."
+      ]
+    },
+    {
+      "cargo": "Kotlin Backend Developer",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2023-05",
+      "fin": "2025-02",
+      "tecnologias": [
+        "Kotlin sobre JVM",
+        "Oracle",
+        "RESTful",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Implemented microservices with Spring Boot.",
+        "Built backend services in Kotlin sobre JVM on Oracle."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Nacional del Centro",
+      "anio_fin": 2023,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Kotlin sobre JVM",
+    "Oracle",
+    "RESTful",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Spanish",
+      "nivel": "Native",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "English",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-06",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-06"
+  },
+  "archivo": {
+    "nombre": "CV-015.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 682,
+    "hash_sha256": "6ba8a8a634cfbf2d0c6b6f4e45c9856791901e513b502251f1550f89c19802ca"
+  }
+}

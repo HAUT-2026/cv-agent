@@ -1,0 +1,104 @@
+{
+  "cv_id": "CV-020",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "mixto",
+  "formato_layout": "funcional",
+  "persona": {
+    "nombre": "Miguel Ángel Reyes Valencia",
+    "sexo": "M",
+    "documento_identidad": "CC 1.001.699.261",
+    "email": "miguel.angel.reyes.valencia@correo-ejemplo.net",
+    "telefono": "+57 311 790 1269",
+    "ciudad": "Pereira",
+    "direccion": "Cra 35 # 86-60",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1999-05-04"
+  },
+  "resumen": "Backend developer con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Mercantil Soft",
+      "tipo": "empleo",
+      "inicio": "2025-03",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "Web services REST",
+        "Spring Boot",
+        "Git",
+        "Jenkins"
+      ],
+      "descripcion": [
+        "Implementación de microservicios con Spring Boot.",
+        "Pipelines de integración continua con Git y Jenkins."
+      ]
+    },
+    {
+      "cargo": "Software Engineer (Java)",
+      "organizacion": "Pacífico Fintech",
+      "tipo": "empleo",
+      "inicio": "2023-08",
+      "fin": "2025-03",
+      "tecnologias": [
+        "Java",
+        "SQL Server",
+        "Web services REST",
+        "Spring Boot",
+        "Git",
+        "Jenkins"
+      ],
+      "descripcion": [
+        "Implemented microservices with Spring Boot.",
+        "Built backend services in Java on SQL Server."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Tecnológica del Eje",
+      "anio_fin": 2023,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "SQL Server",
+    "Web services REST",
+    "Spring Boot",
+    "Git",
+    "Jenkins"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-10-27",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-10-27"
+  },
+  "archivo": {
+    "nombre": "CV-020.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 670,
+    "hash_sha256": "edb56660d00c15b5e06ab5986eea2ff749754e4ae9d5bc517b45f2b2c11640da"
+  }
+}

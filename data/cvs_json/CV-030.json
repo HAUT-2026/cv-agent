@@ -1,0 +1,98 @@
+{
+  "cv_id": "CV-030",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "mixto",
+  "formato_layout": "cronologico",
+  "persona": {
+    "nombre": "Santiago Orozco Ferrer",
+    "sexo": "M",
+    "documento_identidad": "CC 1.197.615.023",
+    "email": "santiago.orozco.ferrer@correo-ejemplo.net",
+    "telefono": "+57 310 736 5781",
+    "ciudad": "Medellín",
+    "direccion": "Cra 6 # 94-81",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1989-06-12"
+  },
+  "resumen": "Backend developer con 4 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Grupo Orión Software",
+      "tipo": "empleo",
+      "inicio": "2024-11",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Desarrollo de servicios backend en Java sobre MySQL.",
+        "Implementación de microservicios con Spring Boot."
+      ]
+    },
+    {
+      "cargo": "Software Engineer (Java)",
+      "organizacion": "DataPulse LATAM",
+      "tipo": "empleo",
+      "inicio": "2022-11",
+      "fin": "2024-11",
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "Spring Boot"
+      ],
+      "descripcion": [
+        "Built backend services in Java on MySQL.",
+        "Designed and consumed REST to integrate internal and third-party systems."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad del Pacífico",
+      "anio_fin": 2022,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "MySQL",
+    "REST",
+    "Spring Boot"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B1",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 4
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-06",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-06"
+  },
+  "archivo": {
+    "nombre": "CV-030.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 640,
+    "hash_sha256": "3ff46c725dd473b47a3a3c2e5784687f66813e13ac273aab21818fafc2ec1aa3"
+  }
+}

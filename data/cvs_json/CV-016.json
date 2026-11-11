@@ -1,0 +1,107 @@
+{
+  "cv_id": "CV-016",
+  "vacante_id": "VAC-001",
+  "vacante_version": 1,
+  "idioma": "es",
+  "formato_layout": "prosa",
+  "persona": {
+    "nombre": "Santiago Benavides Ramírez",
+    "sexo": "M",
+    "documento_identidad": "CC 1.054.725.651",
+    "email": "santiago.benavides.ramirez@correo-ejemplo.com",
+    "telefono": "+57 321 270 2292",
+    "ciudad": "Bogotá",
+    "direccion": "Cra 55 # 69-57",
+    "nacionalidad": "Colombiana",
+    "fecha_nacimiento": "1987-08-02"
+  },
+  "resumen": "Profesional de desarrollo backend con 3 años de experiencia en Java.",
+  "experiencia": [
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Transportes Altiplano TI",
+      "tipo": "empleo",
+      "inicio": "2025-04",
+      "fin": null,
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
+      "descripcion": [
+        "Pipelines de integración continua con Git y Jenkins.",
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros."
+      ]
+    },
+    {
+      "cargo": "Desarrollador Backend Java",
+      "organizacion": "Frontera Retail Tech",
+      "tipo": "empleo",
+      "inicio": "2023-10",
+      "fin": "2025-04",
+      "tecnologias": [
+        "Java",
+        "MySQL",
+        "REST",
+        "JUnit",
+        "Mockito",
+        "Git",
+        "Jenkins"
+      ],
+      "descripcion": [
+        "Pruebas unitarias y de integración con JUnit y Mockito.",
+        "Diseño y consumo de REST para integrar sistemas internos y de terceros."
+      ]
+    }
+  ],
+  "educacion": [
+    {
+      "titulo": "Ingeniería de Sistemas",
+      "institucion": "Universidad Central Andina",
+      "anio_fin": 2022,
+      "nivel": "profesional"
+    }
+  ],
+  "habilidades": [
+    "Java",
+    "MySQL",
+    "REST",
+    "JUnit",
+    "Mockito",
+    "Git",
+    "Jenkins"
+  ],
+  "idiomas": [
+    {
+      "idioma": "Español",
+      "nivel": "Nativo",
+      "acreditacion": "ninguna",
+      "detalle": ""
+    },
+    {
+      "idioma": "Inglés",
+      "nivel": "B2",
+      "acreditacion": "certificado",
+      "detalle": "Certificado Cambridge FCE"
+    }
+  ],
+  "declarado": {
+    "anios_experiencia": 3
+  },
+  "otros": [],
+  "fecha_recepcion": "2026-11-08",
+  "consentimiento": {
+    "registrado": true,
+    "fecha": "2026-11-08"
+  },
+  "archivo": {
+    "nombre": "CV-016.pdf",
+    "formato": "pdf",
+    "caracteres_extraidos": 712,
+    "hash_sha256": "ccda64ffac5d6bd076d3d38587c2ce66933c9439958c4e7b0502014652f8b5be"
+  }
+}
