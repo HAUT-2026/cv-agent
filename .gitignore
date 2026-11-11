@@ -6,3 +6,7 @@ __pycache__/
 *.egg-info/
 .venv/
 .langgraph_api/
+
+# Rol 3: configuración local del LLM (puede contener API keys)
+.env
+resultados/
