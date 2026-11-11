@@ -84,6 +84,16 @@ def _todas(estado="sin_evidencia"):
     return [{"id_requisito": r.id, "cumplimiento": estado, "citas": []} for r in VACANTE.requisitos]
 
 
+def _buscar(ids, extra=()):
+    """Un turno del modelo que pide frases_relacionadas para varios requisitos a la vez."""
+    calls = [{"id": f"f{k}", "type": "function", "function": {
+        "name": "frases_relacionadas", "arguments": json.dumps({"id_requisito": i})}} for k, i in enumerate(ids)]
+    return {"role": "assistant", "tool_calls": calls + list(extra)}
+
+
+TODOS = [r.id for r in VACANTE.requisitos]
+
+
 def test_analista_de_punta_a_punta():
     c = caso("CV-002")
     cita = segmento(c, "experiencia[1].descripcion[0]")                    # «Implemented microservices with Spring Boot.»
@@ -91,15 +101,13 @@ def test_analista_de_punta_a_punta():
     i = next(k for k, e in enumerate(evs) if e["id_requisito"] == "DES-01")
     evs[i] = {"id_requisito": "DES-01", "cumplimiento": "cumple", "citas": [cita]}
     falso = LLMFalso([
-        {"role": "assistant", "tool_calls": [
-            {"id": "1", "type": "function", "function": {"name": "frases_relacionadas", "arguments": '{"id_requisito": "DES-01"}'}},
-            {"id": "2", "type": "function", "function": {"name": "experiencia_por_cargo", "arguments": "{}"}}]},
+        _buscar(TODOS, [{"id": "x", "type": "function", "function": {"name": "experiencia_por_cargo", "arguments": "{}"}}]),
         llamar("entregar_resultado", {"evaluaciones": evs})])
     r = analizar_caso(c, VACANTE, CLIENTE(falso))
     assert {t["function"]["name"] for t in falso.recibidos[0]["tools"]} == set(ALLOWLIST) | {"entregar_resultado"}
     des01 = next(e for e in r.ficha.evaluaciones if e.id_requisito == "DES-01")
     assert r.texto.texto[des01.citas[0].inicio:des01.citas[0].fin] == cita
-    assert r.agente.traza[1].resultado["total_meses_sin_solapes"] == MANIFIESTO["CV-002"]["esperado"]["meses_efectivos"]
+    assert r.agente.traza[len(TODOS)].resultado["total_meses_sin_solapes"] == MANIFIESTO["CV-002"]["esperado"]["meses_efectivos"]
     assert r.ficha.version_prompt == VERSION_PROMPT and r.ficha.modelo == "falso@f"
 
 
@@ -109,6 +117,51 @@ def test_entrega_prematura_y_llamada_repetida():
         {"id": "a", "type": "function", "function": {"name": "frases_relacionadas", "arguments": '{"id_requisito": "REQ-02"}'}},
         {"id": "b", "type": "function", "function": {"name": "entregar_resultado", "arguments": json.dumps(entrega)}}]}
     misma = llamar("frases_relacionadas", {"id_requisito": "REQ-02"})
-    falso = LLMFalso([juntas, misma, llamar("entregar_resultado", entrega)])
+    resto = _buscar([i for i in TODOS if i != "REQ-02"])
+    falso = LLMFalso([juntas, misma, resto, llamar("entregar_resultado", entrega)])
     r = analizar_caso(caso("CV-001"), VACANTE, CLIENTE(falso))
-    assert [e.tipo for e in r.agente.traza] == ["llamada", "entrega_prematura", "repetida", "entrega"]
+    tipos = [e.tipo for e in r.agente.traza]
+    assert tipos[:3] == ["llamada", "entrega_prematura", "repetida"] and tipos[-1] == "entrega"
+
+
+# ---------------------------------------------------------------- baranda B (11-nov)
+OBLIG = [r.id for r in VACANTE.requisitos if r.obligatorio]
+
+
+def test_baranda_rechaza_sin_evidencia_sin_buscar_y_el_agente_corrige():
+    """Reproduce la corrida real de CV-001: buscó solo los obligatorios y marcó todo lo demás
+    sin_evidencia. El motor rechaza, el agente busca los deseables y vuelve a entregar."""
+    entrega = {"evaluaciones": _todas()}
+    falso = LLMFalso([_buscar(OBLIG), llamar("entregar_resultado", entrega),
+                      _buscar([i for i in TODOS if i not in OBLIG]), llamar("entregar_resultado", entrega)])
+    r = analizar_caso(caso("CV-001"), VACANTE, CLIENTE(falso))
+    rechazo = next(t for t in r.agente.traza if t.tipo == "entrega_incompleta")
+    faltan = {p.split(":")[0] for p in rechazo.resultado}
+    assert faltan == {"DES-01", "DES-02", "DES-03", "DES-04"}     # DES-05 (ONG o salud): sin frases → no se exige
+    assert r.agente.traza[-1].tipo == "entrega" and r.agente.pasos == 4
+    # el motor le dijo al modelo exactamente qué llamar
+    ultimo_tool = [m for m in falso.recibidos[2]["messages"] if m["role"] == "tool"][-1]["content"]
+    assert "DES-01" in ultimo_tool and "frases_relacionadas" in ultimo_tool
+
+
+def test_baranda_no_exige_buscar_lo_que_no_existe():
+    """Si la herramienta no encuentra nada, sin_evidencia sin buscar es correcto: no se rechaza."""
+    entrega = {"evaluaciones": _todas()}
+    falso = LLMFalso([_buscar([i for i in TODOS if i != "DES-05"]), llamar("entregar_resultado", entrega)])
+    r = analizar_caso(caso("CV-001"), VACANTE, CLIENTE(falso))
+    assert "entrega_incompleta" not in [t.tipo for t in r.agente.traza]
+
+
+def test_baranda_cede_tras_dos_rechazos_y_el_auditor_lo_senala():
+    """Un modelo terco no consume los 15 pasos: tras 2 rechazos se acepta, y el auditor (C)
+    lo deja visible para el reclutador como evidencia ignorada."""
+    from cvagent.agentes.auditor import auditar
+    from cvagent.agentes.salida import TipoHallazgo
+    entrega = llamar("entregar_resultado", {"evaluaciones": _todas()})
+    falso = LLMFalso([_buscar(OBLIG), entrega, entrega, entrega])
+    c = caso("CV-001")
+    r = analizar_caso(c, VACANTE, CLIENTE(falso))
+    assert [t.tipo for t in r.agente.traza].count("entrega_incompleta") == 2 and r.agente.pasos == 4
+    v = auditar(r.ficha, c, VACANTE)
+    ignorados = {h.id_requisito for h in v.hallazgos if h.tipo == TipoHallazgo.EVIDENCIA_IGNORADA}
+    assert {"DES-01", "DES-02", "DES-03", "DES-04"} <= ignorados and "DES-05" not in ignorados

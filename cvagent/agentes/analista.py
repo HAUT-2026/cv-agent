@@ -15,9 +15,9 @@ from typing import Any, Callable, Optional
 from .agente import ResultadoAgente, ejecutar_agente
 from .criterios import Vacante
 from .ficha import construir_ficha
-from .herramientas import ContextoCaso
+from .herramientas import REGISTRO, ContextoCaso
 from .llm import ClienteLLM
-from .salida import FichaCandidato, FichaLLM
+from .salida import Cumplimiento, FichaCandidato, FichaLLM
 from .sanitizacion import IndicioInyeccion
 from .texto import TextoCanonico
 
@@ -97,6 +97,28 @@ def construir_tarea(vacante: Vacante, tc: TextoCanonico) -> str:
     return "\n".join(lineas)
 
 
+def evidencia_sin_revisar(salida: FichaLLM, traza: list, ctx: ContextoCaso) -> list[str]:
+    """Baranda B (medida el 11-nov con qwen2.5:7b en CV-001): el modelo buscó solo los obligatorios
+    y marcó los deseables «sin_evidencia» aunque el CV decía «Spring Boot», «JUnit, Mockito»…
+    El prompt ya pedía buscar CADA requisito: la regla tiene que vivir en el código.
+
+    Devuelve un problema por cada requisito marcado sin_evidencia que NO se buscó con
+    frases_relacionadas y para el que la herramienta SÍ encuentra frases. Si no hay frases
+    (p. ej. «ONG o salud» en un CV sin eso), sin_evidencia sin buscar es correcto y no se rechaza."""
+    buscados = {(t.argumentos or {}).get("id_requisito") for t in traza
+                if t.herramienta == "frases_relacionadas" and t.tipo in ("llamada", "repetida")}
+    problemas = []
+    for ev in salida.evaluaciones:
+        if ev.cumplimiento != Cumplimiento.SIN_EVIDENCIA or ev.id_requisito in buscados:
+            continue
+        frases = REGISTRO["frases_relacionadas"].funcion({"id_requisito": ev.id_requisito}, ctx).get("frases") or []
+        if frases:
+            problemas.append(f"{ev.id_requisito}: marcado sin_evidencia sin haberlo buscado, y "
+                             f"frases_relacionadas encuentra {len(frases)} frase(s). Llama "
+                             f'frases_relacionadas con {{"id_requisito": "{ev.id_requisito}"}} y juzga.')
+    return problemas
+
+
 @dataclass
 class ResultadoAnalisis:
     ficha: FichaCandidato
@@ -111,11 +133,12 @@ def analizar_texto(cv, tc: TextoCanonico, indicios: list[IndicioInyeccion], vaca
                    al_evento: Optional[Callable[[str, Any], None]] = None) -> ResultadoAnalisis:
     """Núcleo común: recibe el texto canónico ya construido (de cualquier formato de CV)."""
     t0 = time.monotonic()
+    ctx = ContextoCaso(cv, tc, vacante)
     res = ejecutar_agente(
         nombre="analista", cliente=cliente, instrucciones=INSTRUCCIONES,
-        tarea=construir_tarea(vacante, tc), allowlist=ALLOWLIST,
-        contexto=ContextoCaso(cv, tc, vacante),
-        esquema_salida=FichaLLM, max_pasos=max_pasos, al_evento=al_evento)
+        tarea=construir_tarea(vacante, tc), allowlist=ALLOWLIST, contexto=ctx,
+        esquema_salida=FichaLLM, max_pasos=max_pasos, al_evento=al_evento,
+        validar_entrega=lambda salida, traza: evidencia_sin_revisar(salida, traza, ctx))
     ficha = construir_ficha(res.salida, tc, vacante,
                             modelo=cliente.config.etiqueta, version_prompt=VERSION_PROMPT)
     return ResultadoAnalisis(ficha, res, indicios, tc, time.monotonic() - t0)

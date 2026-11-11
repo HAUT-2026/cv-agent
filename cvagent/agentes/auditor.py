@@ -20,7 +20,8 @@ import unicodedata
 from typing import Optional
 
 from .criterios import TipoRequisito, Vacante
-from .herramientas import relacion_con_requisito
+from .herramientas import REGISTRO, ContextoCaso, relacion_con_requisito
+from .texto import localizar_cita
 from .salida import (Cumplimiento, FichaCandidato, Hallazgo, ResultadoAuditoria, Severidad,
                      TipoHallazgo, Veredicto)
 
@@ -169,6 +170,22 @@ def auditar(ficha: FichaCandidato, caso, vacante: Vacante,
         hallazgos.append(_h(TipoHallazgo.OBLIGATORIO_SIN_EVIDENCIA, B,
                             detalle="obligatorios omitidos por el analista: " +
                                     ", ".join(r for r in sin_ev if r in ficha.requisitos_omitidos)))
+
+    # 4b) Evidencia ignorada (red de seguridad de la baranda B del analista): un requisito
+    #     sin_evidencia para el que frases_relacionadas sí encuentra frases. Advierte: el
+    #     reclutador ve que el puntaje puede estar subestimado (en obligatorios ya bloquea R4).
+    ctx = ContextoCaso(caso.cv, caso.texto, vacante)
+    for e in ficha.evaluaciones:
+        if (e.cumplimiento == Cumplimiento.SIN_EVIDENCIA and e.id_requisito in reqs
+                and e.id_requisito not in ficha.requisitos_omitidos):
+            frases = REGISTRO["frases_relacionadas"].funcion({"id_requisito": e.id_requisito}, ctx).get("frases") or []
+            if frases:
+                f0 = frases[0]
+                loc = localizar_cita(caso.texto, f0["texto"])
+                hallazgos.append(_h(TipoHallazgo.EVIDENCIA_IGNORADA, A, e.id_requisito,
+                                    loc.inicio if loc else None, loc.fin if loc else None, f0.get("seccion"),
+                                    f"'sin_evidencia', pero el CV dice «{f0['texto'][:90]}» "
+                                    f"({len(frases)} frase(s) relacionadas): el puntaje puede estar subestimado"))
 
     # 5) Cobertura (R4)
     if ficha.cobertura_evidencia < umbral_cobertura:

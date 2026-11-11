@@ -30,8 +30,8 @@ El modelo solo decide lo que el código no puede decidir: si una frase del CV de
 | `ficha.py` | `FichaLLM` → `FichaCandidato`: verifica cada cita y **no corrige al modelo** (las citas falsas quedan en `citas_rechazadas` para el auditor) |
 | `llm.py` | Cliente **agnóstico del proveedor** (protocolo de chat de OpenAI con `tools`), configurado por `.env` |
 | `herramientas.py` | `frases_relacionadas` (en educación e idioma devuelve todos los registros de esa sección), `buscar_en_cv`, `consultar_equivalencias`, `experiencia_por_cargo` (**R11 oficial**) y el registro central |
-| `agente.py` | Motor razonar → actuar → observar: allowlist por agente, freno de llamadas repetidas, rechazo de entrega prematura, límite de pasos (fail-closed) y traza |
-| `analista.py` | Prompt `analista-v3.2` (v3.2: acreditación de idioma, E5), allowlist, `analizar_caso()` |
+| `agente.py` | Motor razonar → actuar → observar: allowlist por agente, freno de llamadas repetidas, rechazo de entrega prematura, **`validar_entrega`** (baranda propia de cada agente: rechaza hasta 2 veces una entrega válida pero incompleta), límite de pasos (fail-closed) y traza |
+| `analista.py` | Prompt `analista-v3.2` (v3.2: acreditación de idioma, E5), allowlist, `analizar_caso()` y la baranda `evidencia_sin_revisar`: rechaza un `sin_evidencia` en un requisito que no buscó si `frases_relacionadas` sí tiene frases |
 | `auditor.py` | Auditor **determinista**: `auditar(ficha, caso, vacante)` → `Veredicto` (`bloquea` / `sin_objeciones`; **no aprueba**) con hallazgos de severidad y offset |
 | `evaluacion.py` | `ruta_final(ruta_motor, rol3_bloquea)`, vocabulario de estados del analista → motor (`A_ESTADO_MOTOR`) y comparación contra `data/manifiesto.json` (solo para medir) |
 
@@ -40,7 +40,7 @@ El modelo solo decide lo que el código no puede decidir: si una frase del CV de
 Guía completa, con Docker, Ollama, salidas esperadas y solución de errores: **[rol-3-ejecucion.md](rol-3-ejecucion.md)**. En resumen:
 
 ```bash
-python -m pytest tests/test_rol3_*.py                 # 298 pruebas, sin LLM ni red (solo pydantic + pytest)
+python -m pytest tests/test_rol3_*.py                 # 302 pruebas, sin LLM ni red (solo pydantic + pytest)
 python scripts/rol3/probar_banco.py --sin-llm         # 44 CV: motor Rol 2 + sanitización → ruta final 44/44
 cp .env.example .env                                  # configurar el LLM (Ollama, OpenAI…)
 python scripts/rol3/probar_banco.py CV-001            # analista real + auditor sobre un CV
@@ -65,6 +65,7 @@ Independiente del analista (ADR-002): solo ve la ficha, el texto canónico, la v
 | `calificador_debil` (`cumple` con «básico», «en curso»…) | 🟡 | Corrida 1: DES-01 |
 | `estado_incoherente` (estudios en curso marcados `no_cumple`) | 🟡 | |
 | `nivel_idioma_incoherente` (`no_cumple` con nivel suficiente) | 🟡 | |
+| `evidencia_ignorada` (`sin_evidencia`, pero `frases_relacionadas` encuentra frases; red de seguridad de la baranda del analista) | 🟡 | CV-001, corrida del 11-nov: DES-01 a 04 sin buscar |
 | `requisito_omitido` | 🟡 (y 🔴 `obligatorio_sin_evidencia` si es obligatorio) | |
 | `senal_sesgo` (proxies de R7 en el CV) | 🟡 | |
 

@@ -9,7 +9,7 @@ Esta guía te lleva desde cero hasta ver a los agentes del Rol 3 (analista y aud
 | Paso | Qué haces | ¿Necesita LLM? | Tiempo |
 |---|---|---|---|
 | 1-3 | Instalar lo básico, traer el código y comprobar Docker | No | 10-20 min (una vez) |
-| 4 | Correr las **430 pruebas** (Rol 2 + Rol 3) | No | 1 min |
+| 4 | Correr las **434 pruebas** (Rol 2 + Rol 3) | No | 1 min |
 | 5 | Correr el **banco sin LLM**: los 44 CV por el motor de reglas y la sanitización | No | 1 min |
 | 6-7 | Preparar Ollama y el archivo `.env` | Sí | 15-30 min (una vez; la descarga del modelo pesa 4,7 GB) |
 | 8 | Ver al **analista** (LLM) y al **auditor** evaluar un CV | Sí | 3-5 min por CV en un portátil |
@@ -70,7 +70,7 @@ docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q 
 | `pip install -q pydantic pytest pypdf` | Lo único que se necesita. `pypdf` es para las pruebas del Rol 2 que leen los PDF |
 | `python -m pytest ...` | Corre las pruebas del Rol 2 (`test_reglas`, `test_dataset`) y las 7 del Rol 3 |
 
-**Qué esperar:** filas de puntos y, al final, `430 passed`. Son 132 del Rol 2 y 298 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
+**Qué esperar:** filas de puntos y, al final, `434 passed`. Son 132 del Rol 2 y 302 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
 
 > No corras `pytest` a secas: también recogería las pruebas del Rol 1, que necesitan LangGraph (`pip install -e .`). Por eso se listan los archivos.
 
@@ -178,7 +178,7 @@ Prueba también con `CV-040` (texto oculto), `INJ-04` (inyección en inglés) o 
 
 **Qué vas a ver, en orden:**
 
-1. **En vivo**, cada paso del agente: `paso 1: esperando al modelo…`, luego `llamada frases_relacionadas {"id_requisito": "REQ-02"} → 2 frases`, y así sucesivamente. En el primer turno, el agente pide evidencia con herramientas; en el segundo, juzga y entrega.
+1. **En vivo**, cada paso del agente: `paso 1: esperando al modelo…`, luego `llamada frases_relacionadas {"id_requisito": "REQ-02"} → 2 frases`, y así sucesivamente. En el primer turno, el agente pide evidencia con herramientas; en el segundo, juzga y entrega. Si aparece `entrega_incompleta`, es una baranda del motor funcionando, no un error: el modelo quiso entregar `sin_evidencia` en requisitos que no había buscado, el motor se lo rechazó con la lista de búsquedas pendientes, y el agente vuelve a buscar y a entregar.
 2. **La ficha:** cada requisito con su estado (`cumple`, `parcial`, `no_cumple`, `sin_evidencia`) y las **citas literales** del CV. Al lado aparece `✓` o `✗ (esperado …)` frente al manifiesto. Una cita que el código no encuentra en el CV aparece como `✗ NO ENCONTRADA`: el modelo la inventó o la parafraseó.
 3. **El auditor:** `SIN_OBJECIONES` o `BLOQUEA`, con hallazgos 🔴 (bloquean) y 🟡 (advierten).
 4. **La ruta final** y si coincide con la esperada.

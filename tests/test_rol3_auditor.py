@@ -178,3 +178,14 @@ def test_hallazgos_con_offsets_verificables():
     for h in v.hallazgos:
         if h.inicio is not None and h.campo != "texto_oculto" and h.fin > h.inicio:
             assert c.texto.texto[h.inicio:h.fin]
+
+
+def test_evidencia_ignorada_advierte_con_offset():
+    """C (11-nov): deseable sin_evidencia con frases disponibles → 🟡 visible para el reclutador."""
+    c = caso("CV-001")
+    evs = {k: v for k, v in buena(c).items() if k != "DES-03"}       # DES-03 Docker/nube queda sin_evidencia
+    v = auditar(ficha(c, evs), c, VACANTE)
+    h = next(h for h in v.hallazgos if h.tipo == T.EVIDENCIA_IGNORADA)
+    assert v.resultado == OK and h.id_requisito == "DES-03" and h.severidad == Severidad.ADVERTENCIA
+    assert "Docker" in c.texto.texto[h.inicio:h.fin]
+    assert T.EVIDENCIA_IGNORADA not in tipos(auditar(ficha(c, buena(c)), c, VACANTE))   # DES-05 sin frases: nada

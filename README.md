@@ -199,7 +199,7 @@ configurado por `.env`. Todavía no está conectado al grafo: depende del contra
 | --- | --- |
 | `cvagent/agentes/` | `cv_json.py` (CV → texto canónico anónimo), `texto.py` (verificación de citas), `sanitizacion.py` (inyección y proxies), `herramientas.py`, `agente.py` (ciclo del agente), `llm.py` (cliente agnóstico), `analista.py`, `auditor.py`, `ficha.py`, `salida.py`, `criterios.py`, `evaluacion.py` |
 | `scripts/rol3/` | `probar_banco.py` (banco de punta a punta contra el manifiesto, con o sin LLM) y `auditar.py` (re-audita fichas guardadas sin LLM) |
-| `tests/` | `test_rol3_*.py` y `rol3_comun.py` (298 pruebas, con un LLM falso: no usan red ni modelo) |
+| `tests/` | `test_rol3_*.py` y `rol3_comun.py` (302 pruebas, con un LLM falso: no usan red ni modelo) |
 | `docs/` | `rol-3-ejecucion.md` (guía), `rol-3-agentes.md` (diseño), `rol-3-evaluacion.md` (mediciones con LLM real), `rol-3-propuesta-contratos.md` |
 
 `.env` (claves del LLM) y `resultados/` (fichas generadas) no se suben a git.
@@ -215,7 +215,7 @@ docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q 
 docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic && python scripts/rol3/probar_banco.py --sin-llm"
 ```
 
-La primera debe terminar con `298 passed`. La segunda pasa los 44 CV por el motor del
+La primera debe terminar con `302 passed`. La segunda pasa los 44 CV por el motor del
 Rol 2 y la sanitización del Rol 3, y debe terminar con
 `Ruta final de punta a punta (Rol 2 + Rol 3): 44/44`. Para ver al analista con un
 LLM, sigue los pasos 6 a 8 de la [guía](docs/rol-3-ejecucion.md).

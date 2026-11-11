@@ -89,9 +89,16 @@ def ejecutar_agente(
     esquema_salida: Type[T],
     max_pasos: int = 10,
     al_evento: Optional[Callable[[str, Any], None]] = None,
+    validar_entrega: Optional[Callable[[Any, list], list[str]]] = None,
+    max_rechazos_entrega: int = 2,
 ) -> ResultadoAgente[T]:
     """`al_evento(tipo, dato)` permite mostrar el progreso en vivo:
-    tipo = "pensando" (dato = n.º de paso) o "evento" (dato = EventoTraza)."""
+    tipo = "pensando" (dato = n.º de paso) o "evento" (dato = EventoTraza).
+
+    `validar_entrega(salida, traza)` es una baranda propia de cada agente: revisa una entrega
+    que ya cumple el esquema y devuelve los problemas (lista vacía = aceptada). Si hay problemas,
+    la entrega se rechaza y el agente sigue trabajando. Se rechaza a lo sumo `max_rechazos_entrega`
+    veces: después se acepta y el problema queda para el auditor (evita gastar todos los pasos)."""
     desconocidas = [h for h in allowlist if h not in REGISTRO]
     if desconocidas:
         raise ValueError(f"[{nombre}] allowlist con herramientas inexistentes: {desconocidas}")
@@ -113,6 +120,7 @@ def ejecutar_agente(
                 al_evento("evento", ev)
     traza = _Traza()
     ya_hechas: dict[str, int] = {}   # firma de la llamada → paso en que se hizo
+    rechazos_entrega = 0
 
     for paso in range(1, max_pasos + 1):
         if al_evento:
@@ -159,6 +167,16 @@ def ejecutar_agente(
                         {"error": "El resultado no cumple el esquema. Corrige y vuelve a entregar.",
                          "detalles": errores}, ensure_ascii=False)})
                     continue
+                if validar_entrega and rechazos_entrega < max_rechazos_entrega:
+                    problemas = validar_entrega(salida, list(traza))
+                    if problemas:
+                        rechazos_entrega += 1
+                        traza.append(EventoTraza(paso, "entrega_incompleta", nombre_h, args, problemas))
+                        mensajes.append({"role": "tool", "tool_call_id": id_ll, "content": json.dumps(
+                            {"error": "Entrega rechazada: decidiste sin revisar la evidencia disponible. "
+                                      "Haz las llamadas indicadas, juzga con sus resultados y vuelve a entregar.",
+                             "detalles": problemas}, ensure_ascii=False)})
+                        continue
                 traza.append(EventoTraza(paso, "entrega", nombre_h, args))
                 return ResultadoAgente(salida, list(traza), paso)
 
