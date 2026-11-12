@@ -188,3 +188,25 @@ def test_baranda_y_auditor_ante_un_modelo_terco():
     v = auditar(r.ficha, c, VACANTE)
     ignorados = {h.id_requisito for h in v.hallazgos if h.tipo == TipoHallazgo.EVIDENCIA_IGNORADA}
     assert {"DES-01", "DES-02", "DES-03", "DES-04"} <= ignorados and "DES-05" not in ignorados
+
+
+EVALUABLES = [i for i in IDS if MANIFIESTO[i]["esperado"]["ruta_motor_reglas"] == "evaluable"]
+
+
+@pytest.mark.parametrize("cv_id", EVALUABLES)
+def test_frases_relacionadas_encuentra_los_deseables_del_manifiesto(cv_id):
+    """12-nov: sin el filtro de evidencia fuerte acertaba 13/28 («integrar sistemas» contaba como CI,
+    «Andes Cloud Labs» como nube, «Prueba de nivel» como pruebas automatizadas). Con el filtro, 28/28.
+    Ojo: está ajustado con este dataset; no es una prueba de generalización."""
+    ctx = contexto(cv_id)
+    con_frases = [r.id for r in VACANTE.requisitos if not r.obligatorio
+                  and REGISTRO["frases_relacionadas"].funcion({"id_requisito": r.id}, ctx)["frases"]]
+    assert len(con_frases) == MANIFIESTO[cv_id]["esperado"]["deseables_cubiertos"], con_frases
+
+
+@pytest.mark.parametrize("cv_id,rid,ruido", [
+    ("CV-013", "DES-04", "integrar sistemas"), ("CV-013", "DES-03", "Andes Cloud Labs"),
+    ("CV-018", "DES-02", "Prueba de nivel")])
+def test_ruido_lexico_no_es_evidencia(cv_id, rid, ruido):
+    frases = REGISTRO["frases_relacionadas"].funcion({"id_requisito": rid}, contexto(cv_id))["frases"]
+    assert not any(ruido in f["texto"] for f in frases)

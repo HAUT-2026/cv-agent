@@ -62,3 +62,21 @@ class Comparacion:
         """(coinciden, comparados) entre el analista y el estado esperado por requisito."""
         comunes = [k for k in self.estados_esperados if k in self.estados_analista]
         return sum(self.estados_analista[k] == self.estados_esperados[k] for k in comunes), len(comunes)
+
+
+def ficha_lexica(caso, vacante):
+    """Analista SIMULADO, sin LLM: «cumple» si frases_relacionadas encuentra evidencia (citando la
+    primera frase), si no «sin_evidencia». No juzga matices (parcial, no_cumple): NO es el analista.
+    Sirve para medir el puntaje y el staging de punta a punta en segundos (acierta 28/28 deseables
+    del manifiesto con este dataset) y como línea base contra la que comparar al LLM."""
+    from .ficha import construir_ficha
+    from .herramientas import REGISTRO, ContextoCaso
+    from .salida import FichaLLM
+    ctx = ContextoCaso(caso.cv, caso.texto, vacante)
+    evs = []
+    for r in vacante.requisitos:
+        frases = REGISTRO["frases_relacionadas"].funcion({"id_requisito": r.id}, ctx)["frases"]
+        evs.append({"id_requisito": r.id, "cumplimiento": "cumple" if frases else "sin_evidencia",
+                    "citas": [frases[0]["texto"]] if frases else []})
+    return evs, (lambda evaluaciones: construir_ficha(FichaLLM.model_validate({"evaluaciones": evaluaciones}),
+                                                      caso.texto, vacante, "simulado:lexico", "sin-prompt"))

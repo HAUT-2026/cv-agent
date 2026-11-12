@@ -9,7 +9,7 @@ Esta guía te lleva desde cero hasta ver a los agentes del Rol 3 (analista y aud
 | Paso | Qué haces | ¿Necesita LLM? | Tiempo |
 |---|---|---|---|
 | 1-3 | Instalar lo básico, traer el código y comprobar Docker | No | 10-20 min (una vez) |
-| 4 | Correr las **436 pruebas** (Rol 2 + Rol 3) | No | 1 min |
+| 4 | Correr las **486 pruebas** (Rol 2 + Rol 3) | No | 1 min |
 | 5 | Correr el **banco sin LLM**: los 44 CV por el motor de reglas y la sanitización | No | 1 min |
 | 6-7 | Preparar Ollama y el archivo `.env` | Sí | 15-30 min (una vez; la descarga del modelo pesa 4,7 GB) |
 | 8 | Ver al **analista** (LLM) y al **auditor** evaluar un CV | Sí | 3-5 min por CV en un portátil |
@@ -56,7 +56,7 @@ docker version
 ## Paso 4 · Correr las pruebas (sin LLM, sin red)
 
 ```powershell
-docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic pytest pypdf && python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_sanitizacion.py"
+docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic pytest pypdf && python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py"
 ```
 
 **Qué hace cada parte:**
@@ -70,7 +70,7 @@ docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q 
 | `pip install -q pydantic pytest pypdf` | Lo único que se necesita. `pypdf` es para las pruebas del Rol 2 que leen los PDF |
 | `python -m pytest ...` | Corre las pruebas del Rol 2 (`test_reglas`, `test_dataset`) y las 7 del Rol 3 |
 
-**Qué esperar:** filas de puntos y, al final, `436 passed`. Son 132 del Rol 2 y 304 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
+**Qué esperar:** filas de puntos y, al final, `486 passed`. Son 132 del Rol 2 y 354 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
 
 > No corras `pytest` a secas: también recogería las pruebas del Rol 1, que necesitan LangGraph (`pip install -e .`). Por eso se listan los archivos.
 
@@ -99,6 +99,19 @@ Ruta del motor (Rol 2): 44/44 · Ruta final de punta a punta (Rol 2 + Rol 3): 44
 - **ruta final**: lo que ve el reclutador. `ranking` significa que el CV entra a la lista; `bandeja`, que va a revisión humana. CV-040 pasa las reglas, pero esconde texto blanco sobre blanco con una orden para la IA. El motor no puede verlo; la sanitización del Rol 3 sí, y lo manda a la bandeja.
 - **meses**: la experiencia efectiva (R11), sin contar dos veces los empleos solapados.
 - **inyección**: los patrones detectados, con su posición exacta en el texto para que el reclutador los vea resaltados.
+
+Al final aparece el **staging simulado**: el Top 5 que saldría con la rúbrica provisional (`docs/rol-3-puntaje.md`), usando un analista *simulado* por reglas de palabras (no el LLM), y pasándolo por `armar_staging` del Rol 2:
+
+```
+pos  CV      puntaje  cobertura  grupo (manifiesto)
+1    CV-002  0.9062   1.0        apto
+...
+6    CV-007  0.7812   0.875      apto
+  R5: diferencia 5.º–6.º = 0.0 ≤ 0,02 → se presentan seis
+  R4 → revisión humana (cobertura < 0,70 o contradicción), fuera del Top automático: CV-011 (0.5), …
+```
+
+Se espera que el Top tenga **solo aptos**, que se activen R5 (empate → seis) y R4 (los 13 «parciales» a revisión humana), y que CV-006 y CV-007 (par contrafactual mujer/hombre) tengan el mismo puntaje.
 
 ## Paso 6 · Preparar Ollama (solo para ver al LLM)
 
@@ -182,6 +195,7 @@ Prueba también con `CV-040` (texto oculto), `INJ-04` (inyección en inglés) o 
 2. **La ficha:** cada requisito con su estado (`cumple`, `parcial`, `no_cumple`, `sin_evidencia`) y las **citas literales** del CV. Al lado aparece `✓` o `✗ (esperado …)` frente al manifiesto. Una cita que el código no encuentra en el CV aparece como `✗ NO ENCONTRADA`: el modelo la inventó o la parafraseó.
 3. **El auditor:** `SIN_OBJECIONES` o `BLOQUEA`, con hallazgos 🔴 (bloquean) y 🟡 (advierten).
 4. **La ruta final** y si coincide con la esperada.
+5. **El puntaje** (solo si va a ranking), con el valor de cada criterio, y al final el **staging** con los CV que corriste.
 
 Todo queda guardado en `resultados/rol3/CV-001.json`: la ficha, el veredicto, los indicios y la traza completa del agente. Esa carpeta tampoco se sube a git.
 
@@ -224,7 +238,7 @@ Con Python 3.11 o superior instalado:
 python -m venv .venv
 .venv\Scripts\Activate.ps1          # macOS/Linux: source .venv/bin/activate
 pip install pydantic pytest pypdf
-python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_sanitizacion.py
+python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py
 python scripts/rol3/probar_banco.py --sin-llm
 ```
 

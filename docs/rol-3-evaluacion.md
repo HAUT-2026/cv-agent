@@ -102,6 +102,12 @@ El modelo repitió la pereza en el paso 2 (otra vez buscó solo los obligatorios
 
 **Conclusión del experimento:** con un modelo pequeño, *decirle qué hacer* (prompt, rechazo con orden) no basta; *mostrarle lo que hay* (observación) sí cambia el juicio. B2 se queda como diseño del analista.
 
+## 6b. Precisión de `frases_relacionadas` (12-nov)
+
+Al preparar el puntaje se midió cuántos deseables encuentra `frases_relacionadas` frente a `deseables_cubiertos` del manifiesto: **13/28**. Sobraban por ruido léxico: «…REST para **integrar** sistemas» contaba como integración continua (DES-04), el nombre de empresa «Andes **Cloud** Labs» como nube (DES-03) y «Inglés · acreditación: **prueba**» como pruebas automatizadas (DES-02). Es el mismo ruido que vimos con el LLM (DES-04 `parcial` por «integración» en CV-014 e INJ-04), y afecta a la baranda B2 y al auditor C, que usan esta herramienta.
+
+Corrección (`herramientas.evidencia_fuerte`): una frase cuenta solo si trae una equivalencia del diccionario o un término específico del requisito; raíces genéricas solas («integr», «prueba», «automa», «despli», «servic») no bastan, y en requisitos de *habilidad* no cuentan la organización, el tipo de vínculo, el periodo ni los idiomas. Se agregaron términos de sector para DES-05 («clínica», «hospital», «fundación», «health», «NGO»…). Resultado: **28/28**, sin que ningún obligatorio perdiera evidencia. Advertencia honesta: está ajustado con este dataset; no prueba generalización.
+
 ## 7. Conclusiones para ADR-007
 
 - La meta de ficha es ≤ 2 min/CV. El modelo local tarda **~4 a 7 min/CV** (220 s con el dataset previo; 332 a 739 s con la vacante de 10 requisitos): sirve para desarrollo, **no** para la corrida del lote. El cliente es agnóstico, así que medir otro proveedor es cambiar `.env` y correr `probar_banco.py todos`.

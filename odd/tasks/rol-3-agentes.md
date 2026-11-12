@@ -1,5 +1,5 @@
 # Rol 3 — Agentes del MVP de CVAgent
-Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (304) · Guía: `docs/rol-3-ejecucion.md`
+Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (354) · Guía: `docs/rol-3-ejecucion.md`
 Objetivo: agentes analista, auditor y agendador con salidas en esquemas estrictos, citas verificables por código y herramientas bajo allowlist, sin asumir lógica de negocio de otros roles.
 
 ## Specs
@@ -26,8 +26,8 @@ Acceptance: `test_rol3_auditor.py` reproduce los errores reales medidos; sobre l
 
 ### S6 — Auditor LLM ⏳ · S7 — Agendador ⏳
 
-### S9 — Puntaje y cobertura para `armar_staging` ⏳
-El motor del Rol 2 recibe `[{cv_id, puntaje, cobertura, contradiccion_material}]`. Pendiente: rúbrica de pesos (RR. HH.) y definición acordada de cobertura.
+### S9 — Puntaje y cobertura para `armar_staging` ✅ (rúbrica provisional)
+`rubrica.py` + `puntaje.py` → `[{cv_id, puntaje, cobertura, contradiccion_material}]` para el motor del Rol 2. Acceptance: Top solo aptos, R5 y R4 se activan, par contrafactual con el mismo puntaje, CV-040 = CV-008 (`tests/test_rol3_puntaje.py`, 19). Pendiente: aprobación de RR. HH. y del grupo (`docs/rol-3-puntaje.md`).
 
 ### S10 — Ejecución reproducible por el equipo ✅
 `docs/rol-3-ejecucion.md` (personas, paso a paso con Docker y Ollama) y `cvagent/agentes/AGENTS.md` (asistentes de IA: lista de verificación y árbol de errores).

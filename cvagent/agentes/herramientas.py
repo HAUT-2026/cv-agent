@@ -138,6 +138,8 @@ _RELACIONADOS = {
     "ingles": {"english", "toefl", "ielts"},
     "ingenieria": {"ingeniero", "ingeniera", "sistemas", "software", "tecnologia", "tecnologo"},
     "backend": {"servidor", "servicios", "api", "apis"},
+    "salud": {"clinica", "hospital", "ips", "eps", "health", "healthcare", "pacientes", "patients", "medica", "medico"},
+    "ong": {"fundacion", "foundation", "ngo", "nonprofit", "voluntariado", "volunteer"},
 }
 
 
@@ -186,6 +188,27 @@ def relacion_con_requisito(texto: str, req) -> int:
     return puntos
 
 
+# Raíces que por sí solas no prueban nada (12-nov): «integrar sistemas» no es integración continua,
+# «prueba de nivel» no es pruebas automatizadas. Cuentan solo junto a un término específico.
+_GENERICAS = {_raiz(x) for x in ("integracion", "continua", "pruebas", "automatizadas", "despliegue", "servicios")}
+# En requisitos de HABILIDAD, el nombre de la empresa («Andes Cloud Labs»), el tipo de vínculo,
+# el periodo y los idiomas no son evidencia. (En DES-05 «ONG o salud» la organización sí lo es.)
+_NO_EVIDENCIA_HABILIDAD = re.compile(r"(\.organizacion|\.tipo|\.periodo)$|^idiomas\[")
+
+
+def evidencia_fuerte(texto: str, req, ruta: str = "") -> bool:
+    """¿La frase menciona algo específico del requisito? Una equivalencia del diccionario o un
+    término que no sea genérico. La usan frases_relacionadas, la baranda B2 y el auditor C."""
+    tipo = getattr(req.tipo, "value", req.tipo)
+    if tipo == "habilidad" and _NO_EVIDENCIA_HABILIDAD.search(ruta):
+        return False
+    claves, frases_eq = claves_de_requisito(req)
+    fn = _norm(texto)
+    if any(re.search(rf"(?<![a-z0-9]){re.escape(x)}(?![a-z0-9])", fn) for x in frases_eq):
+        return True
+    return bool((claves & _terminos(texto)) - _GENERICAS)
+
+
 def _frases_relacionadas(args: dict, ctx: ContextoCaso) -> dict:
     rid = str(args.get("id_requisito", "")).strip()
     req = next((r for r in ctx.vacante.requisitos if r.id == rid), None)
@@ -207,7 +230,7 @@ def _frases_relacionadas(args: dict, ctx: ContextoCaso) -> dict:
                     puntuadas.append((-puntos, i, ruta, frase))
             continue  # idioma: solo la sección de idiomas (evita el ruido de «prueba», «certificado»…)
         puntos = relacion_con_requisito(frase, req)
-        if puntos:
+        if puntos and evidencia_fuerte(frase, req, ruta):
             puntuadas.append((-puntos, i, ruta, frase))
     puntuadas.sort()
     frases, vistas = [], set()

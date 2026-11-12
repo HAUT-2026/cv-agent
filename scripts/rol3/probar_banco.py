@@ -21,12 +21,14 @@ RAIZ = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(RAIZ))
 
 from reglas import cargar_diccionario, cargar_vacante as cargar_vacante_rol2  # noqa: E402
-from reglas.motor import evaluar_caso, procesar_lote  # noqa: E402
+from reglas.motor import armar_staging, evaluar_caso, procesar_lote  # noqa: E402
 
 from cvagent.agentes.auditor import auditar  # noqa: E402
 from cvagent.agentes.criterios import cargar_vacante  # noqa: E402
 from cvagent.agentes.cv_json import preparar_caso  # noqa: E402
-from cvagent.agentes.evaluacion import Comparacion, estados_del_analista, ruta_final  # noqa: E402
+from cvagent.agentes.evaluacion import Comparacion, estados_del_analista, ficha_lexica, ruta_final  # noqa: E402
+from cvagent.agentes.puntaje import calcular_puntaje  # noqa: E402
+from cvagent.agentes.rubrica import VERSION_RUBRICA  # noqa: E402
 
 
 def _cargar_env(ruta: Path) -> None:
@@ -65,6 +67,27 @@ def rutas_del_motor() -> dict:
 
 
 motor = rutas_del_motor()
+
+
+def mostrar_staging(puntajes: list, titulo: str) -> None:
+    """Puntaje/cobertura (Rol 3, rúbrica provisional) → armar_staging (Rol 2: R4, R5, R6)."""
+    if not puntajes:
+        return
+    st = armar_staging([p.para_staging() for p in puntajes], vac.id_vacante, vac.version)
+    por_id = {p.cv_id: p for p in puntajes}
+    print(f"\n{'=' * 78}\n{titulo} · {VERSION_RUBRICA} (provisional, pendiente de RR. HH.)")
+    print(f"{'pos':<5}{'CV':<8}{'puntaje':<9}{'cobertura':<11}grupo (manifiesto)")
+    for t in st["top"]:
+        print(f"{t['posicion']:<5}{t['cv_id']:<8}{t['puntaje']:<9}{t['cobertura']:<11}{entradas[t['cv_id']].get('grupo')}")
+    if st["empate_r5"]:
+        print(f"  R5: diferencia 5.º–6.º = {st['diferencia_5_6']} ≤ 0,02 → se presentan seis")
+    if st["aviso_r6"]:
+        print(f"  R6: {st['aviso_r6']}")
+    rev = st["revision_humana_r4"]
+    if rev:
+        print(f"  R4 → revisión humana (cobertura < 0,70 o contradicción), fuera del Top automático: "
+              + ", ".join(f"{i} ({por_id[i].cobertura})" for i in rev))
+    print(f"  staging_id {st['staging_id']} (inmutable; mismo conjunto → mismo hash)")
 print(f"Vacante {vac.id_vacante} v{vac.version}: {vac.cargo} · {len(vac.requisitos)} requisitos "
       f"({sum(r.obligatorio for r in vac.requisitos)} obligatorios)\n")
 
@@ -72,6 +95,7 @@ print(f"Vacante {vac.id_vacante} v{vac.version}: {vac.cargo} · {len(vac.requisi
 if args[0] == "--sin-llm":
     print(f"{'CV':<8}{'motor (esperado)':<38}{'ruta final (esperada)':<36}{'meses':<9}inyección")
     ok_m = ok_f = ok_meses = n_meses = 0
+    simulados = []
     for cv_id, m in entradas.items():
         e = m["esperado"]
         rm = motor[cv_id]["ruta"]
@@ -79,6 +103,10 @@ if args[0] == "--sin-llm":
         if rm == "evaluable":
             indicios = preparar_caso(D / m["archivo_json"]).indicios
         rf = ruta_final(rm, bool(indicios))
+        if rf == "ranking":
+            c = preparar_caso(D / m["archivo_json"])
+            evs, construir = ficha_lexica(c, vac)
+            simulados.append(calcular_puntaje(construir(evs), motor[cv_id], vac, dic, None, c.texto.texto))
         ok_m += rm == e["ruta_motor_reglas"]
         ok_f += rf == e["ruta_final"]
         meses = motor[cv_id].get("meses_efectivos")
@@ -92,6 +120,7 @@ if args[0] == "--sin-llm":
     n = len(entradas)
     print(f"\nRuta del motor (Rol 2): {ok_m}/{n} · Ruta final de punta a punta (Rol 2 + Rol 3): {ok_f}/{n} · "
           f"Meses R11: {ok_meses}/{n_meses}")
+    mostrar_staging(simulados, "Staging SIMULADO (analista léxico, sin LLM; no reemplaza al analista)")
     sys.exit(0)
 
 # ------------------------------------------------------------------ con LLM
@@ -102,6 +131,7 @@ ids = list(entradas) if args[0] == "todos" else args
 cliente = ClienteLLM(ConfigLLM.desde_entorno())
 SALIDA.mkdir(parents=True, exist_ok=True)
 comparaciones: list[Comparacion] = []
+puntajes = []
 
 for cv_id in ids:
     m, e = entradas[cv_id], entradas[cv_id]["esperado"]
@@ -152,10 +182,18 @@ for cv_id in ids:
     for h in v.hallazgos:
         print(f"    {'🔴' if h.severidad.value == 'bloqueante' else '🟡'} {h.tipo.value:<26}{h.id_requisito or '':<8}{h.detalle or ''}")
     print(f"  Ruta final: {comp.ruta_final} · esperada: {comp.ruta_final_esperada} {'✓' if comp.acierta_ruta_final else '✗'}")
+    pje = None
+    if comp.ruta_final == "ranking":
+        pje = calcular_puntaje(f, motor[cv_id], vac, dic, v, caso.texto.texto)
+        puntajes.append(pje)
+        print(f"  Puntaje {pje.puntaje} · cobertura {pje.cobertura}"
+              + (" · contradicción material" if pje.contradiccion_material else "") + "   ("
+              + ", ".join(f"{c.id}={'—' if c.valor is None else c.valor}" for c in pje.criterios) + ")")
     (SALIDA / f"{cv_id}.json").write_text(json.dumps({
         "ficha": f.model_dump(mode="json"), "veredicto": v.model_dump(mode="json"),
         "indicios": [asdict(i) for i in caso.indicios], "proxies": [asdict(p) for p in caso.proxies],
         "traza": [asdict(t) for t in r.agente.traza], "comparacion": asdict(comp),
+        "puntaje": pje.a_dict() if pje else None,
     }, ensure_ascii=False, indent=2, default=str), "utf-8")
 
 # ------------------------------------------------------------------ resumen
@@ -170,6 +208,7 @@ for c in comparaciones:
 n = len(comparaciones)
 print(f"\nRuta final: {sum(c.acierta_ruta_final for c in comparaciones)}/{n}"
       + (f" · Estados de requisitos (analista vs. esperado): {coinc}/{comp_total}" if comp_total else ""))
+mostrar_staging(puntajes, "Staging con el analista LLM")
 nombre = "resumen_todos.json" if args[0] == "todos" else f"resumen_{'_'.join(ids)}.json"
 (SALIDA / nombre).write_text(json.dumps({"modelo": cliente.config.etiqueta,
                                          "resultados": [asdict(c) for c in comparaciones]},
