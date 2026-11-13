@@ -15,7 +15,10 @@ Agente de preselección de hojas de vida. El trabajo se reparte en cuatro roles;
   - [Qué contiene](#rol-2-que-contiene)
   - [Cómo probarlo](#rol-2-como-probarlo)
   - [Documentación completa del Rol 2 (`README_ROL2.md`)](README_ROL2.md)
-- **Rol 3 · Agentes** (pendiente)
+- **[Rol 3 · Agentes](#rol-3)**
+  - [Qué contiene](#rol-3-que-contiene)
+  - [Cómo probarlo](#rol-3-como-probarlo)
+  - [Guía paso a paso, con Ollama (`docs/rol-3-ejecucion.md`)](docs/rol-3-ejecucion.md)
 - **Rol 4 · Bandeja, simuladores y evidencia** (pendiente)
 
 ---
@@ -169,3 +172,51 @@ uv run --with pypdf python -m pytest tests/test_reglas.py tests/test_dataset.py 
 
 Debe terminar con `132 passed`. `pypdf` se agrega solo para esa ejecución, porque
 algunas pruebas leen el texto de los PDF.
+
+---
+
+<a id="rol-3"></a>
+
+# CVAgent — Rol 3: agentes
+
+Agente **analista** (LLM con herramientas: juzga la evidencia de cada requisito y la
+respalda con citas literales del CV) y **auditor** determinista (revisa la ficha y
+puede bloquear, nunca aprobar). Recibe solo los CV que el motor del Rol 2 deja como
+`evaluable` y decide si van al `ranking` o a la `bandeja` de revisión humana.
+Principio: **el código busca y verifica; el LLM solo juzga**. Funciona con cualquier
+proveedor compatible con el protocolo de OpenAI (Ollama local, OpenAI, Gemini…),
+configurado por `.env`. Todavía no está conectado al grafo: depende del contrato v1.1.
+
+> Guía para ejecutarlo paso a paso, con Docker y Ollama, salidas esperadas y
+> solución de errores: **[docs/rol-3-ejecucion.md](docs/rol-3-ejecucion.md)**.
+> Para asistentes de IA: [`cvagent/agentes/AGENTS.md`](cvagent/agentes/AGENTS.md).
+
+<a id="rol-3-que-contiene"></a>
+
+## Qué contiene
+
+| Carpeta | Contenido |
+| --- | --- |
+| `cvagent/agentes/` | `rubrica.py` + `puntaje.py` (puntaje y cobertura por código → `armar_staging` del Rol 2; rúbrica **provisional**, ver `docs/rol-3-puntaje.md`), `cv_json.py` (CV → texto canónico anónimo), `texto.py` (verificación de citas), `sanitizacion.py` (inyección y proxies), `herramientas.py`, `agente.py` (ciclo del agente), `llm.py` (cliente agnóstico), `analista.py`, `auditor.py`, `ficha.py`, `salida.py`, `criterios.py`, `evaluacion.py` |
+| `scripts/rol3/` | `probar_banco.py` (banco de punta a punta contra el manifiesto, con o sin LLM) y `auditar.py` (re-audita fichas guardadas sin LLM) |
+| `tests/` | `test_rol3_*.py` y `rol3_comun.py` (354 pruebas, con un LLM falso: no usan red ni modelo) |
+| `docs/` | `rol-3-ejecucion.md` (guía), `rol-3-agentes.md` (diseño), `rol-3-evaluacion.md` (mediciones con LLM real), `rol-3-propuesta-contratos.md` |
+
+`.env` (claves del LLM) y `resultados/` (fichas generadas) no se suben a git.
+
+<a id="rol-3-como-probarlo"></a>
+
+## Cómo probarlo
+
+Sin LLM ni red (Docker; en macOS o Linux, cambia `${PWD}` por `$(pwd)`):
+
+```bash
+docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic pytest && python -m pytest tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py"
+docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic && python scripts/rol3/probar_banco.py --sin-llm"
+```
+
+La primera debe terminar con `354 passed`. La segunda pasa los 44 CV por el motor del
+Rol 2 y la sanitización del Rol 3, y debe terminar con
+`Ruta final de punta a punta (Rol 2 + Rol 3): 44/44`, seguido del Top 5 simulado con la rúbrica provisional. Para ver al analista con un
+LLM, sigue los pasos 6 a 8 de la [guía](docs/rol-3-ejecucion.md).
+
