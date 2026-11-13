@@ -15,11 +15,12 @@ Agente de preselección de hojas de vida. El trabajo se reparte en cuatro roles;
   - [Qué contiene](#rol-2-que-contiene)
   - [Cómo probarlo](#rol-2-como-probarlo)
   - [Documentación completa del Rol 2 (`README_ROL2.md`)](README_ROL2.md)
-- **[Rol 3 · Agentes](#rol-3)**
-  - [Qué contiene](#rol-3-que-contiene)
-  - [Cómo probarlo](#rol-3-como-probarlo)
-  - [Guía paso a paso, con Ollama (`docs/rol-3-ejecucion.md`)](docs/rol-3-ejecucion.md)
-- **Rol 4 · Bandeja, simuladores y evidencia** (pendiente)
+- **Rol 3 · Agentes** (pendiente)
+- **[Rol 4 · Portal, bandeja y evidencia](#rol-4)**
+  - [Ruta rápida](#rol-4-ruta-rapida)
+  - [Qué contiene](#rol-4-que-contiene)
+  - [Hallazgos de integración](#rol-4-hallazgos)
+  - [Documentación completa del Rol 4 (`docs/rol-4-portal.md`)](docs/rol-4-portal.md)
 
 ---
 
@@ -173,50 +174,62 @@ uv run --with pypdf python -m pytest tests/test_reglas.py tests/test_dataset.py 
 Debe terminar con `132 passed`. `pypdf` se agrega solo para esa ejecución, porque
 algunas pruebas leen el texto de los PDF.
 
+
 ---
 
-<a id="rol-3"></a>
+<a id="rol-4"></a>
 
-# CVAgent — Rol 3: agentes
+# CVAgent — Rol 4: portal, bandeja y evidencia
 
-Agente **analista** (LLM con herramientas: juzga la evidencia de cada requisito y la
-respalda con citas literales del CV) y **auditor** determinista (revisa la ficha y
-puede bloquear, nunca aprobar). Recibe solo los CV que el motor del Rol 2 deja como
-`evaluable` y decide si van al `ranking` o a la `bandeja` de revisión humana.
-Principio: **el código busca y verifica; el LLM solo juzga**. Funciona con cualquier
-proveedor compatible con el protocolo de OpenAI (Ollama local, OpenAI, Gemini…),
-configurado por `.env`. Todavía no está conectado al grafo: depende del contrato v1.1.
+Interfaz web del reclutador, API REST y orquestación del lote. Consume los
+contratos del Rol 1 y el motor de reglas del Rol 2 **sin modificar ninguno de
+los dos**: es la primera pieza que hace correr las tres partes juntas.
 
-> Guía para ejecutarlo paso a paso, con Docker y Ollama, salidas esperadas y
-> solución de errores: **[docs/rol-3-ejecucion.md](docs/rol-3-ejecucion.md)**.
-> Para asistentes de IA: [`cvagent/agentes/AGENTS.md`](cvagent/agentes/AGENTS.md).
+<a id="rol-4-ruta-rapida"></a>
 
-<a id="rol-3-que-contiene"></a>
+## Ruta rápida
+
+```bash
+pip install -e ".[portal]"     # o: uv sync --extra portal
+python -m portal               # http://localhost:8000
+```
+
+En la vista **Lote**: «Cargar lote» aplica el motor del Rol 2 a los 44 CV
+(40 del corpus más los 4 de inyección) y «Ejecutar pipeline» corre el grafo del
+Rol 1 caso por caso hasta la primera compuerta humana. La aprobación se hace en
+**Bandeja** y todo queda en **Evidencia**.
+
+Las pruebas del portal corren con las demás: `python -m pytest tests -q`.
+
+<a id="rol-4-que-contiene"></a>
 
 ## Qué contiene
 
-| Carpeta | Contenido |
-| --- | --- |
-| `cvagent/agentes/` | `rubrica.py` + `puntaje.py` (puntaje y cobertura por código → `armar_staging` del Rol 2; rúbrica **provisional**, ver `docs/rol-3-puntaje.md`), `cv_json.py` (CV → texto canónico anónimo), `texto.py` (verificación de citas), `sanitizacion.py` (inyección y proxies), `herramientas.py`, `agente.py` (ciclo del agente), `llm.py` (cliente agnóstico), `analista.py`, `auditor.py`, `ficha.py`, `salida.py`, `criterios.py`, `evaluacion.py` |
-| `scripts/rol3/` | `probar_banco.py` (banco de punta a punta contra el manifiesto, con o sin LLM) y `auditar.py` (re-audita fichas guardadas sin LLM) |
-| `tests/` | `test_rol3_*.py` y `rol3_comun.py` (354 pruebas, con un LLM falso: no usan red ni modelo) |
-| `docs/` | `rol-3-ejecucion.md` (guía), `rol-3-agentes.md` (diseño), `rol-3-evaluacion.md` (mediciones con LLM real), `rol-3-propuesta-contratos.md` |
+| Módulo | Responsabilidad |
+|---|---|
+| `portal/texto.py` | Texto canónico sanitizado (PDF o gemelo JSON) y anclaje de citas por posición |
+| `portal/adaptadores.py` | Los cuatro puertos del Rol 1. El motor de reglas es **real**; analista y auditor son dobles sin modelo de lenguaje |
+| `portal/lote.py` | Une el lote del Rol 2 con el grafo por caso del Rol 1 y reparte la decisión humana |
+| `portal/api.py` | API REST documentada en `/docs` |
+| `portal/web/` | Frontend en HTML, CSS y JavaScript, sin paso de compilación |
 
-`.env` (claves del LLM) y `resultados/` (fichas generadas) no se suben a git.
+La regla que sostiene toda la evidencia: **al modelo se le pide la subcadena
+literal del CV; las posiciones las calcula el código.** Un modelo no cuenta
+caracteres, pero sí copia una frase. `test_p11` verifica el invariante sobre el
+corpus completo y la bandeja marca en rojo cualquier cita que no recorte.
 
-<a id="rol-3-como-probarlo"></a>
+<a id="rol-4-hallazgos"></a>
 
-## Cómo probarlo
+## Hallazgos de integración
 
-Sin LLM ni red (Docker; en macOS o Linux, cambia `${PWD}` por `$(pwd)`):
+Cinco cosas aparecieron al unir las tres partes. Ninguna se resolvió en
+silencio; el detalle y la propuesta de cada una están en
+[`docs/rol-4-portal.md`](docs/rol-4-portal.md).
 
-```bash
-docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic pytest && python -m pytest tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py"
-docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic && python scripts/rol3/probar_banco.py --sin-llm"
-```
-
-La primera debe terminar con `354 passed`. La segunda pasa los 44 CV por el motor del
-Rol 2 y la sanitización del Rol 3, y debe terminar con
-`Ruta final de punta a punta (Rol 2 + Rol 3): 44/44`, seguido del Top 5 simulado con la rúbrica provisional. Para ver al analista con un
-LLM, sigue los pasos 6 a 8 de la [guía](docs/rol-3-ejecucion.md).
-
+| # | Hallazgo | Decide |
+|---|---|---|
+| H-1 | `CaseState` no tiene dónde guardar de qué CV se trata, así que la correlación vive fuera del estado del grafo | Rol 1 |
+| H-2 | El grafo es por caso y R4/R5/R6 son de lote: hay dos nociones distintas de «lista corta» | Rol 1 y Rol 2 |
+| H-3 | La rúbrica de puntaje no está definida en el SDD; los pesos actuales son un supuesto del Rol 4 | Hiring manager |
+| H-4 | INJ-03 esconde la inyección en el PDF: una sanitización que trabaje sobre el JSON no la ve | Rol 3 |
+| H-5 | Un veredicto bloqueado enruta a `stop` y no genera interrupción, así que nadie lo ve | Rol 1 |

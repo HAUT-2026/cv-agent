@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CVAgent · Portal de selección asistida</title>
+  <meta name="description" content="Portal de selección asistida con compuertas humanas y evidencia verificable.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%238A0E2A'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' font-weight='700' fill='white' text-anchor='middle'%3ECV%3C/text%3E%3C/svg%3E">
+  <link rel="preload" href="/fuentes/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fuentes/fraunces.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/fuentes.css">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/componentes.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="lateral">
+      <div class="marca">
+        <div class="marca-logo">CV</div>
+        <div class="marca-texto">
+          <strong>CVAgent</strong>
+          <span>Selección asistida</span>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav" aria-label="Secciones"></nav>
+
+      <div class="lateral-pie">
+        <div class="usuario">
+          <div class="avatar" id="avatar">RE</div>
+          <div class="usuario-datos crece">
+            <strong>Sesión activa</strong>
+            <span>Quien aprueba queda en el registro</span>
+          </div>
+        </div>
+        <input type="email" id="usuario-correo" aria-label="Correo de quien aprueba">
+        <p class="diminuto apagado sin-margen">Grupo 3 · Rol 4</p>
+      </div>
+    </aside>
+
+    <main class="principal">
+      <header class="cabecera">
+        <div class="cabecera-titulo">
+          <h1 id="titulo">Lote</h1>
+          <p id="subtitulo"></p>
+        </div>
+        <div class="cabecera-acciones">
+          <a class="btn btn-fantasma btn-sm" href="/docs" target="_blank" rel="noopener">API</a>
+          <button class="btn btn-fantasma btn-icono" id="btn-tema" aria-label="Cambiar tema"></button>
+        </div>
+      </header>
+
+      <div class="contenido" id="contenido"></div>
+    </main>
+  </div>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

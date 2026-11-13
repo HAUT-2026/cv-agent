@@ -1,0 +1,166 @@
+/* ============================================================================
+   CVAgent · Tokens de diseño
+   ----------------------------------------------------------------------------
+   Un solo lugar donde viven color, tipografía, espacio y sombra. Ninguna otra
+   hoja define un color literal: todas usan estas variables. Cambiar la marca
+   del proyecto es cambiar este archivo y nada más.
+   ========================================================================== */
+
+:root {
+  /* --- Superficies y texto (modo claro) --- */
+  --bg:            #FAF8F8;
+  --surface:       #FFFFFF;
+  --surface-2:     #F4F1F2;
+  --surface-3:     #EBE7E8;
+  --border:        #E2DDDE;
+  --border-fuerte: #CFC7C9;
+  --texto:         #1A1618;
+  --texto-2:       #6A6265;
+  --texto-3:       #948B8E;
+
+  /* --- Marca --- */
+  --marca:         #8A0E2A;
+  --marca-hover:   #6E0A21;
+  --marca-suave:   #FBEDF0;
+  --marca-borde:   #F0D4DA;
+  --sobre-marca:   #FFFFFF;
+
+  /* --- Semánticos --- */
+  --ok:            #0F6B3C;
+  --ok-suave:      #E6F4EC;
+  --ok-borde:      #BFE3CF;
+  --alerta:        #8A5A00;
+  --alerta-suave:  #FCF2DF;
+  --alerta-borde:  #EFDCAE;
+  --peligro:       #A8102A;
+  --peligro-suave: #FBEAEC;
+  --peligro-borde: #F2CBD1;
+  --info:          #1B4F8A;
+  --info-suave:    #E9F1FA;
+  --info-borde:    #C6DBF0;
+
+  /* --- Resaltado de evidencia sobre el CV --- */
+  --cita-fondo:    #FFE9A8;
+  --cita-borde:    #E0B84A;
+  --cita-texto:    #3D2E00;
+
+  /* --- Tipografía ---
+     Fraunces para títulos: serif variable con eje óptico, da carácter
+     editorial sin perder seriedad institucional.
+     Public Sans para interfaz: sans humanista del sistema de diseño del
+     gobierno de EE. UU., pensada para formularios y datos densos.
+     JetBrains Mono para el CV y los hashes: altura de x grande y
+     cero punteado, que es lo que se necesita al leer evidencia.
+     Si no hay internet, las alternativas del sistema mantienen el ritmo. */
+  --titulo: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --fuente: "Public Sans", ui-sans-serif, system-ui, -apple-system,
+            "Segoe UI", Roboto, sans-serif;
+  --mono:   "JetBrains Mono", ui-monospace, SFMono-Regular, "Cascadia Mono",
+            Menlo, Consolas, monospace;
+
+  --t-xs:   11.5px;
+  --t-sm:   12.5px;
+  --t-base: 14px;
+  --t-md:   15px;
+  --t-lg:   19px;
+  --t-xl:   24px;
+  --t-2xl:  31px;
+
+  /* --- Espacio --- */
+  --e-1: 4px;  --e-2: 8px;  --e-3: 12px; --e-4: 16px;
+  --e-5: 24px; --e-6: 32px; --e-7: 48px;
+
+  /* --- Radios --- */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-full: 999px;
+
+  /* --- Sombras --- */
+  --sombra-1: 0 1px 2px rgba(26, 22, 24, .05);
+  --sombra-2: 0 2px 8px rgba(26, 22, 24, .07), 0 1px 2px rgba(26, 22, 24, .04);
+  --sombra-3: 0 12px 32px rgba(26, 22, 24, .14), 0 2px 8px rgba(26, 22, 24, .08);
+
+  /* --- Medidas --- */
+  --lateral: 250px;
+  --transicion: 150ms cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---------------------------------------------------------------- oscuro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --bg:            #141112;
+    --surface:       #1C1819;
+    --surface-2:     #262122;
+    --surface-3:     #322B2D;
+    --border:        #352E30;
+    --border-fuerte: #4A4143;
+    --texto:         #F2EEEF;
+    --texto-2:       #A69DA0;
+    --texto-3:       #7C7376;
+
+    --marca:         #F08098;
+    --marca-hover:   #F6A0B2;
+    --marca-suave:   #2E1620;
+    --marca-borde:   #4A2130;
+    --sobre-marca:   #2A0912;
+
+    --ok:            #6FD69B;
+    --ok-suave:      #11291C;
+    --ok-borde:      #1F4631;
+    --alerta:        #E8BC63;
+    --alerta-suave:  #2C2311;
+    --alerta-borde:  #4A3C1C;
+    --peligro:       #F58A9B;
+    --peligro-suave: #2E1419;
+    --peligro-borde: #4C2029;
+    --info:          #7FB4EC;
+    --info-suave:    #121F2E;
+    --info-borde:    #22364C;
+
+    --cita-fondo:    #4A3A0E;
+    --cita-borde:    #8A6E22;
+    --cita-texto:    #FFE9A8;
+
+    --sombra-1: 0 1px 2px rgba(0, 0, 0, .4);
+    --sombra-2: 0 2px 8px rgba(0, 0, 0, .45), 0 1px 2px rgba(0, 0, 0, .3);
+    --sombra-3: 0 12px 32px rgba(0, 0, 0, .6), 0 2px 8px rgba(0, 0, 0, .4);
+  }
+}
+
+/* Forzado manual desde el botón de tema */
+:root[data-tema="oscuro"] {
+  --bg:            #141112;
+  --surface:       #1C1819;
+  --surface-2:     #262122;
+  --surface-3:     #322B2D;
+  --border:        #352E30;
+  --border-fuerte: #4A4143;
+  --texto:         #F2EEEF;
+  --texto-2:       #A69DA0;
+  --texto-3:       #7C7376;
+
+  --marca:         #F08098;
+  --marca-hover:   #F6A0B2;
+  --marca-suave:   #2E1620;
+  --marca-borde:   #4A2130;
+  --sobre-marca:   #2A0912;
+
+  --ok:            #6FD69B;
+  --ok-suave:      #11291C;
+  --ok-borde:      #1F4631;
+  --alerta:        #E8BC63;
+  --alerta-suave:  #2C2311;
+  --alerta-borde:  #4A3C1C;
+  --peligro:       #F58A9B;
+  --peligro-suave: #2E1419;
+  --peligro-borde: #4C2029;
+  --info:          #7FB4EC;
+  --info-suave:    #121F2E;
+  --info-borde:    #22364C;
+
+  --cita-fondo:    #4A3A0E;
+  --cita-borde:    #8A6E22;
+  --cita-texto:    #FFE9A8;
+
+  --sombra-1: 0 1px 2px rgba(0, 0, 0, .4);
+  --sombra-2: 0 2px 8px rgba(0, 0, 0, .45), 0 1px 2px rgba(0, 0, 0, .3);
+  --sombra-3: 0 12px 32px rgba(0, 0, 0, .6), 0 2px 8px rgba(0, 0, 0, .4);
+}
