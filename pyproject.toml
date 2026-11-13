@@ -15,17 +15,27 @@ dependencies = [
     "pydantic>=2.10,<3.0",
 ]
 
+[project.optional-dependencies]
+# Rol 4 · portal, API y lectura de PDF. El núcleo (Rol 1 y Rol 2) no las necesita.
+portal = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.27",
+    "pdfplumber>=0.11",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=8.0,<9.0",
+    "httpx>=0.27",
 ]
 
 [project.scripts]
 cvagent-demo = "cvagent.cli.demo:main"
 cvagent-postgres-setup = "cvagent.cli.postgres_setup:main"
+cvagent-portal = "portal.__main__:main"
 
 [tool.setuptools.packages.find]
-include = ["cvagent*"]
+include = ["cvagent*", "reglas*", "portal*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

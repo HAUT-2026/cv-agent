@@ -1,0 +1,52 @@
+/* ============================================================================
+   CVAgent · Tipografía
+   ----------------------------------------------------------------------------
+   Las tres familias van EN EL PROYECTO, no traídas de un CDN. Tres razones:
+   la demostración funciona sin internet, nadie depende de que un servicio
+   externo esté arriba, y ningún dato del navegador de quien usa el portal
+   sale hacia un tercero.
+
+   Las tres son variables: un solo archivo cubre todo el rango de grosores,
+   así que pesan menos que las cuatro o cinco estáticas que harían falta.
+   Las tres tienen licencia SIL Open Font License 1.1 (incluida en esta
+   carpeta), que permite usarlas y redistribuirlas en este proyecto.
+
+   Fraunces       títulos      serif con eje óptico; carácter editorial
+   Public Sans    interfaz     sans del sistema de diseño del gobierno de
+                               EE. UU.; pensada para formularios y datos
+   JetBrains Mono CV y hashes  altura de x grande y cero punteado, que es lo
+                               que se necesita al leer evidencia carácter a
+                               carácter
+   ========================================================================== */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fuentes/fraunces.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  src: url("/fuentes/public-sans.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Public Sans";
+  src: url("/fuentes/public-sans-italic.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fuentes/jetbrains-mono.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
