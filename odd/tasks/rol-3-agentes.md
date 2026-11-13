@@ -1,5 +1,5 @@
 # Rol 3 — Agentes del MVP de CVAgent
-Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (354) · Guía: `docs/rol-3-ejecucion.md`
+Paquete: `cvagent/agentes/` · Test runner: `python -m pytest tests/test_rol3_*.py` (373) · Guía: `docs/rol-3-ejecucion.md`
 Objetivo: agentes analista, auditor y agendador con salidas en esquemas estrictos, citas verificables por código y herramientas bajo allowlist, sin asumir lógica de negocio de otros roles.
 
 ## Specs
@@ -24,7 +24,10 @@ Acceptance: CV-007 (dataset previo) con LLM real: decisión, fallidos e inyecci�
 `auditor.py`: hallazgos con severidad y offset (inyección, citas no encontradas, obligatorio sin evidencia y cobertura < 0,70 (R4), idioma bajo el mínimo o sin acreditar (E5), idioma incoherente, cita con proxy, cita sin relación, evidencia solo de lista, calificadores débiles, estados incoherentes, proxies de R7). Bloquea, no aprueba.
 Acceptance: `test_rol3_auditor.py` reproduce los errores reales medidos; sobre la ficha real de CV-007 (corrida 2) bloquea solo por inyección, sin falsos positivos.
 
-### S6 — Auditor LLM ⏳ · S7 — Agendador ⏳
+### S6 — Auditor LLM ⏳
+
+### S7 — Agendador ✅
+`agendador.py`: agente acotado (plantilla + franja con herramientas de solo lectura, sin CV, texto por código), barandas de calendario con fail-closed, `PropuestaAgenda` del Rol 1 y adaptador `AgendadorRol3`. Acceptance: `tests/test_rol3_agendador.py` (19) y `scripts/rol3/agendar.py`. Pendiente: plantillas aprobadas por RR. HH. y contrato v1.1 (`docs/rol-3-agendador.md`).
 
 ### S9 — Puntaje y cobertura para `armar_staging` ✅ (rúbrica provisional)
 `rubrica.py` + `puntaje.py` → `[{cv_id, puntaje, cobertura, contradiccion_material}]` para el motor del Rol 2. Acceptance: Top solo aptos, R5 y R4 se activan, par contrafactual con el mismo puntaje, CV-040 = CV-008 (`tests/test_rol3_puntaje.py`, 19). Pendiente: aprobación de RR. HH. y del grupo (`docs/rol-3-puntaje.md`).

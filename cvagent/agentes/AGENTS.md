@@ -7,6 +7,7 @@ Instrucciones para un asistente de IA que ayuda a una persona a **instalar, ejec
 ## 1. Qué es esto, en cinco líneas
 
 - **Analista** (`analista.py`): un LLM con herramientas que juzga, requisito por requisito, la evidencia de un CV y entrega citas **literales**. No decide quién pasa ni calcula puntajes.
+- **Agendador** (`agendador.py`): LLM con herramientas de solo lectura que elige **plantilla y franja** para cada candidato de la lista aprobada; **no ve el CV** (solo referencias `cand_…`) y **no escribe el mensaje** (lo arma el código desde la plantilla). Ver `docs/rol-3-agendador.md`.
 - **Auditor** (`auditor.py`): **código determinista, sin LLM**. Revisa la ficha del analista y devuelve `bloquea` o `sin_objeciones`. Puede bloquear; nunca aprueba.
 - **Principio:** el código busca y verifica (texto canónico, offsets, experiencia R11, inyección); el LLM solo juzga.
 - **Flujo:** motor del Rol 2 (`reglas/motor.py`) → solo lo `evaluable` pasa al Rol 3 → si la sanitización o el auditor bloquean, el caso va a `bandeja` (revisión humana); si no, a `ranking` → **puntaje y cobertura por código** (`puntaje.py`, rúbrica **provisional**) → `armar_staging` del Rol 2 (R4, R5, R6) → Top 5.
@@ -31,12 +32,13 @@ Avanza **un paso a la vez**. Pide a la persona que te pegue la salida y compára
 | 1 | Herramientas | `git --version` · `docker --version` · (LLM) `ollama --version` | Las tres responden con una versión |
 | 2 | Código | `git clone https://github.com/HAUT-2026/cv-agent.git`, `cd cv-agent` y, si el PR no está fusionado, `git checkout feature/rol-3-agentes` | `git branch` muestra la rama correcta y existe `cvagent/agentes/` |
 | 3 | Docker encendido | `docker version` | Aparece el bloque `Server:` |
-| 4 | Pruebas | Comando del paso 4 de la guía (pydantic, pytest y pypdf; lista explícita de archivos) | Termina en `486 passed` |
+| 4 | Pruebas | Comando del paso 4 de la guía (pydantic, pytest y pypdf; lista explícita de archivos) | Termina en `505 passed` |
 | 5 | Banco sin LLM | `... python scripts/rol3/probar_banco.py --sin-llm` | Última línea: `44/44 · ... 44/44 · Meses R11: 41/41` |
 | 6a | Modelo | `ollama pull qwen2.5:7b` y `ollama show qwen2.5:7b` | `Capabilities` incluye `tools` |
 | 6b | Ollama accesible desde Docker | `setx OLLAMA_HOST 0.0.0.0` y `setx OLLAMA_CONTEXT_LENGTH 8192`, reiniciar Ollama y probar `/api/tags` desde un contenedor | La respuesta lista `qwen2.5:7b` |
 | 7 | `.env` | `Copy-Item .env.example .env` y editar | `LLM_BASE_URL=http://host.docker.internal:11434/v1`, `LLM_MODELO=qwen2.5:7b`, `LLM_MAX_TOKENS=2000`, `LLM_TIMEOUT=600` |
 | 8 | Analista + auditor | `docker run --rm -it ... python -u scripts/rol3/probar_banco.py CV-001` | Muestra la ficha con citas, el veredicto del auditor y `Ruta final: ranking · esperada: ranking ✓` |
+| 9b | Agendar el Top | `... python scripts/rol3/agendar.py --sin-llm` (y sin `--sin-llm` con LLM) | 6 propuestas sin cruces, `texto ✓ idéntico a la plantilla` y el texto con `{{nombre_de_pila}}` |
 | 9 | Re-auditar | `... python scripts/rol3/auditar.py` | Imprime el veredicto de cada ficha de `resultados/rol3/` |
 
 Los comandos completos y la explicación de cada parte están en `docs/rol-3-ejecucion.md`. Cópialos de allí, no los reconstruyas.
@@ -88,6 +90,7 @@ Los comandos completos y la explicación de cada parte están en `docs/rol-3-eje
 | Reglas del auditor | `auditor.py` (una sección numerada por tipo de hallazgo) |
 | Cambiar de proveedor LLM | Solo `.env`. `llm.py` habla el protocolo de OpenAI sobre urllib, sin SDK |
 | Ruta final y comparación | `evaluacion.py` y `scripts/rol3/probar_banco.py` |
+| Agendador | `agendador.py` (herramientas propias en `REGISTRO_AGENDA`, barandas en `problemas_de_agenda`, `verificar_propuesta`, adaptador `AgendadorRol3` para el grafo), datos en `agenda/` y `docs/rol-3-agendador.md` |
 | Puntaje, cobertura y Top 5 | `rubrica.py` (todas las decisiones, versionadas), `puntaje.py` (el cálculo) y `docs/rol-3-puntaje.md` (el porqué). `evaluacion.ficha_lexica` es un analista **simulado** solo para medir |
 | Pruebas | `tests/test_rol3_*.py`, con utilidades en `tests/rol3_comun.py`. Leen `data/`, sin frases fijas |
 
@@ -95,7 +98,7 @@ Los comandos completos y la explicación de cada parte están en `docs/rol-3-eje
 
 1. Corre las pruebas (paso 4) **antes**, para tener una línea base.
 2. Cambia el código del Rol 3 y agrega una prueba que reproduzca el caso, con datos de `data/` o una copia modificada en memoria (ver `datos()` en `tests/rol3_comun.py`). Nunca escribas en `data/`.
-3. Corre las pruebas y el banco sin LLM: deben seguir en `486 passed` (o más) y `44/44`.
+3. Corre las pruebas y el banco sin LLM: deben seguir en `505 passed` (o más) y `44/44`.
 4. Si tocaste el prompt, sube `VERSION_PROMPT` y anota el cambio en el historial del encabezado de `analista.py`.
 5. Para subir los cambios: rama propia, `git status` (que no aparezcan `.env` ni `resultados/`), commit y PR. Avisa al grupo de qué cambió.
 
@@ -114,4 +117,6 @@ El puntaje usa una **rúbrica provisional** (`rubrica.py`, `VERSION_RUBRICA`), a
 Consecuencia que conviene explicar: con esta rúbrica, **los 13 CV «parciales» van a revisión humana por R4** (no se descartan; salen del Top automático). Si te piden cambiar un peso: edita solo `rubrica.py`, sube `VERSION_RUBRICA`, corre `tests/test_rol3_puntaje.py` y `probar_banco.py --sin-llm`, y actualiza `docs/rol-3-puntaje.md`.
 
 Otra decisión del 11-nov que afecta al analista: la **baranda B2** (el motor rechaza `sin_evidencia` en un requisito no buscado y le muestra la evidencia) y el filtro de **evidencia fuerte** de `frases_relacionadas` (12-nov: una raíz genérica sola como «integrar» o «prueba», el nombre de una empresa o la sección de idiomas no cuentan como evidencia de una habilidad). Ambos están medidos en `docs/rol-3-evaluacion.md`.
+
+Decisiones del agendador (12-nov, ver `docs/rol-3-agendador.md`): agente **acotado** (elige plantilla y franja; el texto lo arma el código), **marcador** `{{nombre_de_pila}}` que llena el envío desde la bóveda (ningún nombre real en `PropuestaAgenda`), plantillas y calendario **sintéticos** en `cvagent/agentes/agenda/`. Si alguien pide que el agendador «personalice» el mensaje con datos del CV: no. Rompe la separación de agentes (ADR-002) y la regla 4 del Rol 1.
 
