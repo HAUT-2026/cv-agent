@@ -33,6 +33,8 @@ El modelo solo decide lo que el código no puede decidir: si una frase del CV de
 | `agente.py` | Motor razonar → actuar → observar: allowlist por agente, freno de llamadas repetidas, rechazo de entrega prematura, **`validar_entrega`** (baranda propia de cada agente: rechaza hasta 2 veces una entrega válida pero incompleta), límite de pasos (fail-closed) y traza |
 | `analista.py` | Prompt `analista-v3.2` (v3.2: acreditación de idioma, E5), allowlist, `analizar_caso()` y la baranda `evidencia_sin_revisar`: rechaza un `sin_evidencia` en un requisito que no buscó si `frases_relacionadas` sí tiene frases, y el rechazo **incluye esas frases** como observación (B2) |
 | `auditor.py` | Auditor **determinista**: `auditar(ficha, caso, vacante)` → `Veredicto` (`bloquea` / `sin_objeciones`; **no aprueba**) con hallazgos de severidad y offset |
+| `agendador.py` | Agente agendador acotado: plantilla + franja por candidato con herramientas de solo lectura, sin CV; texto armado por código; barandas de calendario; `PropuestaAgenda` del Rol 1. Detalle en [rol-3-agendador.md](rol-3-agendador.md) |
+| `agenda/` | `plantillas.json` (plantillas-v1, sintéticas) y `calendario_simulado.json` (free/busy del panel) |
 | `rubrica.py` | Rúbrica **provisional** del puntaje (pesos, valoraciones, tramos de experiencia, umbral R4), versionada con `VERSION_RUBRICA`. Detalle en [rol-3-puntaje.md](rol-3-puntaje.md) |
 | `puntaje.py` | `calcular_puntaje(ficha, resultado_motor, vacante, diccionario, veredicto)` → `{puntaje, cobertura, contradiccion_material}` + desglose, en el formato de `armar_staging` del Rol 2 |
 | `evaluacion.py` | `ruta_final(ruta_motor, rol3_bloquea)`, vocabulario de estados del analista → motor (`A_ESTADO_MOTOR`) y comparación contra `data/manifiesto.json` (solo para medir) |
@@ -42,7 +44,7 @@ El modelo solo decide lo que el código no puede decidir: si una frase del CV de
 Guía completa, con Docker, Ollama, salidas esperadas y solución de errores: **[rol-3-ejecucion.md](rol-3-ejecucion.md)**. En resumen:
 
 ```bash
-python -m pytest tests/test_rol3_*.py                 # 354 pruebas, sin LLM ni red (solo pydantic + pytest)
+python -m pytest tests/test_rol3_*.py                 # 373 pruebas, sin LLM ni red (solo pydantic + pytest)
 python scripts/rol3/probar_banco.py --sin-llm         # 44 CV: motor Rol 2 + sanitización → ruta final 44/44
 cp .env.example .env                                  # configurar el LLM (Ollama, OpenAI…)
 python scripts/rol3/probar_banco.py CV-001            # analista real + auditor sobre un CV
@@ -75,7 +77,7 @@ Independiente del analista (ADR-002): solo ve la ficha, el texto canónico, la v
 
 - **Integración al grafo** (`AnalistaPort`): depende de la propuesta de contrato v1.1 (referencia al CV, evaluaciones por requisito y hallazgos en `Veredicto`).
 - **Auditor LLM**: lo semántico (SOAP ≠ REST; consumir ≠ diseñar).
-- **Agendador**.
+- **Agendador:** hecho (`rol-3-agendador.md`); falta aprobar plantillas (RR. HH.) y el contrato v1.1 (una propuesta por candidato).
 - **Puntaje y cobertura:** hechos con rúbrica **provisional** (`rol-3-puntaje.md`); falta la aprobación de RR. HH. y del grupo.
 - Las llamadas a herramientas deberían pasar por `OperationalControls.call_tool` (gateway del Rol 1) en vez de la allowlist propia.
 

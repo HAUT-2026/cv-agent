@@ -9,7 +9,7 @@ Esta guía te lleva desde cero hasta ver a los agentes del Rol 3 (analista y aud
 | Paso | Qué haces | ¿Necesita LLM? | Tiempo |
 |---|---|---|---|
 | 1-3 | Instalar lo básico, traer el código y comprobar Docker | No | 10-20 min (una vez) |
-| 4 | Correr las **486 pruebas** (Rol 2 + Rol 3) | No | 1 min |
+| 4 | Correr las **505 pruebas** (Rol 2 + Rol 3) | No | 1 min |
 | 5 | Correr el **banco sin LLM**: los 44 CV por el motor de reglas y la sanitización | No | 1 min |
 | 6-7 | Preparar Ollama y el archivo `.env` | Sí | 15-30 min (una vez; la descarga del modelo pesa 4,7 GB) |
 | 8 | Ver al **analista** (LLM) y al **auditor** evaluar un CV | Sí | 3-5 min por CV en un portátil |
@@ -56,7 +56,7 @@ docker version
 ## Paso 4 · Correr las pruebas (sin LLM, sin red)
 
 ```powershell
-docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic pytest pypdf && python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py"
+docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic pytest pypdf && python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agendador.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py"
 ```
 
 **Qué hace cada parte:**
@@ -70,7 +70,7 @@ docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q 
 | `pip install -q pydantic pytest pypdf` | Lo único que se necesita. `pypdf` es para las pruebas del Rol 2 que leen los PDF |
 | `python -m pytest ...` | Corre las pruebas del Rol 2 (`test_reglas`, `test_dataset`) y las 7 del Rol 3 |
 
-**Qué esperar:** filas de puntos y, al final, `486 passed`. Son 132 del Rol 2 y 354 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
+**Qué esperar:** filas de puntos y, al final, `505 passed`. Son 132 del Rol 2 y 373 del Rol 3. Un `F` es una prueba fallida y un `E` un error: copia el mensaje y repórtalo.
 
 > No corras `pytest` a secas: también recogería las pruebas del Rol 1, que necesitan LangGraph (`pip install -e .`). Por eso se listan los archivos.
 
@@ -203,6 +203,14 @@ Todo queda guardado en `resultados/rol3/CV-001.json`: la ficha, el veredicto, lo
 
 > `todos` en lugar de un id corre los 44 CV. En un portátil eso son **horas**; úsalo con un proveedor rápido para la medición final (ADR-007).
 
+## Paso 8b · Agendar entrevistas al Top (agendador)
+
+```powershell
+docker run --rm -v "${PWD}:/app" -w /app python:3.12-slim sh -c "pip install -q pydantic && python scripts/rol3/agendar.py --sin-llm"
+```
+
+Toma el Top del staging simulado, lo convierte en referencias opacas (`cand_…`, el agendador nunca ve el CV ni el `cv_id`) y propone una entrevista por candidato desde una plantilla aprobada y un calendario simulado del panel (con el festivo del 16 de noviembre). **Qué esperar:** 6 líneas `CV-00X → cand_… · fecha hora · plantillas-v1:tecnica_virtual · texto ✓ idéntico a la plantilla` y el texto exacto que el reclutador aprobaría, con el marcador `{{nombre_de_pila}}` (lo llena el envío, no el agente). Sin `--sin-llm` (y con `-it`), lo hace el agente con tu LLM: verás `ver_plantillas`, `consultar_franjas` y, si se equivoca, `entrega_incompleta` con las franjas válidas.
+
 ## Paso 9 · Re-auditar sin volver a llamar al LLM
 
 ```powershell
@@ -238,7 +246,7 @@ Con Python 3.11 o superior instalado:
 python -m venv .venv
 .venv\Scripts\Activate.ps1          # macOS/Linux: source .venv/bin/activate
 pip install pydantic pytest pypdf
-python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py
+python -m pytest tests/test_reglas.py tests/test_dataset.py tests/test_rol3_agendador.py tests/test_rol3_agente.py tests/test_rol3_analista.py tests/test_rol3_auditor.py tests/test_rol3_citas.py tests/test_rol3_evaluacion.py tests/test_rol3_ficha.py tests/test_rol3_puntaje.py tests/test_rol3_sanitizacion.py
 python scripts/rol3/probar_banco.py --sin-llm
 ```
 
