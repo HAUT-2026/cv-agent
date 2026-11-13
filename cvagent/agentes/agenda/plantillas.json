@@ -1,0 +1,33 @@
+{
+  "version": "plantillas-v1",
+  "estado": "sintética para el MVP; pendiente de aprobación de RR. HH. (R10)",
+  "nota": "El texto solo admite las variables listadas. {{nombre_de_pila}} es un MARCADOR: no lo llena el agendador; lo reemplaza el envío (Rol 4) desde la bóveda de identidad, después de la aprobación del reclutador. Así ningún nombre real entra a PropuestaAgenda (regla 4 de integración del Rol 1).",
+  "variables_permitidas": ["cargo", "fecha", "hora_inicio", "hora_fin", "duracion_min", "ciudad"],
+  "marcadores": ["{{nombre_de_pila}}"],
+  "plantillas": [
+    {
+      "id": "tecnica_virtual",
+      "nombre": "Entrevista técnica virtual",
+      "tipo": "tecnica",
+      "duracion_min": 60,
+      "modalidades": ["remota", "híbrida"],
+      "texto": "Hola {{nombre_de_pila}}:\n\nGracias por postularte al cargo de {cargo}. Queremos invitarte a una entrevista técnica virtual de {duracion_min} minutos el {fecha}, de {hora_inicio} a {hora_fin} (hora de Bogotá).\n\nEl enlace de la videollamada te llegará cuando confirmes. Si el horario no te sirve, responde este correo y buscamos otro.\n\nEquipo de Selección"
+    },
+    {
+      "id": "tecnica_presencial",
+      "nombre": "Entrevista técnica presencial",
+      "tipo": "tecnica",
+      "duracion_min": 60,
+      "modalidades": ["presencial", "híbrida"],
+      "texto": "Hola {{nombre_de_pila}}:\n\nGracias por postularte al cargo de {cargo}. Queremos invitarte a una entrevista técnica presencial de {duracion_min} minutos el {fecha}, de {hora_inicio} a {hora_fin}, en nuestra sede de {ciudad}.\n\nLa dirección exacta te llegará cuando confirmes. Si el horario no te sirve, responde este correo y buscamos otro.\n\nEquipo de Selección"
+    },
+    {
+      "id": "conversacion_inicial_virtual",
+      "nombre": "Conversación inicial virtual",
+      "tipo": "inicial",
+      "duracion_min": 30,
+      "modalidades": ["remota", "híbrida", "presencial"],
+      "texto": "Hola {{nombre_de_pila}}:\n\nGracias por postularte al cargo de {cargo}. Queremos conocerte en una conversación virtual de {duracion_min} minutos el {fecha}, de {hora_inicio} a {hora_fin} (hora de Bogotá).\n\nEl enlace te llegará cuando confirmes. Si el horario no te sirve, responde este correo y buscamos otro.\n\nEquipo de Selección"
+    }
+  ]
+}
